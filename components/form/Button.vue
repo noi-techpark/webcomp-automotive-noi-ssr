@@ -84,18 +84,18 @@ export default {
 
 <style lang="postcss" scoped>
 .button {
-  @apply relative inline-block rounded-lg px-6 text-base font-semibold select-none;
+  @apply relative inline-block rounded-lg px-6 text-base select-none;
 
-  min-width: 50px;
-  height: 50px;
-  line-height: 50px;
+  min-width: 44px;
+  height: 44px;
+  line-height: 44px;
 
   & > svg {
     @apply align-top mr-2;
 
     width: 18px;
     height: 18px;
-    margin-top: 16px;
+    margin-top: 13px;
     fill: #fff;
   }
 

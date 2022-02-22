@@ -14,6 +14,6 @@ export default {
 
 <style lang="postcss" scoped>
 .map-view {
-  /* TODO */
+  @apply bg-black;
 }
 </style>

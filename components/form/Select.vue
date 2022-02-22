@@ -5,6 +5,7 @@
       disabled: disabled,
       'not-valid': !valid,
       fill: aspect === 'fill',
+      'white-contrast': whiteContrast,
     }"
   >
     <InputLabel v-if="label" :text="label" :required="required" />
@@ -61,6 +62,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    whiteContrast: {
+      type: Boolean,
+      default: true,
+    },
   },
   computed: {
     selected: {
@@ -82,13 +87,13 @@ export default {
   }
 
   & .selector {
-    @apply inline-block bg-input px-6 rounded-lg text-base font-semibold cursor-pointer;
+    @apply inline-block bg-input px-4 rounded-lg text-base cursor-pointer;
 
-    padding-top: 0.8rem;
-    padding-bottom: 0.8rem;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
 
     & select {
-      @apply bg-transparent text-black text-base font-semibold;
+      @apply bg-transparent text-black text-base;
 
       &:focus {
         @apply outline-none;
@@ -109,6 +114,12 @@ export default {
       & select {
         @apply w-full;
       }
+    }
+  }
+
+  &.white-contrast {
+    & .selector {
+      @apply bg-white;
     }
   }
 

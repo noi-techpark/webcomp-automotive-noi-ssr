@@ -1,4 +1,4 @@
-const AVAILABLE_LANGUAGES = ['it']
+const AVAILABLE_LANGUAGES = ['en']
 
 export default {
   ssr: false,
@@ -41,14 +41,14 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['nuxt-i18n'],
+  modules: ['nuxt-i18n', '@nuxtjs/axios'],
 
   i18n: {
     locales: AVAILABLE_LANGUAGES,
     strategy: 'prefix_except_default',
-    defaultLocale: 'it',
+    defaultLocale: 'en',
     vueI18n: {
-      fallbackLocale: 'it',
+      fallbackLocale: 'en',
       messages: AVAILABLE_LANGUAGES.reduce(
         (obj, key) => ({
           ...obj,
@@ -88,6 +88,10 @@ export default {
         ],
       })
     },
+  },
+
+  publicRuntimeConfig: {
+    apiEndpoint: process.env.API_ENDPOINT,
   },
 
   router: {

@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 500px">
+  <div style="height: 500px; overflow: hidden">
     <WebComponent />
   </div>
 </template>

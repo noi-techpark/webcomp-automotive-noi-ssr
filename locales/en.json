@@ -1,0 +1,41 @@
+{
+  "common": {
+    "backToCategories": "Back to main sectors",
+    "filters": "Filters",
+    "automotive": "Automotive",
+    "energy": "Energy",
+    "green": "Green",
+    "food": "Food",
+    "select": "Select",
+    "million": "Mio",
+    "noCompaniesFound": "Sorry, no companies with the matched filters were found."
+  },
+  "filters": {
+    "searchPlaceholder": "Company, keyword...",
+    "industrialSector": "Industrial sector",
+    "valueChainPosition": "Value chain position",
+    "hideAdvanced": "Hide advanced",
+    "showAdvanced": "Show advanced",
+    "turnover": "Turnover",
+    "numberOfEmployees": "N. of employees",
+    "certification": "Certification",
+    "resetFilters": "Reset filters",
+    "automotiveTechnology": "Automotive technology",
+    "machineryAndPlantConstruction": "Machinery and plant construction",
+    "electronicsElectricalEngineering": "Electronics / Electrical Engineering",
+    "pasticsChemics": "Pastics / Chemics",
+    "informationtechnology": "Informationtechnology",
+    "researchAndDevelopment": "Research & Development",
+    "serivceProvidersConsultants": "Serivce providers / Consultants",
+    "educationAndTraining": "Education and Training",
+    "other": "Other",
+    "users": "Users",
+    "developers": "Developers",
+    "laboratories": "Laboratories",
+    "production": "Production",
+    "suppliers": "Suppliers",
+    "providers": "Providers",
+    "commerceAndDistribution": "Commerce and distribution",
+    "notDefined": "Not defined"
+  }
+}
