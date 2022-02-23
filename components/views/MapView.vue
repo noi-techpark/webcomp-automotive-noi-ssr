@@ -1,19 +1,16 @@
 <template>
-  <RightColumn class="map-view" :visible="true"> This is the map </RightColumn>
+  <RightColumn class="map-view" :visible="true">
+    <Map :visible-companies="filteredCompanies" />
+  </RightColumn>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      /* TODO */
-    }
+  props: {
+    filteredCompanies: {
+      type: Array,
+      required: true,
+    },
   },
 }
 </script>
-
-<style lang="postcss" scoped>
-.map-view {
-  @apply bg-black;
-}
-</style>

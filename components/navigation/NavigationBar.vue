@@ -548,7 +548,15 @@ export default {
       }
 
       return results.map((r) =>
-        this.getResultDataObject(false, r.id, r.attributes.name, null, false)
+        this.getResultDataObject(
+          false,
+          r.id,
+          r.attributes.name,
+          null,
+          false,
+          r.attributes.companyAddress.lat,
+          r.attributes.companyAddress.lng
+        )
       )
     },
 
@@ -571,6 +579,10 @@ export default {
         this.backToCategories()
       }
     },
+
+    filteredResults(newCompaniesList) {
+      this.$emit('didFilterCompanies', newCompaniesList)
+    },
   },
 
   mounted() {
@@ -578,13 +590,25 @@ export default {
   },
 
   methods: {
-    getResultDataObject(isPlaceholder, id, name, metric, isMainCategory) {
+    getResultDataObject(
+      isPlaceholder,
+      id,
+      name,
+      metric,
+      isMainCategory,
+      lat,
+      lng
+    ) {
       return {
         isPlaceholder,
         id,
         name,
         metric,
         isMainCategory,
+        coordinates: {
+          lat,
+          lng,
+        },
       }
     },
 
@@ -592,7 +616,7 @@ export default {
       if (result.id.startsWith(this.CATEGORY_PREFIX)) {
         const categoryId = result.id.replace(this.CATEGORY_PREFIX, '')
         this.curSectionTitle = result.name
-        this.mainCategory = categoryId
+        this.showCategory(categoryId)
       } else {
         this.onCompanyClick(result.id)
       }
@@ -644,7 +668,9 @@ export default {
         )
         .then((response) => {
           console.log('DATA', response.data.data)
-          this.fetchedData = response.data.data
+          const companiesList = response.data.data
+          this.fetchedData = companiesList
+          this.$emit('didFetchCompanies', companiesList)
         })
         .catch(() => {
           // TODO

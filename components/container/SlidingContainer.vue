@@ -1,6 +1,8 @@
 <template>
   <div class="container" :class="{ visible }">
-    <slot></slot>
+    <div class="content">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -20,6 +22,13 @@ export default {
   @apply absolute w-full h-full bg-secondary transition duration-300 pointer-events-none;
 
   transform: translateY(100vh);
+  max-width: initial;
+
+  & .content {
+    @apply relative h-full mr-auto ml-auto;
+
+    max-width: 1200px;
+  }
 
   &.visible {
     @apply transform-none pointer-events-auto;

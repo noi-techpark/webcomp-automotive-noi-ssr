@@ -1,16 +1,23 @@
 <template>
   <div class="component-view">
     <NavigationBar
+      ref="navigationBar"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
+      @didFetchCompanies="setCompaniesList"
       @didFilterCompanies="setNewFilteredCompanies"
     />
     <MapView
       :filtered-companies="filteredCompanies"
       @onCompanyClick="showCompany"
     />
-    <HomeView :visible="isHomeViewVisible" />
+    <HomeView
+      :companies-list="companiesList"
+      :filtered-companies="filteredCompanies"
+      :visible="isHomeViewVisible"
+      @showMapView="showMapView"
+    />
     <CompanyView
       :visible="showCompanyWithId !== null"
       :company-id="showCompanyWithId"
@@ -23,6 +30,7 @@
 export default {
   data() {
     return {
+      companiesList: [],
       filteredCompanies: [],
       isHomeViewVisible: true,
       showCompanyWithId: null,
@@ -46,8 +54,16 @@ export default {
       this.isHomeViewVisible = false
     },
 
+    showMapView() {
+      this.$refs.navigationBar.showCategory(true)
+    },
+
     setNewFilteredCompanies(filteredCompanies) {
       this.filteredCompanies = filteredCompanies
+    },
+
+    setCompaniesList(companiesList) {
+      this.companiesList = companiesList
     },
   },
 }

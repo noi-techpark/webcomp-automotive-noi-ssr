@@ -8,7 +8,10 @@
     "food": "Food",
     "select": "Select",
     "million": "Mio",
-    "noCompaniesFound": "Sorry, no companies with the matched filters were found."
+    "noCompaniesFound": "Sorry, no companies with the matched filters were found.",
+    "totalCompanies": "Total companies",
+    "sectors": "Sectors",
+    "keywords": "Keywords"
   },
   "filters": {
     "searchPlaceholder": "Company, keyword...",
@@ -37,5 +40,17 @@
     "providers": "Providers",
     "commerceAndDistribution": "Commerce and distribution",
     "notDefined": "Not defined"
+  },
+  "home": {
+    "title": "Sectorial overview South Tyrol",
+    "topDesc": "Here you can find and contact all South Tyrolean automotive and automation companies.",
+    "firstSection": {
+      "title": "Lorem ipsum",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    "secondSection": {
+      "title": "Lorem ipsum",
+      "desc": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    }
   }
 }
