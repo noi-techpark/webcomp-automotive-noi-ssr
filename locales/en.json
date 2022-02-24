@@ -11,7 +11,15 @@
     "noCompaniesFound": "Sorry, no companies with the matched filters were found.",
     "totalCompanies": "Total companies",
     "sectors": "Sectors",
-    "keywords": "Keywords"
+    "company": "Company",
+    "productsAndServices": "Products and services",
+    "references": "References",
+    "keywords": "Keywords",
+    "employees": "Employees",
+    "exportRatio": "Export ratio",
+    "researchAndDevelopmentRatio": "R&D ratio",
+    "certifications": "Certifications",
+    "contact": "Contact"
   },
   "filters": {
     "searchPlaceholder": "Company, keyword...",
@@ -40,6 +48,9 @@
     "providers": "Providers",
     "commerceAndDistribution": "Commerce and distribution",
     "notDefined": "Not defined"
+  },
+  "company": {
+    "contactReferencePerson": "Contact reference person"
   },
   "home": {
     "title": "Sectorial overview South Tyrol",

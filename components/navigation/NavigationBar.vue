@@ -613,11 +613,11 @@ export default {
     },
 
     showResult(result) {
-      if (result.id.startsWith(this.CATEGORY_PREFIX)) {
+      if (String(result.id).startsWith(this.CATEGORY_PREFIX)) {
         const categoryId = result.id.replace(this.CATEGORY_PREFIX, '')
         this.curSectionTitle = result.name
         this.showCategory(categoryId)
-      } else {
+      } else if (!result.isPlaceholder) {
         this.onCompanyClick(result.id)
       }
     },
@@ -636,7 +636,9 @@ export default {
     },
 
     onCompanyClick(companyId) {
-      this.$emit('onCompanyClick', companyId)
+      const companyData = this.fetchedData.find((c) => c.id === companyId)
+      this.hideFiltersMenu()
+      this.$emit('onCompanyClick', companyData)
     },
 
     didLeaveHome() {
@@ -847,7 +849,7 @@ export default {
     }
 
     & .close {
-      @apply absolute top-3 right-3 w-8 h-8 bg-white;
+      @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
 
       border-radius: 50%;
 

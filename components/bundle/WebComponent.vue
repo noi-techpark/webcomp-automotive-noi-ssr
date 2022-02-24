@@ -19,8 +19,8 @@
       @showMapView="showMapView"
     />
     <CompanyView
-      :visible="showCompanyWithId !== null"
-      :company-id="showCompanyWithId"
+      :data="visibleCompanyData || undefined"
+      :visible="visibleCompanyData !== null"
       @onHide="hideCompany"
     />
   </div>
@@ -33,17 +33,18 @@ export default {
       companiesList: [],
       filteredCompanies: [],
       isHomeViewVisible: true,
-      showCompanyWithId: null,
+      visibleCompanyData: null,
     }
   },
 
   methods: {
-    showCompany(companyId) {
-      this.showCompanyWithId = companyId
+    showCompany(companyData) {
+      console.log('COMPANY_DATA', companyData)
+      this.visibleCompanyData = companyData
     },
 
     hideCompany() {
-      this.showCompanyWithId = null
+      this.visibleCompanyData = null
     },
 
     showHome() {
