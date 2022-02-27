@@ -40,11 +40,7 @@
             </div>
             <div class="col">
               <p class="top-desc">
-                {{
-                  data.attributes.mainImage
-                    ? data.attributes.mainImage.data.attributes.caption
-                    : ''
-                }}
+                {{ data.attributes.mainImageDescription }}
               </p>
               <div class="middle-desc">
                 <div
@@ -60,11 +56,7 @@
                   }"
                 ></div>
                 <p class="second-desc">
-                  {{
-                    data.attributes.auxiliaryImage
-                      ? data.attributes.auxiliaryImage.data.attributes.caption
-                      : ''
-                  }}
+                  {{ data.attributes.auxiliaryImageDescription }}
                 </p>
               </div>
             </div>

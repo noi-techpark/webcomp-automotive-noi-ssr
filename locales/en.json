@@ -1,6 +1,6 @@
 {
   "common": {
-    "backToCategories": "Back to main sectors",
+    "backToCategories": "Back to technology sectors",
     "filters": "Filters",
     "automotive": "Automotive",
     "energy": "Energy",
@@ -19,7 +19,8 @@
     "exportRatio": "Export ratio",
     "researchAndDevelopmentRatio": "R&D ratio",
     "certifications": "Certifications",
-    "contact": "Contact"
+    "contact": "Contact",
+    "alpine": "Alpine"
   },
   "filters": {
     "searchPlaceholder": "Company, keyword...",

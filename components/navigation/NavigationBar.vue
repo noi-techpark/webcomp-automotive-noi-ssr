@@ -156,7 +156,7 @@ export default {
           null,
           true
         ),
-        this.getResultDataObject(
+        /* this.getResultDataObject(
           false,
           this.CATEGORY_PREFIX + 'Energy',
           this.$t('common.energy'),
@@ -174,6 +174,13 @@ export default {
           false,
           this.CATEGORY_PREFIX + 'Food',
           this.$t('common.food'),
+          null,
+          true
+        ), */
+        this.getResultDataObject(
+          false,
+          this.CATEGORY_PREFIX + 'Alpine',
+          this.$t('common.alpine'),
           null,
           true
         ),
