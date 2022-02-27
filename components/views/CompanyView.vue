@@ -85,12 +85,17 @@
             <p>
               {{ data.attributes.legalName }}
             </p>
-            <p v-if="data.attributes.companyAddress">
-              {{ data.attributes.companyAddress.street }}
+            <p v-if="data.attributes.companyAddressStreet">
+              {{ data.attributes.companyAddressStreet.name }}
             </p>
-            <p v-if="data.attributes.companyAddress">
+            <p
+              v-if="
+                data.attributes.companyAddress &&
+                data.attributes.companyAddressStreet
+              "
+            >
               {{ data.attributes.companyAddress.CAP }}
-              {{ data.attributes.companyAddress.city }}
+              {{ data.attributes.companyAddressStreet.city }}
             </p>
             <p v-if="data.attributes.companyContact">
               <a :href="'tel:' + data.attributes.companyContact.phoneNumber">{{
