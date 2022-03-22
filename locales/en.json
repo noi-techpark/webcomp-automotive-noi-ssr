@@ -1,6 +1,6 @@
 {
   "common": {
-    "backToCategories": "Back to technology sectors",
+    "backToCategories": "Back to specialization areas",
     "filters": "Filters",
     "automotive": "Automotive",
     "energy": "Energy",
@@ -20,7 +20,10 @@
     "researchAndDevelopmentRatio": "R&D ratio",
     "certifications": "Certifications",
     "contact": "Contact",
-    "alpine": "Alpine"
+    "alpine": "Alpine",
+    "automotiveAndMobility": "Automotive & Mobility",
+    "manufacturing": "Manufacturing",
+    "agriAutomation": "Agri-Automation"
   },
   "filters": {
     "searchPlaceholder": "Company, keyword...",

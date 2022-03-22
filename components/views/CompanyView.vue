@@ -90,11 +90,11 @@
             </p>
             <p
               v-if="
-                data.attributes.companyAddress &&
+                data.attributes.companyLocation &&
                 data.attributes.companyAddressStreet
               "
             >
-              {{ data.attributes.companyAddress.CAP }}
+              {{ data.attributes.companyLocation.cap }}
               {{ data.attributes.companyAddressStreet.city }}
             </p>
             <p v-if="data.attributes.companyContact">

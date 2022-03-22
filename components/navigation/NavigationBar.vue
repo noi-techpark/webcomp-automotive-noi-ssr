@@ -151,36 +151,22 @@ export default {
       return [
         this.getResultDataObject(
           false,
-          this.CATEGORY_PREFIX + 'Automotive',
-          this.$t('common.automotive'),
-          null,
-          true
-        ),
-        /* this.getResultDataObject(
-          false,
-          this.CATEGORY_PREFIX + 'Energy',
-          this.$t('common.energy'),
+          this.CATEGORY_PREFIX + 'automotiveAndMobility',
+          this.$t('common.automotiveAndMobility'),
           null,
           true
         ),
         this.getResultDataObject(
           false,
-          this.CATEGORY_PREFIX + 'Green',
-          this.$t('common.green'),
+          this.CATEGORY_PREFIX + 'manufacturing',
+          this.$t('common.manufacturing'),
           null,
           true
         ),
         this.getResultDataObject(
           false,
-          this.CATEGORY_PREFIX + 'Food',
-          this.$t('common.food'),
-          null,
-          true
-        ), */
-        this.getResultDataObject(
-          false,
-          this.CATEGORY_PREFIX + 'Alpine',
-          this.$t('common.alpine'),
+          this.CATEGORY_PREFIX + 'agriAutomation',
+          this.$t('common.agriAutomation'),
           null,
           true
         ),
@@ -404,11 +390,14 @@ export default {
         }
 
         if (this.mainCategory && this.mainCategory !== true) {
-          results = results.filter(
-            (r) => r.attributes.mainSector === this.mainCategory
-          )
+          results = results.filter((r) => {
+            return (
+              r.attributes.specialization &&
+              r.attributes.specialization[this.mainCategory]
+            )
+          })
         }
-
+        console.log('RES', results)
         if (this.filters.industrialSector) {
           results = results.filter(
             (r) =>
@@ -561,8 +550,12 @@ export default {
           r.attributes.name,
           null,
           false,
-          r.attributes.companyAddress.lat,
-          r.attributes.companyAddress.lng
+          r.attributes.companyLocation
+            ? Number(r.attributes.companyLocation.lat)
+            : 0,
+          r.attributes.companyLocation
+            ? Number(r.attributes.companyLocation.lng)
+            : 0
         )
       )
     },
@@ -676,7 +669,6 @@ export default {
             this.$i18n.locale
         )
         .then((response) => {
-          console.log('DATA', response.data.data)
           const companiesList = response.data.data
           this.fetchedData = companiesList
           this.$emit('didFetchCompanies', companiesList)
