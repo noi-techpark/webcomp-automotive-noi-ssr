@@ -180,19 +180,19 @@ export default {
           name: this.$t('common.select') + '...',
         },
         {
-          value: 'Automotive_technology',
+          value: 'Automotive_Technology',
           name: this.$t('filters.automotiveTechnology'),
         },
         {
-          value: 'Machinery_and_plant_construction',
+          value: 'Machinery_and_Plant_construction',
           name: this.$t('filters.machineryAndPlantConstruction'),
         },
         {
-          value: 'Electronics_Electrical_Engineering',
+          value: 'Electronics_and_Electrical_Engineering',
           name: this.$t('filters.electronicsElectricalEngineering'),
         },
         {
-          value: 'Pastics_Chemics',
+          value: 'Pastics_and_Chemistry',
           name: this.$t('filters.pasticsChemics'),
         },
         {
@@ -204,7 +204,7 @@ export default {
           name: this.$t('filters.researchAndDevelopment'),
         },
         {
-          value: 'Serivce_providers_Consultants',
+          value: 'Serivce_Providers_and_Consulting',
           name: this.$t('filters.serivceProvidersConsultants'),
         },
         {
@@ -665,11 +665,14 @@ export default {
       this.$axios
         .get(
           this.$config.apiEndpoint +
-            '/api/companies/?populate=*&locale=' +
+            '/api/published-companies/?fields[0]=data_' +
             this.$i18n.locale
+          // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
         )
         .then((response) => {
-          const companiesList = response.data.data
+          const companiesList = response.data.data.map(
+            (company) => company.attributes['data_' + this.$i18n.locale]
+          )
           this.fetchedData = companiesList
           this.$emit('didFetchCompanies', companiesList)
         })

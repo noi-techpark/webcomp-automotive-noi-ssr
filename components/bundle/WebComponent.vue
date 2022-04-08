@@ -39,7 +39,6 @@ export default {
 
   methods: {
     showCompany(companyData) {
-      console.log('COMPANY_DATA', companyData)
       this.visibleCompanyData = companyData
     },
 
