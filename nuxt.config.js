@@ -96,6 +96,7 @@ export default {
 
   publicRuntimeConfig: {
     apiEndpoint: process.env.API_ENDPOINT,
+    apiCompaniesPath: process.env.API_COMPANIES_PATH,
   },
 
   router: {

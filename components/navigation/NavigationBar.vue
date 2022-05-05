@@ -132,7 +132,11 @@
 </template>
 
 <script>
+import utils from '~/mixins/utils.js'
+
 export default {
+  mixins: [utils],
+
   data() {
     return {
       CATEGORY_PREFIX: 'CATEGORY-',
@@ -192,11 +196,11 @@ export default {
           name: this.$t('filters.electronicsElectricalEngineering'),
         },
         {
-          value: 'Pastics_and_Chemistry',
+          value: 'Plastics_and_Chemistry',
           name: this.$t('filters.pasticsChemics'),
         },
         {
-          value: 'Informationtechnology',
+          value: 'Information_Technology',
           name: this.$t('filters.informationtechnology'),
         },
         {
@@ -204,7 +208,7 @@ export default {
           name: this.$t('filters.researchAndDevelopment'),
         },
         {
-          value: 'Serivce_Providers_and_Consulting',
+          value: 'Service_Providers_and_Consulting',
           name: this.$t('filters.serivceProvidersConsultants'),
         },
         {
@@ -665,13 +669,14 @@ export default {
       this.$axios
         .get(
           this.$config.apiEndpoint +
-            '/api/published-companies/?fields[0]=data_' +
+            this.$config.apiCompaniesPath +
             this.$i18n.locale
           // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
         )
         .then((response) => {
-          const companiesList = response.data.data.map(
-            (company) => company.attributes['data_' + this.$i18n.locale]
+          const companiesList = this.mapCompaniesResult(
+            response,
+            this.$i18n.locale
           )
           this.fetchedData = companiesList
           this.$emit('didFetchCompanies', companiesList)

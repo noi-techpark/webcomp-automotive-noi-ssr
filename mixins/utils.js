@@ -38,5 +38,11 @@ export default {
 
       document.body.removeChild(textArea)
     },
+
+    mapCompaniesResult(response, lang) {
+      return response.data.data.map(
+        (company) => company.attributes['data_' + lang]
+      )
+    },
   },
 }
