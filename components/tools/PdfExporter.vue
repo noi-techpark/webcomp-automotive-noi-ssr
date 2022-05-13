@@ -16,22 +16,14 @@
       @hasGenerated="hasGeneratedPdf($event)"
     >
       <section slot="pdf-content" class="company-page">
-        <div v-for="data in companies" :key="data.id" class="company-view">
+        <div
+          v-for="(data, index) in companies"
+          :key="data.id"
+          class="company-view"
+        >
           <div class="data-view">
             <div class="header">
-              <h1>{{ data.attributes.name }}</h1>
-              <div
-                class="logo"
-                :style="{
-                  backgroundImage: data.attributes.logo
-                    ? 'url(' +
-                      $config.apiEndpoint +
-                      data.attributes.logo.data.attributes.formats.thumbnail
-                        .url +
-                      ')'
-                    : undefined,
-                }"
-              ></div>
+              <strong>NOI</strong> | {{ $t('common.ecosystemAutomotive') }}
             </div>
             <div class="top-overview">
               <div class="col">
@@ -71,6 +63,7 @@
                 </div>
               </div>
             </div>
+            <h1>{{ data.attributes.name }}</h1>
             <div class="data-cols">
               <div class="col">
                 <h2>{{ $t('common.company') }}</h2>
@@ -84,15 +77,10 @@
                 <p class="text">{{ data.attributes.productsAndServices }}</p>
               </div>
             </div>
-            <div v-if="data.attributes.contactPerson" class="contact-bt">
-              <a :href="'mailto:' + data.attributes.contactPerson.email"
-                >{{ $t('company.contactReferencePerson') }} →</a
-              >
-            </div>
           </div>
           <div class="footer">
-            <div class="column">
-              <p>
+            <div class="column primary">
+              <p class="uppercase">
                 {{ data.attributes.legalName }}
               </p>
               <p v-if="data.attributes.companyAddressStreet">
@@ -108,9 +96,8 @@
                 {{ data.attributes.companyAddressStreet.city }}
               </p>
               <p v-if="data.attributes.companyContact">
-                <a
-                  :href="'tel:' + data.attributes.companyContact.phoneNumber"
-                  >{{ data.attributes.companyContact.phoneNumber }}</a
+                <a :href="'tel:' + data.attributes.companyContact.phoneNumber"
+                  >T {{ data.attributes.companyContact.phoneNumber }}</a
                 >
               </p>
               <p v-if="data.attributes.companyContact">
@@ -125,7 +112,7 @@
               </p>
             </div>
             <div class="column second">
-              <p v-if="data.attributes.companyContact">
+              <p v-if="data.attributes.companyContact" class="mb-6">
                 {{ $t('common.contact') }}:
                 <a :href="'mailto:' + data.attributes.contactPerson.email">{{
                   data.attributes.contactPerson.personName
@@ -161,6 +148,23 @@
                 {{ getEnabledCertifications(data).join(', ') }}
               </p>
             </div>
+            <div class="column logo-ct">
+              <div
+                class="logo"
+                :style="{
+                  backgroundImage: data.attributes.logo
+                    ? 'url(' +
+                      $config.apiEndpoint +
+                      data.attributes.logo.data.attributes.formats.thumbnail
+                        .url +
+                      ')'
+                    : undefined,
+                }"
+              ></div>
+            </div>
+          </div>
+          <div class="page-num">
+            {{ index + 1 }}
           </div>
         </div>
       </section>
@@ -185,19 +189,27 @@ export default {
       type: String,
       default: null,
     },
+    automaticDownload: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   watch: {
     companies() {
-      this.$nextTick(() => {
-        this.generatePdf()
-      })
+      if (this.automaticDownload) {
+        this.$nextTick(() => {
+          this.generatePdf()
+        })
+      }
     },
   },
 
   mounted() {
-    if (this.companies) {
-      this.generatePdf()
+    if (this.automaticDownload) {
+      if (this.companies) {
+        this.generatePdf()
+      }
     }
   },
 
@@ -244,27 +256,19 @@ export default {
 
 <style lang="postcss" scoped>
 .company-view {
+  @apply px-20 overflow-hidden;
+
+  height: 1120px;
+
   & .data-view {
-    @apply px-8 py-8;
+    @apply py-8;
 
     & .header {
-      @apply flex flex-row;
-
-      & h1 {
-        @apply text-3xl text-base font-bold flex-grow;
-      }
-
-      & .logo {
-        @apply relative bg-contain bg-no-repeat -mt-6 -left-8;
-
-        background-position: top right;
-        width: 150px;
-        height: 70px;
-      }
+      @apply relative text-right text-xs pb-6 left-5;
     }
 
     & .top-overview {
-      @apply flex flex-row my-6 space-x-6;
+      @apply flex flex-row mt-6 mb-2 pb-5 space-x-6 border-b border-black;
 
       & .col {
         width: 50%;
@@ -276,9 +280,10 @@ export default {
         }
 
         & .top-desc {
-          @apply flex items-center text-sm text-grey font-light;
+          @apply flex items-start font-light;
 
           height: 130px;
+          font-size: 0.65rem;
         }
 
         & .middle-desc {
@@ -293,14 +298,22 @@ export default {
           }
 
           & .second-desc {
-            @apply flex items-center text-sm text-grey font-light pl-6;
+            @apply flex items-end font-light pl-6;
+
+            font-size: 0.65rem;
           }
         }
       }
     }
 
+    & h1 {
+      @apply text-4xl uppercase leading-none font-bold flex-grow;
+    }
+
     & .data-cols {
-      @apply mt-8;
+      @apply mt-10 overflow-hidden;
+
+      height: 380px;
 
       & .col {
         @apply mb-5;
@@ -308,7 +321,7 @@ export default {
         max-width: 700px;
 
         & h2 {
-          @apply text-base uppercase mt-8;
+          @apply text-xs uppercase font-bold mt-8 mb-1;
 
           &:first-child {
             @apply mt-0;
@@ -316,7 +329,7 @@ export default {
         }
 
         & .text {
-          @apply text-base font-light;
+          @apply text-xs font-light;
 
           white-space: pre-wrap;
         }
@@ -333,27 +346,47 @@ export default {
   }
 
   & .footer {
-    @apply flex flex-row items-center py-8 px-8;
+    @apply flex flex-row items-start pt-4 border-t border-black;
 
-    background-color: #ededed;
+    height: 170px;
 
     & .column {
-      @apply pr-10;
+      @apply h-full;
 
       & p {
-        @apply text-base text-black mb-1;
+        @apply text-xs text-black leading-5;
+      }
 
-        & a {
-          @apply underline;
+      & .logo {
+        @apply relative bg-contain bg-no-repeat -mt-6 -left-8;
+
+        background-position: bottom right;
+        width: 150px;
+        height: 70px;
+      }
+
+      &.primary {
+        & p {
+          @apply font-bold;
         }
       }
 
       &.second {
+        @apply pl-20;
+
         & p {
-          @apply text-sm text-grey;
+          @apply text-xs;
         }
       }
+
+      &.logo-ct {
+        @apply flex flex-grow items-end justify-end;
+      }
     }
+  }
+
+  & .page-num {
+    @apply relative text-right text-xs left-5;
   }
 }
 </style>

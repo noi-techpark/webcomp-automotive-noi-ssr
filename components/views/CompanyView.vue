@@ -73,16 +73,38 @@
               <h2>{{ $t('common.productsAndServices') }}</h2>
               <p class="text">{{ data.attributes.productsAndServices }}</p>
             </div>
-          </div>
-          <div v-if="data.attributes.contactPerson" class="contact-bt">
-            <a :href="'mailto:' + data.attributes.contactPerson.email"
-              >{{ $t('company.contactReferencePerson') }} →</a
+            <div
+              v-if="
+                data.attributes.contactPerson &&
+                data.attributes.contactPerson.personName
+              "
+              class="col"
             >
+              <h2>{{ $t('common.contactPerson') }}</h2>
+              <p class="text">{{ data.attributes.contactPerson.personName }}</p>
+              <p v-if="data.attributes.contactPerson.email" class="text">
+                <a
+                  :href="'mailto:' + data.attributes.contactPerson.email"
+                  class="link"
+                  >{{ data.attributes.contactPerson.email }}</a
+                >
+              </p>
+              <p v-if="data.attributes.companyContact.phoneNumber" class="text">
+                <a
+                  :href="'tel:' + data.attributes.companyContact.phoneNumber"
+                  class="link"
+                  >{{ data.attributes.companyContact.phoneNumber }}</a
+                >
+              </p>
+            </div>
+          </div>
+          <div class="download-bt" @click="downloadPdf">
+            {{ $t('common.downloadPdf') }} ↓
           </div>
         </div>
         <div class="footer">
           <div class="column">
-            <p>
+            <p class="uppercase">
               {{ data.attributes.legalName }}
             </p>
             <p v-if="data.attributes.companyAddressStreet">
@@ -153,6 +175,12 @@
         </div>
       </div>
     </SlidingContainer>
+    <PdfExporter
+      ref="pdfExporter"
+      :export-name="data.attributes.name"
+      :companies="[data]"
+      :automatic-download="false"
+    />
   </RightColumn>
 </template>
 
@@ -199,6 +227,10 @@ export default {
   },
 
   methods: {
+    downloadPdf() {
+      this.$refs.pdfExporter.generatePdf()
+    },
+
     hideCompany() {
       this.$emit('onHide')
     },
@@ -233,7 +265,7 @@ export default {
       @apply flex flex-row;
 
       & h1 {
-        @apply text-3xl text-base font-bold flex-grow;
+        @apply text-3xl font-bold flex-grow uppercase;
       }
 
       & .logo {
@@ -301,12 +333,16 @@ export default {
           @apply text-base font-light;
 
           white-space: pre-wrap;
+
+          & .link {
+            @apply underline;
+          }
         }
       }
     }
 
-    & .contact-bt {
-      @apply text-base my-8;
+    & .download-bt {
+      @apply text-base my-8 cursor-pointer;
 
       &:hover {
         @apply underline;

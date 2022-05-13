@@ -23,7 +23,10 @@
     "alpine": "Alpine",
     "automotiveAndMobility": "Automotive & Mobility",
     "manufacturing": "Manufacturing",
-    "agriAutomation": "Agri-Automation"
+    "agriAutomation": "Agri-Automation",
+    "ecosystemAutomotive": "Ecosystem Automotive",
+    "contactPerson": "Contact person",
+    "downloadPdf": "Download pdf"
   },
   "filters": {
     "searchPlaceholder": "Company, keyword...",
