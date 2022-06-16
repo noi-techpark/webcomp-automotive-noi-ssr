@@ -121,7 +121,10 @@
               </p>
               <p v-if="data.attributes.metrics">
                 {{ $t('filters.turnover') }}:
-                {{ data.attributes.metrics.turnover }}
+                {{
+                  formatWithThousandSeparator(data.attributes.metrics.turnover)
+                }}
+                €
               </p>
               <p v-if="data.attributes.metrics">
                 {{ $t('common.employees') }}:
@@ -174,11 +177,14 @@
 
 <script>
 import VueHtml2pdf from 'vue-html2pdf'
+import utils from '~/mixins/utils.js'
 
 export default {
   components: {
     VueHtml2pdf,
   },
+
+  mixins: [utils],
 
   props: {
     companies: {
@@ -264,11 +270,14 @@ export default {
     @apply py-8;
 
     & .header {
-      @apply relative text-right text-xs pb-6 left-5;
+      @apply relative text-right pt-6 pb-4 left-5;
+
+      font-size: 0.7rem;
+      line-height: 1rem;
     }
 
     & .top-overview {
-      @apply flex flex-row mt-6 mb-2 pb-5 space-x-6 border-b border-black;
+      @apply flex flex-row mt-2 pb-5 space-x-6 border-b border-black;
 
       & .col {
         width: 50%;
@@ -276,44 +285,47 @@ export default {
         & .image {
           @apply bg-white bg-cover bg-center;
 
-          height: 270px;
+          height: 220px;
         }
 
         & .top-desc {
           @apply flex items-start font-light;
 
-          height: 130px;
-          font-size: 0.65rem;
+          height: 100px;
+          font-size: 0.55rem;
         }
 
         & .middle-desc {
           @apply flex flex-row;
 
-          height: 140px;
+          height: 120px;
 
           & .second-image {
             @apply h-full w-1/2 bg-white bg-cover bg-center;
 
-            min-width: 200px;
+            min-width: 180px;
           }
 
           & .second-desc {
-            @apply flex items-end font-light pl-6;
+            @apply flex items-end font-light pl-6 pb-1;
 
-            font-size: 0.65rem;
+            font-size: 0.55rem;
           }
         }
       }
     }
 
     & h1 {
-      @apply text-4xl uppercase leading-none font-bold flex-grow;
+      @apply uppercase leading-none font-bold flex-grow;
+
+      font-size: 2rem;
+      line-height: 2rem;
     }
 
     & .data-cols {
-      @apply mt-10 overflow-hidden;
+      @apply mt-8 overflow-hidden;
 
-      height: 380px;
+      height: 470px;
 
       & .col {
         @apply mb-5;

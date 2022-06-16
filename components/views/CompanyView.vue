@@ -145,7 +145,10 @@
             </p>
             <p v-if="data.attributes.metrics">
               {{ $t('filters.turnover') }}:
-              {{ data.attributes.metrics.turnover }}
+              {{
+                formatWithThousandSeparator(data.attributes.metrics.turnover)
+              }}
+              €
             </p>
             <p v-if="data.attributes.metrics">
               {{ $t('common.employees') }}:
@@ -185,7 +188,11 @@
 </template>
 
 <script>
+import utils from '~/mixins/utils.js'
+
 export default {
+  mixins: [utils],
+
   props: {
     data: {
       type: Object,
@@ -290,9 +297,10 @@ export default {
         }
 
         & .top-desc {
-          @apply flex items-center text-sm text-grey font-light;
+          @apply flex items-start text-xs text-grey font-light pt-2;
 
           height: 130px;
+          width: 200px;
         }
 
         & .middle-desc {
@@ -307,7 +315,7 @@ export default {
           }
 
           & .second-desc {
-            @apply flex items-center text-sm text-grey font-light pl-6;
+            @apply flex items-end text-xs text-grey font-light pl-6;
           }
         }
       }

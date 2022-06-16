@@ -44,5 +44,9 @@ export default {
         (company) => company.attributes['data_' + lang]
       )
     },
+
+    formatWithThousandSeparator(number) {
+      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+    },
   },
 }
