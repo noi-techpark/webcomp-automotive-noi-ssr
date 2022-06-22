@@ -7,11 +7,19 @@
       :enable-download="true"
       :preview-modal="false"
       :paginate-elements-by-height="4250"
-      :filename="exportName || 'export'"
       :pdf-quality="2"
       :manual-pagination="true"
       pdf-format="a4"
       pdf-orientation="portrait"
+      :html-to-pdf-options="{
+        enableLinks: true,
+        filename: exportName || 'export',
+        html2canvas: {
+          allowTaint: true,
+          scale: 4,
+          useCORS: true,
+        },
+      }"
       @hasStartedGeneration="hasStartedPdfGEneration()"
       @hasGenerated="hasGeneratedPdf($event)"
     >
