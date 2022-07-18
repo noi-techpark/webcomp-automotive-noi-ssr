@@ -16,7 +16,7 @@
         filename: exportName || 'export',
         html2canvas: {
           allowTaint: true,
-          scale: 4,
+          scale: 2,
           useCORS: true,
         },
       }"
@@ -38,13 +38,17 @@
                 <div
                   class="image"
                   :style="{
-                    backgroundImage: data.attributes.mainImage
-                      ? 'url(' +
-                        $config.apiEndpoint +
-                        data.attributes.mainImage.data.attributes.formats.large
-                          .url +
-                        ')'
-                      : undefined,
+                    backgroundImage:
+                      data.attributes.mainImage &&
+                      data.attributes.mainImage.data &&
+                      data.attributes.mainImage.data.attributes.formats
+                        ? 'url(' +
+                          $config.apiEndpoint +
+                          getAvailableImageFormat(
+                            data.attributes.mainImage.data.attributes.formats
+                          ) +
+                          ')'
+                        : undefined,
                   }"
                 ></div>
               </div>
@@ -56,13 +60,18 @@
                   <div
                     class="second-image"
                     :style="{
-                      backgroundImage: data.attributes.mainImage
-                        ? 'url(' +
-                          $config.apiEndpoint +
-                          data.attributes.auxiliaryImage.data.attributes.formats
-                            .medium.url +
-                          ')'
-                        : undefined,
+                      backgroundImage:
+                        data.attributes.auxiliaryImage &&
+                        data.attributes.auxiliaryImage.data &&
+                        data.attributes.auxiliaryImage.data.attributes.formats
+                          ? 'url(' +
+                            $config.apiEndpoint +
+                            getAvailableImageFormat(
+                              data.attributes.auxiliaryImage.data.attributes
+                                .formats
+                            ) +
+                            ')'
+                          : undefined,
                     }"
                   ></div>
                   <p class="second-desc">
@@ -71,18 +80,20 @@
                 </div>
               </div>
             </div>
-            <h1>{{ data.attributes.name }}</h1>
-            <div class="data-cols">
-              <div class="col">
-                <h2>{{ $t('common.company') }}</h2>
-                <p class="text">{{ data.attributes.companyDescription }}</p>
+            <div class="data-ct">
+              <h1>{{ data.attributes.name }}</h1>
+              <div class="data-cols">
+                <div class="col">
+                  <h2>{{ $t('common.company') }}</h2>
+                  <p class="text">{{ data.attributes.companyDescription }}</p>
 
-                <h2>{{ $t('common.references') }}</h2>
-                <p class="text">{{ data.attributes.references }}</p>
-              </div>
-              <div class="col">
-                <h2>{{ $t('common.productsAndServices') }}</h2>
-                <p class="text">{{ data.attributes.productsAndServices }}</p>
+                  <h2>{{ $t('common.references') }}</h2>
+                  <p class="text">{{ data.attributes.references }}</p>
+                </div>
+                <div class="col">
+                  <h2>{{ $t('common.productsAndServices') }}</h2>
+                  <p class="text">{{ data.attributes.productsAndServices }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -163,13 +174,17 @@
               <div
                 class="logo"
                 :style="{
-                  backgroundImage: data.attributes.logo
-                    ? 'url(' +
-                      $config.apiEndpoint +
-                      data.attributes.logo.data.attributes.formats.thumbnail
-                        .url +
-                      ')'
-                    : undefined,
+                  backgroundImage:
+                    data.attributes.logo &&
+                    data.attributes.logo.data &&
+                    data.attributes.logo.data.attributes.formats
+                      ? 'url(' +
+                        $config.apiEndpoint +
+                        getAvailableImageFormat(
+                          data.attributes.logo.data.attributes.formats
+                        ) +
+                        ')'
+                      : undefined,
                 }"
               ></div>
             </div>
@@ -272,7 +287,7 @@ export default {
 .company-view {
   @apply px-20 overflow-hidden;
 
-  height: 1120px;
+  height: 1122.3px;
 
   & .data-view {
     @apply py-8;
@@ -323,35 +338,39 @@ export default {
       }
     }
 
-    & h1 {
-      @apply uppercase leading-none font-bold flex-grow;
+    & .data-ct {
+      @apply overflow-hidden;
 
-      font-size: 2rem;
-      line-height: 2rem;
-    }
+      height: 535px;
 
-    & .data-cols {
-      @apply mt-8 overflow-hidden;
+      & h1 {
+        @apply uppercase leading-none font-bold flex-grow;
 
-      height: 470px;
+        font-size: 2rem;
+        line-height: 2rem;
+      }
 
-      & .col {
-        @apply mb-5;
+      & .data-cols {
+        @apply mt-8;
 
-        max-width: 700px;
+        & .col {
+          @apply mb-5;
 
-        & h2 {
-          @apply text-xs uppercase font-bold mt-8 mb-1;
+          max-width: 700px;
 
-          &:first-child {
-            @apply mt-0;
+          & h2 {
+            @apply text-xs uppercase font-bold mt-8 mb-1;
+
+            &:first-child {
+              @apply mt-0;
+            }
           }
-        }
 
-        & .text {
-          @apply text-xs font-light;
+          & .text {
+            @apply text-xs font-light;
 
-          white-space: pre-wrap;
+            white-space: pre-wrap;
+          }
         }
       }
     }

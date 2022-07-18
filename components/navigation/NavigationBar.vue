@@ -401,7 +401,7 @@ export default {
             )
           })
         }
-        console.log('RES', results)
+
         if (this.filters.industrialSector) {
           results = results.filter(
             (r) =>

@@ -46,7 +46,25 @@ export default {
     },
 
     formatWithThousandSeparator(number) {
-      return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+      return number
+        ? number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+        : ''
+    },
+
+    getAvailableImageFormat(formats) {
+      if (formats.large) {
+        return formats.large.url
+      }
+
+      if (formats.medium) {
+        return formats.medium.url
+      }
+
+      if (formats.small) {
+        return formats.small.url
+      }
+
+      return formats.thumbnail.url
     },
   },
 }

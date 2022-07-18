@@ -14,12 +14,17 @@
             <div
               class="logo"
               :style="{
-                backgroundImage: data.attributes.logo
-                  ? 'url(' +
-                    $config.apiEndpoint +
-                    data.attributes.logo.data.attributes.formats.thumbnail.url +
-                    ')'
-                  : undefined,
+                backgroundImage:
+                  data.attributes.logo &&
+                  data.attributes.logo.data &&
+                  data.attributes.logo.data.attributes.formats
+                    ? 'url(' +
+                      $config.apiEndpoint +
+                      getAvailableImageFormat(
+                        data.attributes.logo.data.attributes.formats
+                      ) +
+                      ')'
+                    : undefined,
               }"
             ></div>
           </div>
@@ -28,13 +33,17 @@
               <div
                 class="image"
                 :style="{
-                  backgroundImage: data.attributes.mainImage
-                    ? 'url(' +
-                      $config.apiEndpoint +
-                      data.attributes.mainImage.data.attributes.formats.large
-                        .url +
-                      ')'
-                    : undefined,
+                  backgroundImage:
+                    data.attributes.mainImage &&
+                    data.attributes.mainImage.data &&
+                    data.attributes.mainImage.data.attributes.formats
+                      ? 'url(' +
+                        $config.apiEndpoint +
+                        getAvailableImageFormat(
+                          data.attributes.mainImage.data.attributes.formats
+                        ) +
+                        ')'
+                      : undefined,
                 }"
               ></div>
             </div>
@@ -46,13 +55,18 @@
                 <div
                   class="second-image"
                   :style="{
-                    backgroundImage: data.attributes.mainImage
-                      ? 'url(' +
-                        $config.apiEndpoint +
-                        data.attributes.auxiliaryImage.data.attributes.formats
-                          .medium.url +
-                        ')'
-                      : undefined,
+                    backgroundImage:
+                      data.attributes.auxiliaryImage &&
+                      data.attributes.auxiliaryImage.data &&
+                      data.attributes.auxiliaryImage.data.attributes.formats
+                        ? 'url(' +
+                          $config.apiEndpoint +
+                          getAvailableImageFormat(
+                            data.attributes.auxiliaryImage.data.attributes
+                              .formats
+                          ) +
+                          ')'
+                        : undefined,
                   }"
                 ></div>
                 <p class="second-desc">

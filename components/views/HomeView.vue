@@ -85,10 +85,10 @@ export default {
           name: this.$t('common.sectors'),
           value: '8',
         },
-        {
+        /* TODO: re-enable once the keywords count will be available {
           name: this.$t('common.keywords'),
           value: '-',
-        },
+        }, */
       ]
     },
   },

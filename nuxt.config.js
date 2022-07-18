@@ -45,7 +45,26 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['nuxt-i18n', '@nuxtjs/axios', '@/shared/vuelayers'],
+  modules: [
+    'nuxt-i18n',
+    '@nuxtjs/axios',
+    '@/shared/vuelayers',
+    'nuxt-custom-elements',
+  ],
+
+  customElements: {
+    entries: [
+      {
+        name: 'NOI Automotive',
+        tags: [
+          {
+            name: 'NoiAutomotive',
+            path: '@/components/bundle/WebComponent',
+          },
+        ],
+      },
+    ],
+  },
 
   i18n: {
     locales: AVAILABLE_LANGUAGES,
