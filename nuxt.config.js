@@ -1,11 +1,11 @@
-const AVAILABLE_LANGUAGES = ['en']
+const AVAILABLE_LANGUAGES = ['en', 'de', 'it']
 
 export default {
   ssr: false,
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'NOI Automotive',
+    title: 'NOI Automotive Automation',
     htmlAttrs: {
       lang: 'it',
     },

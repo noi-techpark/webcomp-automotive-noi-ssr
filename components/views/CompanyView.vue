@@ -80,12 +80,11 @@
               <h2>{{ $t('common.company') }}</h2>
               <p class="text">{{ data.attributes.companyDescription }}</p>
 
-              <h2>{{ $t('common.references') }}</h2>
-              <p class="text">{{ data.attributes.references }}</p>
-            </div>
-            <div class="col">
               <h2>{{ $t('common.productsAndServices') }}</h2>
               <p class="text">{{ data.attributes.productsAndServices }}</p>
+
+              <h2>{{ $t('common.references') }}</h2>
+              <p class="text">{{ data.attributes.references }}</p>
             </div>
             <div
               v-if="
@@ -94,7 +93,7 @@
               "
               class="col"
             >
-              <h2>{{ $t('common.contactPerson') }}</h2>
+              <h2 class="pt-5">{{ $t('common.contactPerson') }}</h2>
               <p class="text">{{ data.attributes.contactPerson.personName }}</p>
               <p v-if="data.attributes.contactPerson.email" class="text">
                 <a
@@ -155,7 +154,9 @@
               <a :href="'mailto:' + data.attributes.contactPerson.email">{{
                 data.attributes.contactPerson.personName
               }}</a>
-              ({{ data.attributes.contactPerson.role }})
+              <span v-if="data.attributes.contactPerson.role"
+                >({{ data.attributes.contactPerson.role }})</span
+              >
             </p>
             <p v-if="data.attributes.metrics">
               {{ $t('filters.turnover') }}:
@@ -344,7 +345,7 @@ export default {
         max-width: 700px;
 
         & h2 {
-          @apply text-base uppercase mt-8;
+          @apply text-base uppercase mt-8 font-medium;
 
           &:first-child {
             @apply mt-0;

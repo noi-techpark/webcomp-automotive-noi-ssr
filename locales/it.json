@@ -1,0 +1,77 @@
+{
+  "common": {
+    "backToCategories": "Indietro alle aree di specializzazione",
+    "filters": "Filtri",
+    "automotive": "Automotive",
+    "energy": "Energy",
+    "green": "Green",
+    "food": "Food",
+    "select": "Seleziona",
+    "million": "Mio",
+    "noCompaniesFound": "Spiacenti, nessun'azienda è stata trovata",
+    "totalCompanies": "Totale aziende",
+    "sectors": "Settori",
+    "company": "Azienda",
+    "productsAndServices": "Prodotti e servizi",
+    "references": "Referenze",
+    "keywords": "Parole chiave",
+    "employees": "Dipendenti",
+    "exportRatio": "Export ratio",
+    "researchAndDevelopmentRatio": "R&D ratio",
+    "certifications": "Certificazioni",
+    "contact": "Contatto",
+    "alpine": "Alpine",
+    "automotiveAndMobility": "Automotive & Mobility",
+    "manufacturing": "Manufacturing",
+    "agriAutomation": "Agri-Automation",
+    "ecosystemAutomotive": "Ecosystem Automotive",
+    "contactPerson": "Persona di riferimento",
+    "downloadPdf": "Scarica PDF"
+  },
+  "filters": {
+    "searchPlaceholder": "Azienda, parola chiave...",
+    "industrialSector": "Settore industriale",
+    "valueChainPosition": "Value chain position",
+    "hideAdvanced": "Nascondi avanzate",
+    "showAdvanced": "Mostra avanzate",
+    "turnover": "Fatturato",
+    "numberOfEmployees": "Numero di dipendenti",
+    "certification": "Certificazioni",
+    "resetFilters": "Resetta filtri",
+    "automotiveTechnology": "Automotive Technology",
+    "machineryAndPlantConstruction": "Macchinari e Costruzioni",
+    "electronicsElectricalEngineering": "Elettronica & Ingegneria Elettronica",
+    "pasticsChemics": "Pastica & Chimica",
+    "informationtechnology": "Information Technology",
+    "researchAndDevelopment": "Ricerca & Sviluppo",
+    "serivceProvidersConsultants": "Fornitori di Servizi e Consulenza",
+    "educationAndTraining": "Educazione & Formazione",
+    "other": "Altro",
+    "users": "Utenti",
+    "developers": "Sviluppatori",
+    "laboratories": "Laboratori",
+    "production": "Produzione",
+    "suppliers": "Supplier",
+    "providers": "Provider",
+    "commerceAndDistribution": "Commercio & Distribuzione",
+    "notDefined": "Non definito"
+  },
+  "company": {
+    "contactReferencePerson": "Contatta la persona di riferimento"
+  },
+  "home": {
+    "meta": {
+      "description": "Panoramica settore Automotive Automation: attori più importanti nella catena del valore dell’industria manifatturiera in Alto Adige sono presentati in questa piattaforma."
+    },
+    "title": "Sectorial overview South Tyrol",
+    "topDesc": "Here you can find and contact all South Tyrolean automotive and automation companies.",
+    "firstSection": {
+      "title": "Lorem ipsum",
+      "desc": "Questa Panoramica del Settore Automotive | Automation digitale si pone come obiettivo quello di aumentare la visibilità dei singoli attori, facilitare il networking settoriale e creare sinergie. Piccole, medie e grandi imprese, start-up, istituti di ricerca, laboratori e istituti di formazione e perfezionamento professionale sono gli attori più importanti nella catena del valore dell’industria manifatturiera in Alto Adige sono presentati in questa piattaforma."
+    },
+    "secondSection": {
+      "title": "Lorem ipsum",
+      "desc": "Circa 230 attori presentano in questa panoramica la loro azienda, i loro prodotti e servizi, importanti referenze, contatto di una persona di riferimento ed altri dati aziendali."
+    }
+  }
+}

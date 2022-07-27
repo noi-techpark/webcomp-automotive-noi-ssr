@@ -149,6 +149,8 @@ export default {
     @apply flex flex-row space-x-6;
 
     & .col {
+      @apply w-1/2;
+
       & h2 {
         @apply text-base uppercase;
       }

@@ -2,6 +2,7 @@
   <div class="component-view">
     <NavigationBar
       ref="navigationBar"
+      :visible-company="visibleCompanyData"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
@@ -10,7 +11,7 @@
     />
     <MapView
       :filtered-companies="filteredCompanies"
-      @onCompanyClick="showCompany"
+      @showCompanyWithId="showCompanyWithId"
     />
     <HomeView
       :companies-list="companiesList"
@@ -38,6 +39,13 @@ export default {
   },
 
   methods: {
+    showCompanyWithId(companyId) {
+      const companyData = this.companiesList.find(
+        (company) => company.id === companyId
+      )
+      this.showCompany(companyData)
+    },
+
     showCompany(companyData) {
       this.visibleCompanyData = companyData
     },

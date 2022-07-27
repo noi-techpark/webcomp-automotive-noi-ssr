@@ -137,6 +137,15 @@ import utils from '~/mixins/utils.js'
 export default {
   mixins: [utils],
 
+  props: {
+    visibleCompany: {
+      type: Object,
+      default: () => ({
+        attributes: {},
+      }),
+    },
+  },
+
   data() {
     return {
       CATEGORY_PREFIX: 'CATEGORY-',
@@ -547,7 +556,7 @@ export default {
         }
       }
 
-      return results.map((r) =>
+      const mappedResults = results.map((r) =>
         this.getResultDataObject(
           false,
           r.id,
@@ -562,6 +571,10 @@ export default {
             : 0
         )
       )
+
+      mappedResults.sort((a, b) => a.name.localeCompare(b.name))
+
+      return mappedResults
     },
 
     visibleResults() {
@@ -586,6 +599,12 @@ export default {
 
     filteredResults(newCompaniesList) {
       this.$emit('didFilterCompanies', newCompaniesList)
+    },
+
+    visibleCompany(newVisibleCompany) {
+      if (newVisibleCompany && this.isFiltersMenuVisible) {
+        this.hideFiltersMenu()
+      }
     },
   },
 

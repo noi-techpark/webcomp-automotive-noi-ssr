@@ -1,0 +1,77 @@
+{
+  "common": {
+    "backToCategories": "Zurück zu Kategorien",
+    "filters": "Filter",
+    "automotive": "Automotive",
+    "energy": "Energie",
+    "green": "Green",
+    "food": "Lebensmittel",
+    "select": "Auswählen",
+    "million": "Mio",
+    "noCompaniesFound": "Keine Unternehmen gefunden",
+    "totalCompanies": "Gesamtanzahl Unternehmen",
+    "sectors": "Sektoren",
+    "company": "Unternehmen",
+    "productsAndServices": "Produkte und Dienstleistungen",
+    "references": "Referenzen",
+    "keywords": "Schlüsselwörter",
+    "employees": "Mitarbeiter",
+    "exportRatio": "Export Ratio",
+    "researchAndDevelopmentRatio": "R&D Ratio",
+    "certifications": "Zertifizierungen",
+    "contact": "Kontakt",
+    "alpine": "Alpine",
+    "automotiveAndMobility": "Automotive & Mobility",
+    "manufacturing": "Manufacturing",
+    "agriAutomation": "Agri-Automation",
+    "ecosystemAutomotive": "Ecosystem Automotive",
+    "contactPerson": "Kontaktperson",
+    "downloadPdf": "PDF herunterladen"
+  },
+  "filters": {
+    "searchPlaceholder": "Unternehmen, keyword...",
+    "industrialSector": "Industrieklasse",
+    "valueChainPosition": "Wertebereich",
+    "hideAdvanced": "Zuklappen",
+    "showAdvanced": "Ausklappen",
+    "turnover": "Umsatz",
+    "numberOfEmployees": "Mitarbeiter N.",
+    "certification": "Zertifizierung",
+    "resetFilters": "Filter zurücksetzen",
+    "automotiveTechnology": "Automotive Technologie",
+    "machineryAndPlantConstruction": "Maschinen & Bauwesenbau",
+    "electronicsElectricalEngineering": "Elektronik & Elektrotechnik",
+    "pasticsChemics": "Papier und Chemie",
+    "informationtechnology": "Information Technology",
+    "researchAndDevelopment": "Research & Development",
+    "serivceProvidersConsultants": "Service Providers & Consultants",
+    "educationAndTraining": "Education & Training",
+    "other": "Andere",
+    "users": "Benutzer",
+    "developers": "Entwickler",
+    "laboratories": "Laboratorien",
+    "production": "Produktion",
+    "suppliers": "Lieferanten",
+    "providers": "Provider",
+    "commerceAndDistribution": "Commerce & Distribution",
+    "notDefined": "Nicht definiert"
+  },
+  "company": {
+    "contactReferencePerson": "Kontakt Kontaktperson"
+  },
+  "home": {
+    "meta": {
+      "description": "Branchenüberblick Automotive Automation: wichtigste Akteure entlang der Wertschöpfungskette im verarbeitenden Gewerbe Südtirols sind auf dieser Plattform gelistet."
+    },
+    "title": "Sectorial overview South Tyrol",
+    "topDesc": "Here you can find and contact all South Tyrolean automotive and automation companies.",
+    "firstSection": {
+      "title": "Lorem ipsum",
+      "desc": "Mit diesem digitalem Branchenüberblick möchten wir die Sichtbarkeit der einzelnen Akteure erhöhen, deren Vernetzung ermöglichen und Synergieeffekte schaffen. Kleine, mittlere und große Unternehmen, Start-ups, Forschungseinrichtungen, Labore sowie Aus- und Weiterbildungsinstitute sind die wichtigsten Akteure entlang der Wertschöpfungsketten im verarbeitenden Gewerbe in Südtirol und werden auf dieser Plattform gelistet."
+    },
+    "secondSection": {
+      "title": "Lorem ipsum",
+      "desc": "Die Produkte, Dienstleistungen, wichtige Referenzen, Ansprechpartner und weitere relevante Unternehmensinformationen von rund 230 lokalen Akteuren stellt dieser Branchenüberblick digital vor."
+    }
+  }
+}

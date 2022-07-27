@@ -1,10 +1,12 @@
 <template>
   <vl-map
+    ref="map"
     :load-tiles-while-animating="true"
     :load-tiles-while-interacting="true"
     data-projection="EPSG:4326"
     class="map"
     :class="{ 'is-preview': mode === 'preview' }"
+    @singleclick="clickedMap"
   >
     <vl-view
       :zoom.sync="mapConfig.zoom"
@@ -17,7 +19,7 @@
     </vl-layer-tile>
 
     <vl-layer-vector v-for="(company, index) in visibleCompanies" :key="index">
-      <vl-feature>
+      <vl-feature :id="getSecureMapFeatureId(company.id)">
         <vl-geom-point
           :coordinates="[company.coordinates.lng, company.coordinates.lat]"
         ></vl-geom-point>
@@ -55,11 +57,43 @@ export default {
   data() {
     return {
       mapConfig: {
-        zoom: 7,
+        zoom: 8,
         center: [11.341391, 46.5052233],
         rotation: 0,
       },
     }
+  },
+
+  methods: {
+    getSecureMapFeatureId(companyId) {
+      return companyId + '-' + new Date().getTime()
+    },
+
+    getCompanyIdFromMapFeatureId(mapFeatureId) {
+      return Number(mapFeatureId.split('-')[0])
+    },
+
+    clickedMap(mapData) {
+      const feature = this.$refs.map.forEachFeatureAtPixel(
+        mapData.pixel,
+        function (feature) {
+          return feature
+        }
+      )
+
+      if (!feature) {
+        return
+      }
+
+      this.clickedMarker(feature.id_)
+    },
+
+    clickedMarker(mapFeatureId) {
+      this.$emit(
+        'showCompanyWithId',
+        this.getCompanyIdFromMapFeatureId(mapFeatureId)
+      )
+    },
   },
 }
 </script>

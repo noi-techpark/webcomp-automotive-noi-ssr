@@ -28,6 +28,9 @@
           v-for="(data, index) in companies"
           :key="data.id"
           class="company-view"
+          :style="{
+            height: companyViewHeight + 'px',
+          }"
         >
           <div class="data-view">
             <div class="header">
@@ -87,12 +90,11 @@
                   <h2>{{ $t('common.company') }}</h2>
                   <p class="text">{{ data.attributes.companyDescription }}</p>
 
-                  <h2>{{ $t('common.references') }}</h2>
-                  <p class="text">{{ data.attributes.references }}</p>
-                </div>
-                <div class="col">
                   <h2>{{ $t('common.productsAndServices') }}</h2>
                   <p class="text">{{ data.attributes.productsAndServices }}</p>
+
+                  <h2>{{ $t('common.references') }}</h2>
+                  <p class="text">{{ data.attributes.references }}</p>
                 </div>
               </div>
             </div>
@@ -136,7 +138,9 @@
                 <a :href="'mailto:' + data.attributes.contactPerson.email">{{
                   data.attributes.contactPerson.personName
                 }}</a>
-                ({{ data.attributes.contactPerson.role }})
+                <span v-if="data.attributes.contactPerson.role"
+                  >({{ data.attributes.contactPerson.role }})</span
+                >
               </p>
               <p v-if="data.attributes.metrics">
                 {{ $t('filters.turnover') }}:
@@ -224,6 +228,12 @@ export default {
     },
   },
 
+  computed: {
+    companyViewHeight() {
+      return this.automaticDownload ? 1122.3 : 1120
+    },
+  },
+
   watch: {
     companies() {
       if (this.automaticDownload) {
@@ -286,8 +296,6 @@ export default {
 <style lang="postcss" scoped>
 .company-view {
   @apply px-20 overflow-hidden;
-
-  height: 1122.3px;
 
   & .data-view {
     @apply py-8;
