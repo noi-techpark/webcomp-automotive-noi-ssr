@@ -1,5 +1,5 @@
 <template>
-  <RightColumn :visible="visible">
+  <RightColumn class="home-view-ct" :visible="visible">
     <ViewBackground :visible="visible" />
     <SlidingContainer class="container" :visible="visible">
       <div class="home-view">
@@ -9,7 +9,9 @@
             <div class="image"></div>
           </div>
           <div class="map-col">
-            <div class="top-desc">{{ $t('home.topDesc') }}</div>
+            <div class="top-desc">
+              <!-- TODO: add here optional top description -->
+            </div>
             <div class="map-ct clickable" @click="showMapView()">
               <Map
                 mode="preview"
@@ -21,12 +23,11 @@
         </div>
         <div class="data-cols">
           <div class="col">
-            <h2>{{ $t('home.firstSection.title') }}</h2>
-            <p>{{ $t('home.firstSection.desc') }}</p>
-          </div>
-          <div class="col">
-            <h2>{{ $t('home.secondSection.title') }}</h2>
-            <p>{{ $t('home.secondSection.desc') }}</p>
+            <p>
+              {{ $t('home.firstSection.desc') }}<br /><br />{{
+                $t('home.firstSection.descTwo')
+              }}
+            </p>
           </div>
         </div>
         <div class="metrics">
@@ -79,7 +80,10 @@ export default {
       return [
         {
           name: this.$t('common.totalCompanies'),
-          value: this.companiesList ? this.uniqueCompaniesNumber : '-',
+          value:
+            this.companiesList && this.uniqueCompaniesNumber > 0
+              ? this.uniqueCompaniesNumber
+              : '-',
         },
         {
           name: this.$t('common.sectors'),
@@ -129,14 +133,14 @@ export default {
       & .top-desc {
         @apply flex items-center text-sm text-grey font-light;
 
-        height: 130px;
+        height: 30px;
       }
 
       & .map-ct {
         @apply cursor-pointer;
 
-        height: 140px;
-        width: 70%;
+        height: 240px;
+        width: 100%;
 
         & .map {
           @apply pointer-events-none;
@@ -149,8 +153,6 @@ export default {
     @apply flex flex-row space-x-6;
 
     & .col {
-      @apply w-1/2;
-
       & h2 {
         @apply text-base uppercase;
       }
@@ -175,6 +177,12 @@ export default {
         @apply text-base;
       }
     }
+  }
+}
+
+@media (max-width: theme('screens.md')) {
+  .home-view-ct {
+    top: 60vh !important;
   }
 }
 </style>

@@ -64,14 +64,9 @@
       "description": "Sectorial Overview Automotive Automation: the most important South Tyrolean stakeholders along manufacturing value-added chain are presented in this platform."
     },
     "title": "Sectorial overview South Tyrol",
-    "topDesc": "Here you can find and contact all South Tyrolean automotive and automation companies.",
     "firstSection": {
-      "title": "Lorem ipsum",
-      "desc": "With this digital sectoral overview Automotive | Automation we aim to increase the visibility of the individual stakeholders, to interconnect them as well as to create synergies. Small, medium and large enterprises, start-ups, research institutions, laboratories as well as institutes for training and advanced education, are the South Tyrol’s important stakeholders along the value-added chain and are presented in this platform."
-    },
-    "secondSection": {
-      "title": "Lorem ipsum",
-      "desc": "This overview presents the products, services, references, contact person and other relevant information of 230 local stakeholders."
+      "desc": "With this digital sectoral overview Automotive | Automation we aim to increase the visibility of the individual stakeholders, to interconnect them as well as to create synergies. Small, medium and large enterprises, start-ups, research institutions, laboratories as well as institutes for training and advanced education, are the South Tyrol’s important stakeholders along the value-added chain and are presented in this platform.",
+      "descTwo": "This overview presents the products, services, references, contact person and other relevant information of 230 local stakeholders."
     }
   }
 }

@@ -23,4 +23,10 @@ export default {
     @apply pointer-events-auto;
   }
 }
+
+@media (max-width: theme('screens.md')) {
+  .right-column {
+    @apply left-0 h-auto bottom-0 z-10;
+  }
+}
 </style>

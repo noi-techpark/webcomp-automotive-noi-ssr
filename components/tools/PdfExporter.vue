@@ -88,13 +88,16 @@
               <div class="data-cols">
                 <div class="col">
                   <h2>{{ $t('common.company') }}</h2>
-                  <p class="text">{{ data.attributes.companyDescription }}</p>
+                  <!-- prettier-ignore -->
+                  <p class="text">{{ removeUnnecessaryNewlines(data.attributes.companyDescription) }}</p>
 
                   <h2>{{ $t('common.productsAndServices') }}</h2>
-                  <p class="text">{{ data.attributes.productsAndServices }}</p>
+                  <!-- prettier-ignore -->
+                  <p class="text">{{ removeUnnecessaryNewlines(data.attributes.productsAndServices) }}</p>
 
                   <h2>{{ $t('common.references') }}</h2>
-                  <p class="text">{{ data.attributes.references }}</p>
+                  <!-- prettier-ignore -->
+                  <p class="text">{{ removeUnnecessaryNewlines(data.attributes.references) }}</p>
                 </div>
               </div>
             </div>

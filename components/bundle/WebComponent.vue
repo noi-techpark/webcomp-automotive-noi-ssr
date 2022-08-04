@@ -56,6 +56,7 @@ export default {
 
     showHome() {
       this.isHomeViewVisible = true
+      this.hideCompany()
     },
 
     hideHome() {

@@ -64,14 +64,9 @@
       "description": "Panoramica settore Automotive Automation: attori più importanti nella catena del valore dell’industria manifatturiera in Alto Adige sono presentati in questa piattaforma."
     },
     "title": "Sectorial overview South Tyrol",
-    "topDesc": "Here you can find and contact all South Tyrolean automotive and automation companies.",
     "firstSection": {
-      "title": "Lorem ipsum",
-      "desc": "Questa Panoramica del Settore Automotive | Automation digitale si pone come obiettivo quello di aumentare la visibilità dei singoli attori, facilitare il networking settoriale e creare sinergie. Piccole, medie e grandi imprese, start-up, istituti di ricerca, laboratori e istituti di formazione e perfezionamento professionale sono gli attori più importanti nella catena del valore dell’industria manifatturiera in Alto Adige sono presentati in questa piattaforma."
-    },
-    "secondSection": {
-      "title": "Lorem ipsum",
-      "desc": "Circa 230 attori presentano in questa panoramica la loro azienda, i loro prodotti e servizi, importanti referenze, contatto di una persona di riferimento ed altri dati aziendali."
+      "desc": "Questa Panoramica del Settore Automotive | Automation digitale si pone come obiettivo quello di aumentare la visibilità dei singoli attori, facilitare il networking settoriale e creare sinergie. Piccole, medie e grandi imprese, start-up, istituti di ricerca, laboratori e istituti di formazione e perfezionamento professionale sono gli attori più importanti nella catena del valore dell’industria manifatturiera in Alto Adige sono presentati in questa piattaforma.",
+      "descTwo": "Circa 230 attori presentano in questa panoramica la loro azienda, i loro prodotti e servizi, importanti referenze, contatto di una persona di riferimento ed altri dati aziendali."
     }
   }
 }

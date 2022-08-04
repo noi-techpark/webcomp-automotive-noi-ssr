@@ -7,6 +7,7 @@
     class="map"
     :class="{ 'is-preview': mode === 'preview' }"
     @singleclick="clickedMap"
+    @moveend="handleMapMove"
   >
     <vl-view
       :zoom.sync="mapConfig.zoom"
@@ -25,8 +26,15 @@
         ></vl-geom-point>
 
         <vl-style-box>
-          <vl-style-fill color="white"></vl-style-fill>
-          <vl-style-stroke color="red"></vl-style-stroke>
+          <vl-overlay
+            v-if="currentZoom >= 14"
+            :id="getSecureMapFeatureId(company.id) + 'overlay'"
+            :position="[company.coordinates.lng, company.coordinates.lat]"
+          >
+            <div class="alert" @click="clickedBadge(company.id)">
+              {{ company.name }}
+            </div>
+          </vl-overlay>
           <vl-style-icon
             src="/image/marker.png"
             :anchor="[0.5, 1]"
@@ -57,10 +65,12 @@ export default {
   data() {
     return {
       mapConfig: {
-        zoom: 8,
+        zoom: 9,
         center: [11.341391, 46.5052233],
         rotation: 0,
       },
+
+      currentZoom: 2,
     }
   },
 
@@ -71,6 +81,10 @@ export default {
 
     getCompanyIdFromMapFeatureId(mapFeatureId) {
       return Number(mapFeatureId.split('-')[0])
+    },
+
+    handleMapMove() {
+      this.currentZoom = this.$refs.map.getView().getZoom()
     },
 
     clickedMap(mapData) {
@@ -86,6 +100,10 @@ export default {
       }
 
       this.clickedMarker(feature.id_)
+    },
+
+    clickedBadge(companyId) {
+      this.$emit('showCompanyWithId', companyId)
     },
 
     clickedMarker(mapFeatureId) {
@@ -106,6 +124,14 @@ export default {
 
 <style lang="postcss">
 .map {
+  & .alert {
+    @apply absolute bg-primary bg-opacity-50 text-white rounded-md text-xs truncate text-center px-2 leading-none py-1 cursor-pointer;
+
+    top: -50px;
+    width: 100px;
+    margin-left: -50px;
+  }
+
   & .ol-zoom {
     top: auto !important;
     left: auto !important;

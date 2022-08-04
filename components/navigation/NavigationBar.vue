@@ -1,7 +1,16 @@
 <template>
   <div class="navigation-ct">
     <div class="navigation-bar">
-      <div class="logo">
+      <div class="lang-selector">
+        <Select
+          :value="$i18n.locale"
+          :options="availableLanguages"
+          aspect="fill"
+          :white-contrast="false"
+          @input="changeLanguage"
+        />
+      </div>
+      <div class="logo clickable" @click="backToCategories">
         <Icon name="logo" />
       </div>
       <div class="section-title">
@@ -160,6 +169,23 @@ export default {
   },
 
   computed: {
+    availableLanguages() {
+      return [
+        {
+          value: 'it',
+          name: 'IT',
+        },
+        {
+          value: 'de',
+          name: 'DE',
+        },
+        {
+          value: 'en',
+          name: 'EN',
+        },
+      ]
+    },
+
     mainCategories() {
       return [
         this.getResultDataObject(
@@ -613,6 +639,10 @@ export default {
   },
 
   methods: {
+    changeLanguage(lang) {
+      this.$i18n.setLocale(lang)
+    },
+
     getResultDataObject(
       isPlaceholder,
       id,
@@ -647,7 +677,6 @@ export default {
 
     showCategory(categoryId) {
       this.mainCategory = categoryId
-      this.showFiltersMenu()
       this.didLeaveHome()
     },
 
@@ -684,25 +713,45 @@ export default {
       this.isFiltersMenuVisible = false
     },
 
-    fetchResults() {
-      this.$axios
-        .get(
-          this.$config.apiEndpoint +
-            this.$config.apiCompaniesPath +
-            this.$i18n.locale
-          // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
-        )
-        .then((response) => {
-          const companiesList = this.mapCompaniesResult(
-            response,
-            this.$i18n.locale
+    async fetchResults() {
+      const SAFE_LOOP_LIMIT = 10 // More than 1000 companies are not supported
+      const FETCH_LIMIT = 100
+
+      let allCompanies = []
+
+      let fetchedAllCompanies = false
+      let currentLoop = 0
+      while (fetchedAllCompanies === false || currentLoop >= SAFE_LOOP_LIMIT) {
+        const fetchedCompanies = await this.$axios
+          .get(
+            this.$config.apiEndpoint +
+              this.$config.apiCompaniesPath +
+              this.$i18n.locale +
+              '&pagination[start]=' +
+              currentLoop * FETCH_LIMIT +
+              '&pagination[limit]=' +
+              FETCH_LIMIT
+            // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
           )
-          this.fetchedData = companiesList
-          this.$emit('didFetchCompanies', companiesList)
-        })
-        .catch(() => {
-          // TODO
-        })
+          .catch(() => {
+            // TODO
+          })
+
+        const companiesList = this.mapCompaniesResult(
+          fetchedCompanies,
+          this.$i18n.locale
+        )
+
+        allCompanies = [...allCompanies, ...companiesList]
+
+        if (companiesList.length < 100) {
+          fetchedAllCompanies = true
+        }
+        currentLoop++
+      }
+
+      this.fetchedData = allCompanies
+      this.$emit('didFetchCompanies', allCompanies)
     },
 
     toggleAdvancedFiltersVisibility() {
@@ -723,11 +772,14 @@ export default {
 
     z-index: 2;
 
+    & .lang-selector {
+      @apply absolute top-6 right-4 w-20;
+    }
+
     & .logo {
-      @apply mx-3;
+      @apply mx-3 mt-4;
 
       height: 70px;
-      margin-top: 1rem;
 
       & svg {
         @apply h-full;
@@ -927,6 +979,16 @@ export default {
 
     &.visible {
       @apply transform-none;
+    }
+  }
+}
+
+@media (max-width: theme('screens.md')) {
+  .navigation-ct {
+    & .navigation-bar {
+      @apply w-full;
+
+      bottom: 40vh;
     }
   }
 }

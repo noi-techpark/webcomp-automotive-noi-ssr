@@ -23,3 +23,11 @@ export default {
   },
 }
 </script>
+
+<style lang="postcss" scoped>
+@media (max-width: theme('screens.md')) {
+  .map-view {
+    top: 60vh !important;
+  }
+}
+</style>

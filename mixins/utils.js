@@ -66,5 +66,9 @@ export default {
 
       return formats.thumbnail.url
     },
+
+    removeUnnecessaryNewlines(string) {
+      return string ? string.replaceAll(/([^.])(\n)/g, ' ').trim() : ''
+    },
   },
 }

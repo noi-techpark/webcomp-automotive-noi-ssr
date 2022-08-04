@@ -78,13 +78,16 @@
           <div class="data-cols">
             <div class="col">
               <h2>{{ $t('common.company') }}</h2>
-              <p class="text">{{ data.attributes.companyDescription }}</p>
+              <!-- prettier-ignore -->
+              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.companyDescription) }}</p>
 
               <h2>{{ $t('common.productsAndServices') }}</h2>
-              <p class="text">{{ data.attributes.productsAndServices }}</p>
+              <!-- prettier-ignore -->
+              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.productsAndServices) }}</p>
 
               <h2>{{ $t('common.references') }}</h2>
-              <p class="text">{{ data.attributes.references }}</p>
+              <!-- prettier-ignore -->
+              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.references) }}</p>
             </div>
             <div
               v-if="
@@ -392,6 +395,30 @@ export default {
       &.second {
         & p {
           @apply text-sm text-grey;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: theme('screens.md')) {
+  .company-view {
+    & .data-view {
+      & .header {
+        & h1 {
+          @apply mt-12;
+        }
+      }
+
+      & .top-overview {
+        @apply flex-col space-x-0;
+
+        & .col {
+          @apply w-auto;
+
+          & .top-desc {
+            @apply h-auto mb-8;
+          }
         }
       }
     }
