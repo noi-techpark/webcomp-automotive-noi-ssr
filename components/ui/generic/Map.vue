@@ -19,7 +19,10 @@
       <vl-source-osm></vl-source-osm>
     </vl-layer-tile>
 
-    <vl-layer-vector v-for="(company, index) in visibleCompanies" :key="index">
+    <vl-layer-vector
+      v-for="(company, index) in companiesWithValidLocationCoordinates"
+      :key="index"
+    >
       <vl-feature :id="getSecureMapFeatureId(company.id)">
         <vl-geom-point
           :coordinates="[company.coordinates.lng, company.coordinates.lat]"
@@ -74,7 +77,24 @@ export default {
     }
   },
 
+  computed: {
+    companiesWithValidLocationCoordinates() {
+      return this.visibleCompanies.filter((company) =>
+        this.hasCompanyValidCoordinates(company)
+      )
+    },
+  },
+
   methods: {
+    hasCompanyValidCoordinates(company) {
+      return (
+        Number(company.coordinates.lng) &&
+        Number(company.coordinates.lat) &&
+        Number(company.coordinates.lng) !== 0 &&
+        Number(company.coordinates.lat) !== 0
+      )
+    },
+
     getSecureMapFeatureId(companyId) {
       return companyId + '-' + new Date().getTime()
     },

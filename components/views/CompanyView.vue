@@ -161,14 +161,20 @@
                 >({{ data.attributes.contactPerson.role }})</span
               >
             </p>
-            <p v-if="data.attributes.metrics">
+            <p
+              v-if="data.attributes.metrics && data.attributes.metrics.turnover"
+            >
               {{ $t('filters.turnover') }}:
               {{
                 formatWithThousandSeparator(data.attributes.metrics.turnover)
               }}
               €
             </p>
-            <p v-if="data.attributes.metrics">
+            <p
+              v-if="
+                data.attributes.metric && data.attributes.metrics.employeeNumber
+              "
+            >
               {{ $t('common.employees') }}:
               {{ data.attributes.metrics.employeeNumber }}
             </p>
@@ -238,11 +244,11 @@ export default {
       }
 
       if (this.data.attributes.certifications) {
-        for (const [certificationId, enabled] of Object.entries(
-          this.data.attributes.certifications
+        for (const [certificationId, certificationName] of Object.entries(
+          CERTIFICATES_NAMES
         )) {
-          if (enabled === true) {
-            certifications.push(CERTIFICATES_NAMES[certificationId])
+          if (this.data.attributes.certifications[certificationId] === true) {
+            certifications.push(certificationName)
           }
         }
       }
@@ -344,8 +350,6 @@ export default {
 
       & .col {
         @apply mb-5;
-
-        max-width: 700px;
 
         & h2 {
           @apply text-base uppercase mt-8 font-medium;

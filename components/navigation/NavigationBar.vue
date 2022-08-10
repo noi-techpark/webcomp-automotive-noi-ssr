@@ -990,6 +990,13 @@ export default {
 
       bottom: 40vh;
     }
+
+    & .filters-menu {
+      @apply left-0;
+
+      z-index: 3;
+      bottom: 40vh;
+    }
   }
 }
 </style>

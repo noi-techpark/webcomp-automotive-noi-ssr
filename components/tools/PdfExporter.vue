@@ -145,14 +145,23 @@
                   >({{ data.attributes.contactPerson.role }})</span
                 >
               </p>
-              <p v-if="data.attributes.metrics">
+              <p
+                v-if="
+                  data.attributes.metrics && data.attributes.metrics.turnover
+                "
+              >
                 {{ $t('filters.turnover') }}:
                 {{
                   formatWithThousandSeparator(data.attributes.metrics.turnover)
                 }}
                 €
               </p>
-              <p v-if="data.attributes.metrics">
+              <p
+                v-if="
+                  data.attributes.metrics &&
+                  data.attributes.metrics.employeeNumber
+                "
+              >
                 {{ $t('common.employees') }}:
                 {{ data.attributes.metrics.employeeNumber }}
               </p>
@@ -366,8 +375,6 @@ export default {
 
         & .col {
           @apply mb-5;
-
-          max-width: 700px;
 
           & h2 {
             @apply text-xs uppercase font-bold mt-8 mb-1;
