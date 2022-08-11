@@ -68,7 +68,7 @@ export default {
     },
 
     removeUnnecessaryNewlines(string) {
-      return string ? string.replaceAll(/([^.])(\n)/g, ' ').trim() : ''
+      return string ? string.replaceAll(/([^.])(\n)/g, '$1 ').trim() : ''
     },
   },
 }

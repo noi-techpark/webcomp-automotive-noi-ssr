@@ -181,7 +181,12 @@
                 {{ $t('common.researchAndDevelopmentRatio') }}:
                 {{ data.attributes.metrics.rAndDRatio }}%
               </p>
-              <p v-if="data.attributes.certifications">
+              <p
+                v-if="
+                  data.attributes.certifications &&
+                  getEnabledCertifications(data).length
+                "
+              >
                 {{ $t('common.certifications') }}:
                 {{ getEnabledCertifications(data).join(', ') }}
               </p>
@@ -290,11 +295,11 @@ export default {
       }
 
       if (data.attributes.certifications) {
-        for (const [certificationId, enabled] of Object.entries(
-          data.attributes.certifications
+        for (const [certificationId, certificationName] of Object.entries(
+          CERTIFICATES_NAMES
         )) {
-          if (enabled === true) {
-            certifications.push(CERTIFICATES_NAMES[certificationId])
+          if (data.attributes.certifications[certificationId] === true) {
+            certifications.push(certificationName)
           }
         }
       }

@@ -194,7 +194,11 @@
               {{ $t('common.researchAndDevelopmentRatio') }}:
               {{ data.attributes.metrics.rAndDRatio }}%
             </p>
-            <p v-if="data.attributes.certifications">
+            <p
+              v-if="
+                data.attributes.certifications && enabledCertifications.length
+              "
+            >
               {{ $t('common.certifications') }}:
               {{ enabledCertifications.join(', ') }}
             </p>
@@ -423,6 +427,16 @@ export default {
           & .top-desc {
             @apply h-auto mb-8;
           }
+        }
+      }
+    }
+
+    & .footer {
+      @apply flex-col items-start;
+
+      & .column {
+        &.second {
+          @apply mt-4;
         }
       }
     }
