@@ -36,6 +36,16 @@
             <div class="name">{{ metric.name }}</div>
           </div>
         </div>
+        <div v-if="links.length" class="links">
+          <a
+            v-for="link in links"
+            :key="link.url"
+            :href="link.url"
+            target="_blank"
+            class="clickable"
+            >{{ link.label }}</a
+          >
+        </div>
       </div>
     </SlidingContainer>
   </RightColumn>
@@ -58,9 +68,36 @@ export default {
       type: Boolean,
       required: true,
     },
+
+    customLinks: {
+      type: Array,
+      default: null,
+    },
+
+    displayAsWebsite: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
+    links() {
+      if (this.customLinks) {
+        return this.customLinks
+      }
+
+      if (this.displayAsWebsite) {
+        return [
+          {
+            link: 'https://noi.bz.it/en/privacy-cookie-policy',
+            label: this.$t('common.privacyPolicy'),
+          },
+        ]
+      }
+
+      return []
+    },
+
     uniqueCompaniesNumber() {
       const companiesList = {}
 
@@ -175,6 +212,18 @@ export default {
 
       & .name {
         @apply text-base;
+      }
+    }
+  }
+
+  & .links {
+    @apply mt-6 text-sm;
+
+    & a {
+      @apply mr-2;
+
+      &:hover {
+        @apply underline;
       }
     }
   }

@@ -1,12 +1,13 @@
 <template>
   <div class="navigation-ct">
     <div class="navigation-bar">
-      <div class="lang-selector">
+      <div v-if="displayAsWebsite" class="lang-selector">
         <Select
           :value="$i18n.locale"
           :options="availableLanguages"
           aspect="fill"
           :white-contrast="false"
+          centered-text
           @input="changeLanguage"
         />
       </div>
@@ -152,6 +153,11 @@ export default {
       default: () => ({
         attributes: {},
       }),
+    },
+
+    displayAsWebsite: {
+      type: Boolean,
+      default: false,
     },
   },
 
@@ -714,44 +720,8 @@ export default {
     },
 
     async fetchResults() {
-      const SAFE_LOOP_LIMIT = 10 // More than 1000 companies are not supported
-      const FETCH_LIMIT = 100
-
-      let allCompanies = []
-
-      let fetchedAllCompanies = false
-      let currentLoop = 0
-      while (fetchedAllCompanies === false || currentLoop >= SAFE_LOOP_LIMIT) {
-        const fetchedCompanies = await this.$axios
-          .get(
-            this.$config.apiEndpoint +
-              this.$config.apiCompaniesPath +
-              this.$i18n.locale +
-              '&pagination[start]=' +
-              currentLoop * FETCH_LIMIT +
-              '&pagination[limit]=' +
-              FETCH_LIMIT
-            // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
-          )
-          .catch(() => {
-            // TODO
-          })
-
-        const companiesList = this.mapCompaniesResult(
-          fetchedCompanies,
-          this.$i18n.locale
-        )
-
-        allCompanies = [...allCompanies, ...companiesList]
-
-        if (companiesList.length < 100) {
-          fetchedAllCompanies = true
-        }
-        currentLoop++
-      }
-
-      this.fetchedData = allCompanies
-      this.$emit('didFetchCompanies', allCompanies)
+      this.fetchedData = await this.fetchAllCompanies()
+      this.$emit('didFetchCompanies', this.fetchedData)
     },
 
     toggleAdvancedFiltersVisibility() {
@@ -773,7 +743,7 @@ export default {
     z-index: 2;
 
     & .lang-selector {
-      @apply absolute top-6 right-4 w-20;
+      @apply absolute top-6 right-4 w-14;
     }
 
     & .logo {

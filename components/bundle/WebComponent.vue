@@ -3,6 +3,7 @@
     <NavigationBar
       ref="navigationBar"
       :visible-company="visibleCompanyData"
+      :display-as-website="displayAsWebsite"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
@@ -17,6 +18,8 @@
       :companies-list="companiesList"
       :filtered-companies="filteredCompanies"
       :visible="isHomeViewVisible"
+      :display-as-website="displayAsWebsite"
+      :custom-links="parsedCustomLinks"
       @showMapView="showMapView"
     />
     <CompanyView
@@ -24,17 +27,88 @@
       :visible="visibleCompanyData !== null"
       @onHide="hideCompany"
     />
+    <div class="full-screen-loader" :class="{ visible: loading }">
+      <Loader colorscheme="colored" />
+    </div>
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    websiteMode: {
+      type: String,
+      default: 'false',
+    },
+
+    customLinks: {
+      type: String,
+      default: null,
+    },
+
+    defaultCompany: {
+      type: String,
+      default: null,
+    },
+
+    language: {
+      type: String,
+      default: null,
+    },
+  },
+
   data() {
     return {
+      loading: true,
       companiesList: [],
       filteredCompanies: [],
       isHomeViewVisible: true,
       visibleCompanyData: null,
+      requestedCompanyDisplay: null,
+    }
+  },
+
+  computed: {
+    displayAsWebsite() {
+      return this.websiteMode === 'true'
+    },
+
+    parsedCustomLinks() {
+      if (this.customLinks) {
+        return JSON.parse(this.customLinks)
+      }
+
+      return []
+    },
+  },
+
+  watch: {
+    companiesList(newList) {
+      if (newList.length) {
+        this.loading = false
+        if (this.requestedCompanyDisplay) {
+          this.showCompanyWithId(this.requestedCompanyDisplay)
+          this.requestedCompanyDisplay = null
+        }
+      }
+    },
+  },
+
+  created() {
+    if (this.language) {
+      if (this.$i18n.locale !== this.language) {
+        this.$i18n.setLocale(this.language)
+      }
+    }
+
+    if (this.defaultCompanyId) {
+      this.requestedCompanyDisplay = Number(this.defaultCompany)
+    }
+  },
+
+  mounted() {
+    if (this.$route.query.company) {
+      this.requestedCompanyDisplay = Number(this.$route.query.company)
     }
   },
 
@@ -43,15 +117,31 @@ export default {
       const companyData = this.companiesList.find(
         (company) => company.id === companyId
       )
-      this.showCompany(companyData)
+      if (companyData) {
+        this.showCompany(companyData)
+      } else {
+        this.resetUrl()
+      }
     },
 
     showCompany(companyData) {
       this.visibleCompanyData = companyData
+      this.$router.replace({
+        name: this.$router.name,
+        query: { company: companyData.id },
+      })
     },
 
     hideCompany() {
       this.visibleCompanyData = null
+      this.resetUrl()
+    },
+
+    resetUrl() {
+      this.$router.replace({
+        name: this.$router.name,
+        query: { company: undefined },
+      })
     },
 
     showHome() {
@@ -81,5 +171,13 @@ export default {
 <style lang="postcss">
 .component-view {
   @apply relative w-full h-full;
+}
+
+.full-screen-loader {
+  @apply absolute flex items-center justify-center top-0 right-0 bottom-0 left-0 bg-white bg-opacity-75 z-30 opacity-0 pointer-events-none;
+
+  &.visible {
+    @apply opacity-100 pointer-events-auto;
+  }
 }
 </style>

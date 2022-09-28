@@ -146,9 +146,13 @@
               }}</a>
             </p>
             <p v-if="data.attributes.companyContact">
-              <a :href="data.attributes.companyContact.website">{{
-                data.attributes.companyContact.website
-              }}</a>
+              <a
+                :href="
+                  appendPrefixToUrl(data.attributes.companyContact.website)
+                "
+                target="_blank"
+                >{{ data.attributes.companyContact.website }}</a
+              >
             </p>
           </div>
           <div class="column second">

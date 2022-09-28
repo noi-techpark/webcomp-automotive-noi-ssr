@@ -52,23 +52,71 @@ export default {
     },
 
     getAvailableImageFormat(formats) {
-      if (formats.large) {
+      if (formats?.large) {
         return formats.large.url
       }
 
-      if (formats.medium) {
+      if (formats?.medium) {
         return formats.medium.url
       }
 
-      if (formats.small) {
+      if (formats?.small) {
         return formats.small.url
       }
 
-      return formats.thumbnail.url
+      return formats?.thumbnail?.url
     },
 
     removeUnnecessaryNewlines(string) {
       return string ? string.replaceAll(/([^.])(\n)/g, '$1 ').trim() : ''
+    },
+
+    appendPrefixToUrl(url) {
+      if (!/^https?:\/\//i.test(url)) {
+        url = 'https://' + url
+      }
+
+      return url
+    },
+
+    async fetchAllCompanies() {
+      const SAFE_LOOP_LIMIT = 10 // More than 1000 companies are not supported
+      const FETCH_LIMIT = 100
+
+      let allCompanies = []
+
+      let fetchedAllCompanies = false
+      let currentLoop = 0
+      while (fetchedAllCompanies === false || currentLoop >= SAFE_LOOP_LIMIT) {
+        const fetchedCompanies = await this.$axios
+          .get(
+            this.$config.apiEndpoint +
+              this.$config.apiCompaniesPath +
+              this.$i18n.locale +
+              '&pagination[start]=' +
+              currentLoop * FETCH_LIMIT +
+              '&pagination[limit]=' +
+              FETCH_LIMIT
+            // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
+          )
+          .catch(() => {
+            alert('Sorry, an error has occurred while fetching the companies.')
+          })
+
+        const companiesList = this.mapCompaniesResult(
+          fetchedCompanies,
+          this.$i18n.locale
+        )
+
+        allCompanies = [...allCompanies, ...companiesList]
+
+        if (companiesList.length < 100) {
+          fetchedAllCompanies = true
+        }
+        currentLoop++
+      }
+
+      return allCompanies
     },
   },
 }

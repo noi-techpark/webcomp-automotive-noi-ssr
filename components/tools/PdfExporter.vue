@@ -13,19 +13,20 @@
       pdf-orientation="portrait"
       :html-to-pdf-options="{
         enableLinks: true,
-        filename: exportName || 'export',
+        filename:
+          exportName + (pdfSlice > 0 ? ' - ' + pdfSlice : '') || 'export',
         html2canvas: {
           allowTaint: true,
           scale: 2,
           useCORS: true,
         },
       }"
-      @hasStartedGeneration="hasStartedPdfGEneration()"
-      @hasGenerated="hasGeneratedPdf($event)"
+      @startPagination="hasStartedGeneration()"
+      @hasDownloaded="hasGeneratedPdf($event)"
     >
       <section slot="pdf-content" class="company-page">
         <div
-          v-for="(data, index) in companies"
+          v-for="(data, index) in currentPdfCompanies"
           :key="data.id"
           class="company-view"
           :style="{
@@ -130,9 +131,12 @@
                 }}</a>
               </p>
               <p v-if="data.attributes.companyContact">
-                <a :href="data.attributes.companyContact.website">{{
-                  data.attributes.companyContact.website
-                }}</a>
+                <a
+                  :href="
+                    appendPrefixToUrl(data.attributes.companyContact.website)
+                  "
+                  >{{ data.attributes.companyContact.website }}</a
+                >
               </p>
             </div>
             <div class="column second">
@@ -211,7 +215,7 @@
             </div>
           </div>
           <div class="page-num">
-            {{ index + 1 }}
+            {{ startCompanyNumber + index + 1 }}
           </div>
         </div>
       </section>
@@ -245,9 +249,29 @@ export default {
     },
   },
 
+  data() {
+    return {
+      MAX_PDF_LENGTH: 25,
+      pdfSlice: 0,
+    }
+  },
+
   computed: {
     companyViewHeight() {
       return this.automaticDownload ? 1122.3 : 1120
+    },
+
+    startCompanyNumber() {
+      return this.MAX_PDF_LENGTH * this.pdfSlice
+    },
+
+    currentPdfCompanies() {
+      return this.companies
+        ? this.companies.slice(
+            this.startCompanyNumber,
+            this.startCompanyNumber + this.MAX_PDF_LENGTH
+          )
+        : []
     },
   },
 
@@ -280,6 +304,19 @@ export default {
 
     hasGeneratedPdf() {
       this.$emit('hasGeneratedPdf')
+      if (this.automaticDownload) {
+        if (
+          this.companies.length >
+          this.startCompanyNumber + this.MAX_PDF_LENGTH + 1
+        ) {
+          this.pdfSlice = this.pdfSlice + 1
+          this.$nextTick(() => {
+            this.generatePdf()
+          })
+        } else {
+          this.$emit('hasGeneratedMultiPagePdf')
+        }
+      }
     },
 
     getEnabledCertifications(data) {

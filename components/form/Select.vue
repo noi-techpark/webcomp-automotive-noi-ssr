@@ -6,6 +6,7 @@
       'not-valid': !valid,
       fill: aspect === 'fill',
       'white-contrast': whiteContrast,
+      'centered-text': centeredText,
     }"
   >
     <InputLabel v-if="label" :text="label" :required="required" />
@@ -66,6 +67,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    centeredText: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     selected: {
@@ -120,6 +125,14 @@ export default {
   &.white-contrast {
     & .selector {
       @apply bg-white;
+    }
+  }
+
+  &.centered-text {
+    & .selector {
+      & select {
+        @apply text-center;
+      }
     }
   }
 

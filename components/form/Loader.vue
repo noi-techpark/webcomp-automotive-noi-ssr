@@ -1,5 +1,5 @@
 <template>
-  <div class="loader-ct" :class="{ grey: colorscheme === 'colored' }">
+  <div class="loader-ct" :class="{ colored: colorscheme === 'colored' }">
     <div class="lds-ellipsis">
       <div></div>
     </div>
@@ -14,9 +14,9 @@ export default {
       default: 'white',
       validator(value) {
         return ['white', 'colored']
-      }
-    }
-  }
+      },
+    },
+  },
 }
 </script>
 
@@ -58,7 +58,7 @@ export default {
     }
   }
 
-  &.grey {
+  &.colored {
     & > .lds-ellipsis {
       & > div {
         @apply border-primary;

@@ -1,8 +1,12 @@
 <template>
-  <PdfExporter
-    :export-name="'All companies - ' + lang"
-    :companies="companies"
-  />
+  <section>
+    <p class="p-6">{{ isPdfReady ? 'Pdf downloaded' : 'Generating pdf...' }}</p>
+    <PdfExporter
+      :export-name="'All companies - ' + lang"
+      :companies="companies"
+      @hasGeneratedMultiPagePdf="didGeneratePdf"
+    />
+  </section>
 </template>
 
 <script>
@@ -15,6 +19,7 @@ export default {
     return {
       lang: this.$route.query.lang || 'en',
       companies: null,
+      isPdfReady: false,
     }
   },
 
@@ -23,17 +28,12 @@ export default {
   },
 
   methods: {
-    fetchCompanies() {
-      this.$axios
-        .get(
-          this.$config.apiEndpoint + this.$config.apiCompaniesPath + this.lang
-        )
-        .then((response) => {
-          this.companies = this.mapCompaniesResult(response, this.lang)
-        })
-        .catch(() => {
-          alert('Sorry, an error has occurred while fetching the companies.')
-        })
+    async fetchCompanies() {
+      this.companies = await this.fetchAllCompanies()
+    },
+
+    didGeneratePdf() {
+      this.isPdfReady = true
     },
   },
 }

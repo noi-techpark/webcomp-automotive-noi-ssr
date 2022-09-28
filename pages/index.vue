@@ -1,6 +1,6 @@
 <template>
   <div style="height: 100vh; overflow: hidden">
-    <WebComponent />
+    <WebComponent website-mode="true" />
   </div>
 </template>
 
