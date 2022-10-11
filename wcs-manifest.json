@@ -1,0 +1,74 @@
+{
+  "title": "Automotive NOI",
+  "description": "A web component to display a list and details of automotive/automation businesses and organizations located in South Tyrol.",
+  "descriptionAbstract": "List and details of automotive/automation businesses and organizations",
+  "license": "AGPL-3.0-or-later",
+  "repositoryUrl": "https://github.com/noi-techpark/webcomp-automotive-noi.git",
+  "copyrightHolders": [
+    {
+      "name": "NOI",
+      "email": "info@noi.bz.it",
+      "organization": "NOI AG/SpA Südtirol - Alto Adige",
+      "organizationUrl": "https://noi.bz.it"
+    }
+  ],
+  "authors": [
+    {
+      "name": "FlashBeing",
+      "email": "info@flashbeing.com",
+      "organization": "FlashBeing s.r.l.",
+      "organizationUrl": "https://flashbeing.com/company"
+    }
+  ],
+  "image": "wcs-logo.png",
+  "searchTags": [
+    "automotive",
+    "automation",
+    "NOI"
+  ],
+  "dist": {
+    "basePath": "dist",
+    "files": [
+      "odh-automotive-noi.min.js"
+    ],
+    "scripts": [
+      {
+        "file": "odh-automotive-noi.min.js",
+        "parameter": ""
+      }
+    ]
+  },
+  "configuration": {
+    "tagName": "odh-automotive-noi",
+    "options": [
+      {
+        "key": "content-type",
+        "type": "select",
+        "label": "Type of list items",
+        "required": false,
+        "options": {
+          "default": "Gastronomy",
+          "values": [
+            "Gastronomy",
+            "Activity",
+            "POI"
+          ]
+        }
+      },
+      {
+        "key": "language",
+        "type": "select",
+        "label": "language",
+        "required": false,
+        "options": {
+          "values": [
+            "en",
+            "de",
+            "it"
+          ],
+          "default": "de"
+        }
+      }
+    ]
+  }
+}
