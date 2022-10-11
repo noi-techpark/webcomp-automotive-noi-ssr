@@ -3,6 +3,8 @@ const AVAILABLE_LANGUAGES = ['en', 'de', 'it']
 export default {
   ssr: false,
 
+  srcDir: 'src/',
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'NOI Automotive Automation',
@@ -92,7 +94,7 @@ export default {
       messages: AVAILABLE_LANGUAGES.reduce(
         (obj, key) => ({
           ...obj,
-          [key]: require('./locales/' + key + '.json'),
+          [key]: require('./src/locales/' + key + '.json'),
         }),
         {}
       ),
