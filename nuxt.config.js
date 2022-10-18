@@ -52,7 +52,7 @@ export default {
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
-  components: [{ path: '~/components/', pathPrefix: false }],
+  components: [{ path: '~/src/components/', pathPrefix: false }],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
@@ -146,4 +146,10 @@ export default {
   pageTransition: 'zoom-page',
 
   telemetry: false,
+
+  html: {
+    minify: {
+      minifyJS: false
+    }
+  }
 }
