@@ -21,18 +21,11 @@
     }
   ],
   "image": "wcs-logo.png",
-  "searchTags": [
-    "automotive",
-    "automation",
-    "NOI"
-  ],
+  "searchTags": ["automotive", "automation", "NOI"],
   "dist": {
     "basePath": "dist/nuxt-custom-elements/noi-automotive",
-    "files": [
-      "noi-automotive.js"
-    ],
-    "scripts": [
-    ]
+    "files": ["noi-automotive.js"],
+    "scripts": []
   },
   "configuration": {
     "tagName": "noi-automotive",
@@ -43,34 +36,36 @@
         "label": "language",
         "required": false,
         "options": {
-          "values": [
-            "en",
-            "de",
-            "it"
-          ],
+          "values": ["en", "de", "it"],
           "default": "en"
         }
       },
       {
         "key": "websiteMode",
-        "type": "bool",
+        "type": "text",
         "label": "Website Mode",
         "required": false,
-        "default": false
+        "options": {
+          "default": "false"
+        }
       },
       {
         "key": "defaultCompany",
         "type": "text",
         "label": "Default Company",
         "required": false,
-        "default": ""
+        "options": {
+          "default": ""
+        }
       },
       {
         "key": "customLinks",
-        "type": "object",
+        "type": "text",
         "label": "Custom Links shown in footer",
         "required": false,
-        "default": ""
+        "options": {
+          "default": ""
+        }
       }
     ]
   }
