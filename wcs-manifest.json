@@ -60,14 +60,14 @@
       },
       {
         "key": "defaultCompany",
-        "type": "string",
+        "type": "text",
         "label": "Default Company",
         "required": false,
         "default": ""
       },
       {
         "key": "customLinks",
-        "type": "string",
+        "type": "object",
         "label": "Custom Links shown in footer",
         "required": false,
         "default": ""
