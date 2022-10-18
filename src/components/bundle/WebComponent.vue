@@ -95,12 +95,11 @@ export default {
   },
 
   created() {
-    // temporarily commented out to prevent errors
-    // if (this.language) {
-    //   if (this.$i18n.locale !== this.language) {
-    //     this.$i18n.setLocale(this.language)
-    //   }
-    // }
+    if (this.language) {
+      if (this.$i18n.locale !== this.language) {
+        this.$i18n.setLocale(this.language)
+      }
+    }
 
     if (this.defaultCompanyId) {
       this.requestedCompanyDisplay = Number(this.defaultCompany)
@@ -108,10 +107,9 @@ export default {
   },
 
   mounted() {
-    // temporarily commented out to prevent errors
-    // if (this.$route.query.company) {
-    //   this.requestedCompanyDisplay = Number(this.$route.query.company)
-    // }
+    if (this.$route.query.company) {
+      this.requestedCompanyDisplay = Number(this.$route.query.company)
+    }
   },
 
   methods: {
