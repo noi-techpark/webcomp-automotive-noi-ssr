@@ -146,10 +146,4 @@ export default {
   pageTransition: 'zoom-page',
 
   telemetry: false,
-
-  html: {
-    minify: {
-      minifyJS: false
-    }
-  }
 }
