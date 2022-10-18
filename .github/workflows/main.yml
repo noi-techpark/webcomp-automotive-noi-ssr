@@ -30,6 +30,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Create .env file
+        uses: noi-techpark/github-actions/env-file@v2
+        env:
+          X_API_ENDPOINT: https://bk.opendatahub.com
+          X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
+
       - uses: noi-techpark/github-actions/npm-build@v2
         with:
           build-command: npm run generate
@@ -47,6 +53,12 @@ jobs:
     concurrency: deploy-prod
     steps:
       - uses: actions/checkout@v2
+
+      - name: Create .env file
+        uses: noi-techpark/github-actions/env-file@v2
+        env:
+          X_API_ENDPOINT: https://bk.opendatahub.com
+          X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
 
       - uses: noi-techpark/github-actions/npm-build@v2
         with:
