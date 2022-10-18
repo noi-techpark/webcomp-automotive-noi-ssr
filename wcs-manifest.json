@@ -29,7 +29,7 @@
   "dist": {
     "basePath": "dist/nuxt-custom-elements/noi-automotive",
     "files": [
-      "odh-automotive-noi.min.js"
+      "noi-automotive.js"
     ],
     "scripts": [
     ]
