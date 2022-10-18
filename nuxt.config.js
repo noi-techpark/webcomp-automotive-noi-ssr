@@ -4,13 +4,12 @@ export default {
   ssr: false,
 
   srcDir: 'src/',
-  target: 'static',
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'NOI Automotive Automation',
     htmlAttrs: {
-      lang: 'it',
+      lang: 'en',
     },
     meta: [
       { charset: 'utf-8' },
@@ -52,7 +51,7 @@ export default {
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
-  components: [{ path: '~/src/components/', pathPrefix: false }],
+  components: [{ path: '~/components/', pathPrefix: false }],
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
