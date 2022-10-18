@@ -19,6 +19,11 @@ jobs:
 
       - uses: noi-techpark/github-actions/npm-build@v2
         with:
+          build-command: npm run generate
+          node-version: ${{env.NODE_VERSION}}
+
+      - uses: noi-techpark/github-actions/npm-build@v2
+        with:
           build-command: nuxt generate
           node-version: ${{env.NODE_VERSION}}
 
@@ -50,7 +55,7 @@ jobs:
 
       - uses: noi-techpark/github-actions/npm-build@v2
         with:
-          build-command: npm run build
+          build-command: npm run generate
           node-version: ${{env.NODE_VERSION}}
 
       - uses: noi-techpark/github-actions/webcomp-push@v2
