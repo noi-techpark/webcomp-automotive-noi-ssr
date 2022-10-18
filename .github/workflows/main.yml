@@ -22,11 +22,6 @@ jobs:
           build-command: npm run generate
           node-version: ${{env.NODE_VERSION}}
 
-      - uses: noi-techpark/github-actions/npm-build@v2
-        with:
-          build-command: nuxt generate
-          node-version: ${{env.NODE_VERSION}}
-
   deploy-test:
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
