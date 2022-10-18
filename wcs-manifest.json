@@ -27,34 +27,16 @@
     "NOI"
   ],
   "dist": {
-    "basePath": "dist",
+    "basePath": "dist/nuxt-custom-elements/noi-automotive",
     "files": [
       "odh-automotive-noi.min.js"
     ],
     "scripts": [
-      {
-        "file": "odh-automotive-noi.min.js",
-        "parameter": ""
-      }
     ]
   },
   "configuration": {
     "tagName": "odh-automotive-noi",
     "options": [
-      {
-        "key": "content-type",
-        "type": "select",
-        "label": "Type of list items",
-        "required": false,
-        "options": {
-          "default": "Gastronomy",
-          "values": [
-            "Gastronomy",
-            "Activity",
-            "POI"
-          ]
-        }
-      },
       {
         "key": "language",
         "type": "select",
@@ -66,8 +48,29 @@
             "de",
             "it"
           ],
-          "default": "de"
+          "default": "en"
         }
+      },
+      {
+        "key": "websiteMode",
+        "type": "bool",
+        "label": "Website Mode",
+        "required": false,
+        "default": false
+      },
+      {
+        "key": "defaultCompany",
+        "type": "string",
+        "label": "Default Company",
+        "required": false,
+        "default": ""
+      },
+      {
+        "key": "customLinks",
+        "type": "string",
+        "label": "Custom Links shown in footer",
+        "required": false,
+        "default": ""
       }
     ]
   }
