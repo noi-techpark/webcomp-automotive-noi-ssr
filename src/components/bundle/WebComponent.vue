@@ -107,9 +107,9 @@ export default {
   },
 
   mounted() {
-    if (this.$route.query.company) {
-      this.requestedCompanyDisplay = Number(this.$route.query.company)
-    }
+    // if (this.$route.query.company) {
+    //   this.requestedCompanyDisplay = Number(this.$route.query.company)
+    // }
   },
 
   methods: {

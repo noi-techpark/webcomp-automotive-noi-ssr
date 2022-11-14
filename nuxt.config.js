@@ -1,4 +1,5 @@
-const AVAILABLE_LANGUAGES = ['en', 'de', 'it']
+import i18nOptions from './src/plugins/i18n.options';
+
 
 export default {
   ssr: false,
@@ -65,8 +66,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
-    'nuxt-i18n',
-    '@nuxtjs/axios',
+    '@nuxtjs/i18n',
     '@/shared/vuelayers',
     'nuxt-custom-elements',
   ],
@@ -78,28 +78,30 @@ export default {
         tags: [
           {
             name: 'NoiAutomotive',
-            path: '@/components/bundle/WebComponent',
+            path: '@/entries/NOIAutomotive',
           },
-        ],
-      },
+        ]
+      }
     ],
   },
 
-  i18n: {
-    locales: AVAILABLE_LANGUAGES,
-    strategy: 'prefix_except_default',
-    defaultLocale: 'en',
-    vueI18n: {
-      fallbackLocale: 'en',
-      messages: AVAILABLE_LANGUAGES.reduce(
-        (obj, key) => ({
-          ...obj,
-          [key]: require('./src/locales/' + key + '.json'),
-        }),
-        {}
-      ),
-    },
-  },
+  // i18n: {
+  //   locales: AVAILABLE_LANGUAGES,
+  //   strategy: 'prefix_except_default',
+  //   defaultLocale: 'en',
+  //   vueI18n: {
+  //     fallbackLocale: 'en',
+  //     messages: AVAILABLE_LANGUAGES.reduce(
+  //       (obj, key) => ({
+  //         ...obj,
+  //         [key]: require('./src/locales/' + key + '.json'),
+  //       }),
+  //       {}
+  //     ),
+  //   },
+  // },
+
+  i18n: i18nOptions,
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

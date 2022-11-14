@@ -1,3 +1,6 @@
+const API_ENDPOINT = 'https://bk.opendatahub.com';
+const API_COMPANIES_PATH = '/api/published-companies/?fields[0]=data_';
+
 export default {
   methods: {
     copyToClipboard(text) {
@@ -40,7 +43,8 @@ export default {
     },
 
     mapCompaniesResult(response, lang) {
-      return response.data.data.map(
+      console.log(response);
+      return response.data.map(
         (company) => company.attributes['data_' + lang]
       )
     },
@@ -87,36 +91,43 @@ export default {
 
       let fetchedAllCompanies = false
       let currentLoop = 0
+
+
+      // TODO replace API_ENDPOINT and API_COMPANIES_PATH with .env values
+      // this.$config.apiEndpoint +
+      // this.$config.apiCompaniesPath +
+
       while (fetchedAllCompanies === false || currentLoop >= SAFE_LOOP_LIMIT) {
-        const fetchedCompanies = await this.$axios
-          .get(
-            this.$config.apiEndpoint +
-              this.$config.apiCompaniesPath +
-              this.$i18n.locale +
-              '&pagination[start]=' +
-              currentLoop * FETCH_LIMIT +
-              '&pagination[limit]=' +
-              FETCH_LIMIT
-            // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
-          )
+        const response = await fetch(
+          API_ENDPOINT +
+          API_COMPANIES_PATH +
+          this.$i18n.locale +
+          '&pagination[start]=' +
+          currentLoop * FETCH_LIMIT +
+          '&pagination[limit]=' +
+          FETCH_LIMIT
+          // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
+        )
           .catch(() => {
             alert('Sorry, an error has occurred while fetching the companies.')
-          })
+          });
+
+        const fetchedCompanies = await response.json();
 
         const companiesList = this.mapCompaniesResult(
           fetchedCompanies,
           this.$i18n.locale
-        )
+        );
 
-        allCompanies = [...allCompanies, ...companiesList]
+        allCompanies = [...allCompanies, ...companiesList];
 
         if (companiesList.length < 100) {
-          fetchedAllCompanies = true
+          fetchedAllCompanies = true;
         }
-        currentLoop++
+        currentLoop++;
       }
 
-      return allCompanies
+      return allCompanies;
     },
   },
 }
