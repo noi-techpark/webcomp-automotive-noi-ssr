@@ -6,7 +6,13 @@
         <h1>{{ $t('home.title') }}</h1>
         <div class="top-overview">
           <div class="image-ct">
-            <div class="image"></div>
+            <div
+              class="image"
+              :style="{
+                backgroundImage:
+                  'url(' + require('@/assets/image/home-cover.jpg') + ')',
+              }"
+            />
           </div>
           <div class="map-col">
             <div class="top-desc">
@@ -160,7 +166,6 @@ export default {
         @apply bg-white bg-cover bg-center;
 
         height: 270px;
-        background-image: url(/image/home-cover.jpg);
       }
     }
 
@@ -174,7 +179,7 @@ export default {
       }
 
       & .map-ct {
-        @apply cursor-pointer;
+        @apply bg-white cursor-pointer;
 
         height: 240px;
         width: 100%;

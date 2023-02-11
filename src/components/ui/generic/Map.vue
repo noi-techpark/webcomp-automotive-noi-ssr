@@ -39,7 +39,7 @@
             </div>
           </vl-overlay>
           <vl-style-icon
-            src="/image/marker.png"
+            :src="require('@/assets/image/marker.png')"
             :anchor="[0.5, 1]"
             :scale="0.1"
           ></vl-style-icon>
@@ -50,6 +50,12 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import VueLayers from 'vuelayers'
+import 'vuelayers/lib/style.css'
+
+Vue.use(VueLayers)
+
 export default {
   props: {
     visibleCompanies: {
@@ -138,7 +144,7 @@ export default {
 
 <style lang="postcss" scoped>
 .map {
-  @apply h-full;
+  @apply w-full h-full;
 }
 </style>
 

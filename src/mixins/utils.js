@@ -1,8 +1,16 @@
-const API_ENDPOINT = 'https://bk.opendatahub.com';
-const API_COMPANIES_PATH = '/api/published-companies/?fields[0]=data_';
-
 export default {
   methods: {
+    getApiEndpoint() {
+      return this.$config?.apiEndpoint || 'https://bk.opendatahub.com'
+    },
+
+    getApiCompaniesPath() {
+      return (
+        this.$config?.apiCompaniesPath ||
+        '/api/published-companies/?fields[0]=data_'
+      )
+    },
+
     copyToClipboard(text) {
       const textArea = document.createElement('textarea')
 
@@ -43,10 +51,7 @@ export default {
     },
 
     mapCompaniesResult(response, lang) {
-      console.log(response);
-      return response.data.map(
-        (company) => company.attributes['data_' + lang]
-      )
+      return response.data.map((company) => company.attributes['data_' + lang])
     },
 
     formatWithThousandSeparator(number) {
@@ -92,42 +97,36 @@ export default {
       let fetchedAllCompanies = false
       let currentLoop = 0
 
-
-      // TODO replace API_ENDPOINT and API_COMPANIES_PATH with .env values
-      // this.$config.apiEndpoint +
-      // this.$config.apiCompaniesPath +
-
       while (fetchedAllCompanies === false || currentLoop >= SAFE_LOOP_LIMIT) {
         const response = await fetch(
-          API_ENDPOINT +
-          API_COMPANIES_PATH +
-          this.$i18n.locale +
-          '&pagination[start]=' +
-          currentLoop * FETCH_LIMIT +
-          '&pagination[limit]=' +
-          FETCH_LIMIT
+          this.getApiEndpoint() +
+            this.getApiCompaniesPath() +
+            this.$i18n.locale +
+            '&pagination[start]=' +
+            currentLoop * FETCH_LIMIT +
+            '&pagination[limit]=' +
+            FETCH_LIMIT
           // NOTE: switch to "'/api/published-companies/?populate=*&locale=' +" and remove ".map" to fetch regular company data
-        )
-          .catch(() => {
-            alert('Sorry, an error has occurred while fetching the companies.')
-          });
+        ).catch(() => {
+          alert('Sorry, an error has occurred while fetching the companies.')
+        })
 
-        const fetchedCompanies = await response.json();
+        const fetchedCompanies = await response.json()
 
         const companiesList = this.mapCompaniesResult(
           fetchedCompanies,
           this.$i18n.locale
-        );
+        )
 
-        allCompanies = [...allCompanies, ...companiesList];
+        allCompanies = [...allCompanies, ...companiesList]
 
         if (companiesList.length < 100) {
-          fetchedAllCompanies = true;
+          fetchedAllCompanies = true
         }
-        currentLoop++;
+        currentLoop++
       }
 
-      return allCompanies;
+      return allCompanies
     },
   },
 }

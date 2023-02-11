@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import 'tailwindcss/tailwind.css'
+
 export default {
   props: {
     websiteMode: {
@@ -126,10 +128,12 @@ export default {
 
     showCompany(companyData) {
       this.visibleCompanyData = companyData
-      this.$router.replace({
-        name: this.$router.name,
-        query: { company: companyData.id },
-      })
+      if (this.$router) {
+        this.$router.replace({
+          name: this.$router.name,
+          query: { company: companyData.id },
+        })
+      }
     },
 
     hideCompany() {
@@ -138,10 +142,12 @@ export default {
     },
 
     resetUrl() {
-      this.$router.replace({
-        name: this.$router.name,
-        query: { company: undefined },
-      })
+      if (this.$router) {
+        this.$router.replace({
+          name: this.$router.name,
+          query: { company: undefined },
+        })
+      }
     },
 
     showHome() {
@@ -169,8 +175,13 @@ export default {
 </script>
 
 <style lang="postcss">
+@import url('~assets/css/animations.css');
+@import url('~assets/css/main.css');
+
 .component-view {
-  @apply relative w-full h-full;
+  @apply relative w-full h-full overflow-hidden;
+
+  min-height: 300px;
 }
 
 .full-screen-loader {

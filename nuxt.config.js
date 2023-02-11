@@ -1,8 +1,7 @@
-import i18nOptions from './src/plugins/i18n.options';
-
+import i18nOptions from './src/plugins/i18n.options'
 
 export default {
-  ssr: false,
+  ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
 
   srcDir: 'src/',
 
@@ -44,10 +43,6 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     { src: '@/plugins/vue-notification', ssr: false },
-    {
-      src: '@/plugins/vuelayers.js',
-      ssr: false,
-    },
     '@/plugins/notify',
   ],
 
@@ -65,11 +60,7 @@ export default {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-    '@nuxtjs/i18n',
-    '@/shared/vuelayers',
-    'nuxt-custom-elements',
-  ],
+  modules: ['@nuxtjs/i18n', '@/shared/vuelayers', 'nuxt-custom-elements'],
 
   customElements: {
     entries: [
@@ -80,8 +71,8 @@ export default {
             name: 'NoiAutomotive',
             path: '@/entries/NOIAutomotive',
           },
-        ]
-      }
+        ],
+      },
     ],
   },
 
