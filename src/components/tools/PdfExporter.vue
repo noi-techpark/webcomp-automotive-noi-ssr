@@ -47,7 +47,7 @@
                       data.attributes.mainImage.data &&
                       data.attributes.mainImage.data.attributes.formats
                         ? 'url(' +
-                          $config.apiEndpoint +
+                          getApiEndpoint() +
                           getAvailableImageFormat(
                             data.attributes.mainImage.data.attributes.formats
                           ) +
@@ -69,7 +69,7 @@
                         data.attributes.auxiliaryImage.data &&
                         data.attributes.auxiliaryImage.data.attributes.formats
                           ? 'url(' +
-                            $config.apiEndpoint +
+                            getApiEndpoint() +
                             getAvailableImageFormat(
                               data.attributes.auxiliaryImage.data.attributes
                                 .formats
@@ -204,7 +204,7 @@
                     data.attributes.logo.data &&
                     data.attributes.logo.data.attributes.formats
                       ? 'url(' +
-                        $config.apiEndpoint +
+                        getApiEndpoint() +
                         getAvailableImageFormat(
                           data.attributes.logo.data.attributes.formats
                         ) +
