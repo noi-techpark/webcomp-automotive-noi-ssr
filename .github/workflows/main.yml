@@ -46,27 +46,27 @@ jobs:
           keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_TEST}}
           version-tag: ${{github.sha}}
 
-  deploy-prod:
-    runs-on: ubuntu-20.04
-    if: startsWith(github.ref, 'refs/tags/v')
-    needs: test
-    concurrency: deploy-prod
-    steps:
-      - uses: actions/checkout@v2
+  # deploy-prod:
+  #   runs-on: ubuntu-20.04
+  #   if: startsWith(github.ref, 'refs/tags/v')
+  #   needs: test
+  #   concurrency: deploy-prod
+  #   steps:
+  #     - uses: actions/checkout@v2
 
-      - name: Create .env file
-        uses: noi-techpark/github-actions/env-file@v2
-        env:
-          X_API_ENDPOINT: https://bk.opendatahub.com
-          X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
+  #     - name: Create .env file
+  #       uses: noi-techpark/github-actions/env-file@v2
+  #       env:
+  #         X_API_ENDPOINT: https://bk.opendatahub.com
+  #         X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
 
-      - uses: noi-techpark/github-actions/npm-build@v2
-        with:
-          build-command: npm run generate
-          node-version: ${{env.NODE_VERSION}}
+  #     - uses: noi-techpark/github-actions/npm-build@v2
+  #       with:
+  #         build-command: npm run generate
+  #         node-version: ${{env.NODE_VERSION}}
 
-      - uses: noi-techpark/github-actions/webcomp-push@v2
-        with:
-          keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_PROD}}
-          version-tag: ${{github.ref_name}}
-          production: "true"
+  #     - uses: noi-techpark/github-actions/webcomp-push@v2
+  #       with:
+  #         keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_PROD}}
+  #         version-tag: ${{github.ref_name}}
+  #         production: "true"
