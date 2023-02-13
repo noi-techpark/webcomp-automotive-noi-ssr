@@ -181,7 +181,7 @@ export default {
 .component-view {
   @apply relative w-full h-full overflow-hidden;
 
-  min-height: 300px;
+  min-height: 800px;
 }
 
 .full-screen-loader {
