@@ -31,7 +31,10 @@
       "static/image/search.953d1778.svg"
     ],
     "scripts": [
-      "noi-automotive.js"
+      {
+      "file": "noi-automotive.js",
+      "parameter": ""
+      }
     ]
   },
   "configuration": {
