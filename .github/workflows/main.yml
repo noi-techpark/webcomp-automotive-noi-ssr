@@ -41,6 +41,12 @@ jobs:
           build-command: npm run generate
           node-version: ${{env.NODE_VERSION}}
 
+      - name: Move assets do root of dist directory
+        run: |
+          mv dist/nuxt-custom-elements/noi-automotive/img/home-cover.12230c7.jpg dist/nuxt-custom-elements/noi-automotive/
+          mv dist/nuxt-custom-elements/noi-automotive/img/marker.57a02c3.png dist/nuxt-custom-elements/noi-automotive/
+          mv dist/nuxt-custom-elements/noi-automotive/img/img/home-cover.12230c7.jpg dist/nuxt-custom-elements/noi-automotive/
+
       - uses: noi-techpark/github-actions/webcomp-push@v2
         with:
           keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_TEST}}
