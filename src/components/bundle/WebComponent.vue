@@ -34,9 +34,12 @@
 </template>
 
 <script>
+import vueI18n from '@/plugins/vueI18n'
 import 'tailwindcss/tailwind.css'
 
 export default {
+  i18n: vueI18n,
+
   props: {
     websiteMode: {
       type: String,
@@ -99,19 +102,23 @@ export default {
   created() {
     if (this.language) {
       if (this.$i18n.locale !== this.language) {
-        this.$i18n.setLocale(this.language)
+        if (typeof this.$i18n.setLocale !== 'undefined') {
+          this.$i18n.setLocale(this.language)
+        } else {
+          this.$i18n.locale = this.language
+        }
       }
     }
 
-    if (this.defaultCompanyId) {
+    if (this.defaultCompany) {
       this.requestedCompanyDisplay = Number(this.defaultCompany)
     }
   },
 
   mounted() {
-    // if (this.$route.query.company) {
-    //   this.requestedCompanyDisplay = Number(this.$route.query.company)
-    // }
+    if (this.$route?.query?.company) {
+      this.requestedCompanyDisplay = Number(this.$route.query.company)
+    }
   },
 
   methods: {

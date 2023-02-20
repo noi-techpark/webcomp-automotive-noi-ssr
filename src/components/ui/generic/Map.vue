@@ -39,7 +39,8 @@
             </div>
           </vl-overlay>
           <vl-style-icon
-            :src="require('@/assets/image/marker.png')"
+            src="marker.png"
+            :data-webpack-sync="require('@/assets/image/marker.png')"
             :anchor="[0.5, 1]"
             :scale="0.1"
           ></vl-style-icon>

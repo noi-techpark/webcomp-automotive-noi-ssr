@@ -9,9 +9,9 @@
             <div
               class="image"
               :style="{
-                backgroundImage:
-                  'url(' + require('@/assets/image/home-cover.jpg') + ')',
+                backgroundImage: 'url(home-cover.jpg)',
               }"
+              :data-webpack-sync="require('@/assets/image/home-cover.jpg')"
             />
           </div>
           <div class="map-col">

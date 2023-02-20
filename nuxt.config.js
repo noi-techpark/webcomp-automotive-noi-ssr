@@ -2,6 +2,7 @@ import i18nOptions from './src/plugins/i18n.options'
 
 export default {
   ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  target: 'static',
 
   srcDir: 'src/',
 
@@ -69,28 +70,19 @@ export default {
         tags: [
           {
             name: 'NoiAutomotive',
-            path: '@/entries/NOIAutomotive',
+            path: '@/components/bundle/WebComponent',
+            /* options: { // NOTE: uncomment this code part to test properties
+              props: {
+                language: 'de',
+                defaultCompany: '840',
+                customLinks: '[]',
+              },
+            }, */
           },
         ],
       },
     ],
   },
-
-  // i18n: {
-  //   locales: AVAILABLE_LANGUAGES,
-  //   strategy: 'prefix_except_default',
-  //   defaultLocale: 'en',
-  //   vueI18n: {
-  //     fallbackLocale: 'en',
-  //     messages: AVAILABLE_LANGUAGES.reduce(
-  //       (obj, key) => ({
-  //         ...obj,
-  //         [key]: require('./src/locales/' + key + '.json'),
-  //       }),
-  //       {}
-  //     ),
-  //   },
-  // },
 
   i18n: i18nOptions,
 
@@ -118,6 +110,20 @@ export default {
               svgo: {
                 plugins: [{ removeViewBox: false }],
               },
+            },
+          },
+        ],
+      })
+
+      config.module.rules.push({
+        test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              esModule: false,
+              limit: 1000, // 1kB
+              name: '[name].[ext]',
             },
           },
         ],
