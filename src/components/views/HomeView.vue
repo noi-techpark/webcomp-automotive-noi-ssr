@@ -9,7 +9,7 @@
             <div
               class="image"
               :style="{
-                backgroundImage: 'url(home-cover.jpg)',
+                backgroundImage: 'url(https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg)',
               }"
               :data-webpack-sync="require('@/assets/image/home-cover.jpg')"
             />

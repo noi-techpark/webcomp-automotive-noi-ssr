@@ -39,7 +39,7 @@
             </div>
           </vl-overlay>
           <vl-style-icon
-            src="marker.png"
+            src="https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/marker.png"
             :data-webpack-sync="require('@/assets/image/marker.png')"
             :anchor="[0.5, 1]"
             :scale="0.1"
