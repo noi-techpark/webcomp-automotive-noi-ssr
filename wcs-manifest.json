@@ -50,7 +50,7 @@
         }
       },
       {
-        "key": "websiteMode",
+        "key": "website-mode",
         "type": "text",
         "label": "Website Mode",
         "required": false,
@@ -59,7 +59,7 @@
         }
       },
       {
-        "key": "defaultCompany",
+        "key": "default-company",
         "type": "text",
         "label": "Default Company",
         "required": false,
@@ -68,7 +68,7 @@
         }
       },
       {
-        "key": "customLinks",
+        "key": "custom-links",
         "type": "text",
         "label": "Custom Links shown in footer",
         "required": false,
