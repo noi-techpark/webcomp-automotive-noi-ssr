@@ -12,7 +12,7 @@ jobs:
   test:
     runs-on: ${{ vars.RUNNER_UBUNTU }}
     steps:
-      - uses: ${{ vars.ACTION_CHECKOUT }}
+      - uses: actions/checkout@v3
 
       # - name: REUSE Compliance Check
       #   uses: fsfe/reuse-action@v1
@@ -28,7 +28,7 @@ jobs:
     needs: test
     concurrency: deploy-test
     steps:
-      - uses: ${{ vars.ACTION_CHECKOUT }}
+      - uses: actions/checkout@v3
 
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
