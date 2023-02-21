@@ -28,7 +28,7 @@ jobs:
     needs: test
     concurrency: deploy-test
     steps:
-      - uses: actions/checkout@${{ vars.ACTION_CHECKOUT_VERSION }}
+      - uses: actions/checkout@v3
 
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
