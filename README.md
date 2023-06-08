@@ -6,6 +6,8 @@ SPDX-License-Identifier: CC0-1.0
 
 # NOI Automotive
 
+![REUSE Compliance](https://github.com/noi-techpark/webcomp-automotive-noi/actions/workflows/reuse.yml/badge.svg)
+
 ## Build Setup
 
 ```bash
