@@ -205,7 +205,12 @@ export default {
               width: 5,
             }),
             padding: [1.25, 1.75, 1.25, 1.75]
-          }) : undefined,
+          }) : new OlText({
+            text: "" + feature?.values_?.features.length,
+            fill: new Fill({ color: '#e5e7eb' }),
+            offsetY: 1,
+            textAlign: 'center',
+          }),
           zIndex: this.curFeatureIndex,
         })
         return [baseStyle];
