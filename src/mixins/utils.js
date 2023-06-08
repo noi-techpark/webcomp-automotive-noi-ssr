@@ -132,5 +132,31 @@ export default {
 
       return allCompanies
     },
+    /**
+     * This function calculates wether it's better (according to contrast) to use black or white as textcolor/foreground based on the backgroundcolor.
+     * @param backgroundColor hexcolor, either with 3 or 6 digits
+     * @returns 'black' or 'white'
+     */
+    getTextColor(backgroundColor) {
+      // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+      const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
+      backgroundColor = backgroundColor.replace(
+        shorthandRegex,
+        function (m, r, g, b) {
+          return r + r + g + g + b + b
+        }
+      )
+
+      const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+        backgroundColor
+      )
+      const brightness = Math.round(
+        (parseInt(rgb[1], 16) * 299 +
+          parseInt(rgb[2], 16) * 587 +
+          parseInt(rgb[3], 16) * 114) /
+          1000
+      )
+      return brightness > 125 ? 'black' : 'white'
+    },
   },
 }

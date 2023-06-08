@@ -75,6 +75,15 @@
         "options": {
           "default": ""
         }
+      },
+      {
+        "key": "primary-color",
+        "type": "text",
+        "label": "Primary color (Hex Code)",
+        "required": false,
+        "options": {          
+          "default": "#9626ff"
+        }
       }
     ]
   }

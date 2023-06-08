@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </vl-layer-tile>
 
       <vl-layer-vector>
-        <vl-source-cluster :distance="20">
+        <vl-source-cluster :distance="30">
           <vl-source-vector :features="points"></vl-source-vector>
         </vl-source-cluster>
         <vl-style-func :factory="markerStyleFunc" />
@@ -37,17 +37,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 import Vue from 'vue'
 import VueLayers from 'vuelayers'
-import 'vuelayers/lib/style.css'
 
 import Style from 'ol/style/Style'
 import OlIcon from 'ol/style/Icon'
 import Fill from 'ol/style/Fill'
 import Stroke from 'ol/style/Stroke'
 import OlText from 'ol/style/Text'
+import utils from '~/mixins/utils.js'
 
 Vue.use(VueLayers)
 
 export default {
+  mixins: [utils],
   props: {
     visibleCompanies: {
       type: Array,
@@ -83,16 +84,23 @@ export default {
     points() {
       return this.getCoordinatesOfCompanies(this.companiesWithValidLocationCoordinates);
     },
+    primaryColor() {
+      return document.documentElement.style.getPropertyValue('--primary-color');
+    },
     mapMarker() {
       return new OlIcon({
-        src: "https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/marker.png",
-        scale: 0.1,
+        color: this.primaryColor,
+        crossOrigin: 'anonymous',
+        src: 'data:image/svg+xml;utf8,' + '<svg width="120" height="120" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><path fill="white" d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/></svg>',
+        scale: 0.25,
       });
     },
     clusterIcon() {
       return new OlIcon({
-        src: "https://upload.wikimedia.org/wikipedia/commons/e/ec/RedDot.svg", // https://it.m.wikipedia.org/wiki/File:RedDot.svg
-        scale: 1.5,
+        color: this.primaryColor,
+        crossOrigin: 'anonymous',
+        src: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Dot-white.svg", // https://it.m.wikipedia.org/wiki/File:RedDot.svg
+        scale: 0.12,
       });
     }
   },
@@ -187,27 +195,25 @@ export default {
     },
 
     markerStyleFunc() {
-      // style function and styles using OpenLayers API
-      // https://openlayers.org/en/latest/apidoc/module-ol_style_Style.html
       return (feature) => {
         this.curFeatureIndex++
         const baseStyle = new Style({
           image: feature?.values_?.features.length <= 1 ? this.mapMarker : this.clusterIcon,
           text: feature?.values_?.features.length <= 1 ? new OlText({
             text: this.currentZoom >= 14 ? this.textFormatForMarkerStyleFunc(feature?.values_?.features[0]?.id_) : undefined,
-            fill: new Fill({ color: '#e5e7eb' }),
-            backgroundFill: new Fill({ color: '#c70000' }),
+            fill: new Fill({ color: this.primarycolor }),
+            backgroundFill: new Fill({ color: this.primarycolor }),
             textAlign: 'center',
             offsetY: -25,
             scale: 1.2,
             backgroundStroke: new Stroke({
-              color: '#c70000',
+              color: this.primarycolor,
               width: 5,
             }),
             padding: [1.25, 1.75, 1.25, 1.75]
           }) : new OlText({
             text: "" + feature?.values_?.features.length,
-            fill: new Fill({ color: '#e5e7eb' }),
+            fill: new Fill({ color: this.primarycolor }),
             offsetY: 1,
             textAlign: 'center',
           }),

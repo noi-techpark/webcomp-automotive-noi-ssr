@@ -66,6 +66,14 @@ export default {
       type: String,
       default: 'en',
     },
+    primaryColor: {
+      type: String,
+      default: "#9626ff",
+      Validator(value) {
+        return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
+      }
+    }
+
   },
 
   data() {
@@ -106,6 +114,8 @@ export default {
   },
 
   created() {
+    // eslint-disable-next-line 
+    document.documentElement.style.setProperty('--primary-color', this.primaryColor);
     if (this.language) {
       if (this.$i18n.locale !== this.language) {
         if (typeof this.$i18n.setLocale !== 'undefined') {
