@@ -20,7 +20,7 @@ module.exports = {
     extend: {
       colors: {
         primary: 'var(--primary-color)', // variable is set in WebComponent.vue
-        'primary-hover': '#ff0000',
+        'primary-hover': 'var(--primary-hover)',
         secondary: '#F5F5F5',
         'secondary-hover': '#fAfAfA',
         'light-black': '#343434',

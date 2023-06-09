@@ -42,9 +42,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 import vueI18n from '@/plugins/vueI18n'
 import 'tailwindcss/tailwind.css'
+import utils from '~/mixins/utils.js'
 
 export default {
   i18n: vueI18n,
+  mixins: [ utils ],
 
   props: {
     websiteMode: {
@@ -114,8 +116,11 @@ export default {
   },
 
   created() {
-    // eslint-disable-next-line 
+    // eslint-disable-next-line nuxt/no-globals-in-created
     document.documentElement.style.setProperty('--primary-color', this.primaryColor);
+    // eslint-disable-next-line nuxt/no-globals-in-created
+    document.documentElement.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20)); // Make this pls :3);
+
     if (this.language) {
       if (this.$i18n.locale !== this.language) {
         if (typeof this.$i18n.setLocale !== 'undefined') {
