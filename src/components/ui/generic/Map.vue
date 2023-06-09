@@ -201,7 +201,7 @@ export default {
           image: feature?.values_?.features.length <= 1 ? this.mapMarker : this.clusterIcon,
           text: feature?.values_?.features.length <= 1 ? new OlText({
             text: this.currentZoom >= 14 ? this.textFormatForMarkerStyleFunc(feature?.values_?.features[0]?.id_) : undefined,
-            fill: new Fill({ color: this.primarycolor }),
+            fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
             backgroundFill: new Fill({ color: this.primarycolor }),
             textAlign: 'center',
             offsetY: -25,
@@ -213,7 +213,7 @@ export default {
             padding: [1.25, 1.75, 1.25, 1.75]
           }) : new OlText({
             text: "" + feature?.values_?.features.length,
-            fill: new Fill({ color: this.primarycolor }),
+            fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
             offsetY: 1,
             textAlign: 'center',
           }),
