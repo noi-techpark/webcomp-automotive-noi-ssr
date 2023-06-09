@@ -433,7 +433,17 @@ export default {
               ' ' +
               r.attributes.productsAndServices +
               ' ' +
-              r.attributes.references
+              r.attributes.references +
+              ' ' +
+              r.attributes.companyContact.email +
+              ' ' +
+              r.attributes.contactPerson.email +
+              ' ' +
+              r.attributes.contactPerson.personName +
+              ' ' +
+              r.attributes.companyAddressStreet +
+              ' ' +
+              r.attributes.companyAddressStreet.cap
             )
               .toLowerCase()
               .includes(cleanSearchVal)
