@@ -159,7 +159,7 @@ export default {
   @apply px-8 py-8 h-full overflow-y-auto;
 
   & h1 {
-    @apply text-3xl text-base font-bold;
+    @apply text-3xl font-bold;
   }
 
   & .top-overview {
