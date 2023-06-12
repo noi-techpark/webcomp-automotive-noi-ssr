@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @input="changeLanguage"
         />
       </div>
-      <div>
+      <div class="logos-ct">
         <div class="logo clickable" @click="backToCategories">
           <Icon name="logo" />
         </div><div class="logo clickable" @click="backToCategories">
@@ -778,6 +778,9 @@ export default {
       @apply absolute top-6 right-4 w-14;
     }
 
+    & .logos-ct {
+      height: 100px;
+    }
     & .logo {
       display: inline;
 
