@@ -40,6 +40,7 @@ import VueLayers from 'vuelayers'
 
 import Style from 'ol/style/Style'
 import OlIcon from 'ol/style/Icon'
+import CircleShape from 'ol/style/Circle'
 import Fill from 'ol/style/Fill'
 import Stroke from 'ol/style/Stroke'
 import OlText from 'ol/style/Text'
@@ -96,11 +97,13 @@ export default {
       });
     },
     clusterIcon() {
-      return new OlIcon({
-        color: this.primaryColor,
-        crossOrigin: 'anonymous',
-        src: "https://upload.wikimedia.org/wikipedia/commons/5/5e/Dot-white.svg", // https://it.m.wikipedia.org/wiki/File:RedDot.svg
-        scale: 0.12,
+      return new CircleShape({
+        fill: new Fill({ color: this.primaryColor }),
+        radius: 12,
+        stroke: new Stroke({
+          color: '#000000',
+          width: 2.5,
+        })
       });
     }
   },
