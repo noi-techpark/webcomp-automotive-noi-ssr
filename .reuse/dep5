@@ -3,7 +3,7 @@ Upstream-Name: webcomp-automotive-noi
 Upstream-Contact: NOI Techpark <digital@noi.bz.it>
 Source: https://github.com/noi-techpark/webcomp-automotive-noi
 
-Files: .github/* infrastructure/* .gitignore LICENSE.md .editorconfig .env.example .prettierrc *.png *.ico *.jpg *.svg *.pdf *.json
+Files: .github/* infrastructure/* .gitignore .pre-commit-config.yaml LICENSE.md .editorconfig .env.example .prettierrc *.png *.ico *.jpg *.svg *.pdf *.json
 Copyright: (c) NOI Techpark <digital@noi.bz.it>
 License: CC0-1.0
 
