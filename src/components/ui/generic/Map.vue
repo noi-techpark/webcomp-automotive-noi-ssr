@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </vl-layer-tile>
 
       <vl-layer-vector>
-        <vl-source-cluster :distance="30">
+        <vl-source-cluster :distance="40">
           <vl-source-vector :features="points"></vl-source-vector>
         </vl-source-cluster>
         <vl-style-func :factory="markerStyleFunc" />
@@ -97,14 +97,21 @@ export default {
       });
     },
     clusterIcon() {
-      return new CircleShape({
+      const clusterIcons = Array(3);
+      const circleShape = new CircleShape({
         fill: new Fill({ color: this.primaryColor }),
-        radius: 12,
+        radius: 11,
         stroke: new Stroke({
           color: '#000000',
           width: 2.5,
         })
       });
+      clusterIcons[0] = circleShape.clone();
+      circleShape.setRadius(14);
+      clusterIcons[1] = circleShape.clone();
+      circleShape.setRadius(17);
+      clusterIcons[2] = circleShape;
+      return clusterIcons;
     }
   },
 
@@ -197,12 +204,23 @@ export default {
       return ret
     },
 
+    getClusterIconAccordingToSize(size) {
+      if(size < 10) {
+        return this.clusterIcon[0];
+      } else if (size < 50) {
+        return this.clusterIcon[1];
+      } else {
+        return this.clusterIcon[2];
+      }
+    },
+
     markerStyleFunc() {
       return (feature) => {
+        const clustersize = feature?.values_?.features.length;
         this.curFeatureIndex++
         const baseStyle = new Style({
-          image: feature?.values_?.features.length <= 1 ? this.mapMarker : this.clusterIcon,
-          text: feature?.values_?.features.length <= 1 ? new OlText({
+          image: clustersize <= 1 ? this.mapMarker : this.getClusterIconAccordingToSize(clustersize),
+          text: clustersize <= 1 ? new OlText({
             text: this.currentZoom >= 14 ? this.textFormatForMarkerStyleFunc(feature?.values_?.features[0]?.id_) : undefined,
             fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
             backgroundFill: new Fill({ color: this.primarycolor }),
@@ -215,7 +233,7 @@ export default {
             }),
             padding: [1.25, 1.75, 1.25, 1.75]
           }) : new OlText({
-            text: "" + feature?.values_?.features.length,
+            text: "" + clustersize,
             fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
             offsetY: 1,
             textAlign: 'center',
