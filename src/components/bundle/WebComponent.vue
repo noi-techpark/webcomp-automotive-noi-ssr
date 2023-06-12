@@ -21,6 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       @showCompanyWithId="showCompanyWithId"
     />
     <HomeView
+      v-if="showHomeView"
       :companies-list="companiesList"
       :filtered-companies="filteredCompanies"
       :visible="isHomeViewVisible"
@@ -74,6 +75,10 @@ export default {
       Validator(value) {
         return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
       }
+    },
+    showHomeView: {
+      type: Boolean,
+      default: true,
     }
 
   },

@@ -84,6 +84,15 @@
         "options": {          
           "default": "#9626ff"
         }
+      },
+      {
+        "key": "showHomeView",
+        "type": "bool",
+        "label": "Show Home View?",
+        "required": false,
+        "options": {
+            "default": true
+        }
       }
     ]
   }
