@@ -57,7 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <p class="top-desc">
                 {{ data.attributes.mainImageDescription }}
               </p>
-              <div class="middle-desc">
+              <div v-if="data.attributes?.auxiliaryImage?.data?.attributes?.formats" class="middle-desc">
                 <div
                   class="second-image"
                   :style="{
@@ -319,6 +319,7 @@ export default {
         background-position: top right;
         width: 150px;
         height: 70px;
+        mix-blend-mode: multiply;
       }
     }
 
@@ -332,6 +333,7 @@ export default {
           @apply bg-white bg-cover bg-center;
 
           height: 270px;
+          mix-blend-mode: multiply;
         }
 
         & .top-desc {
@@ -350,6 +352,7 @@ export default {
             @apply h-full w-1/2 bg-white bg-cover bg-center;
 
             min-width: 200px;
+            mix-blend-mode: multiply;
           }
 
           & .second-desc {
