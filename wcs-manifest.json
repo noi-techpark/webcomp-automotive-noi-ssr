@@ -1,5 +1,6 @@
 {
   "title": "Automotive NOI",
+  "shortName": "noi-automotive",
   "description": "A web component to display a list and details of automotive/automation businesses and organizations located in South Tyrol.",
   "descriptionAbstract": "List and details of automotive/automation businesses and organizations",
   "license": "AGPL-3.0-or-later",
