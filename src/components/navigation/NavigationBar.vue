@@ -18,29 +18,32 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         />
       </div>
       <div>
-      <div class="logo clickable" @click="backToCategories">
-        <Icon name="logo" />
+        <div class="logo clickable" @click="backToCategories">
+          <Icon name="logo" />
         </div><div class="logo clickable" @click="backToCategories">
           <Icon name="logo-automotive" />
         </div>
       </div>
-      <div class="section-title">
-        <div class="main-title">
-          <div class="title" :class="{ visible: mainCategory !== null }">
-            {{ curSectionTitle }}
+        <hr />
+        <Transition name="fade">
+        <div v-if="curSectionTitle" class="section-title">
+          <div class="main-title">
+            <div class="title" :class="{ visible: mainCategory !== null }">
+              {{ curSectionTitle }}
+            </div>
+          </div>
+          <div class="subtitle">
+            <div
+              class="back-button"
+              :class="{ visible: mainCategory !== null }"
+              @click="backToCategories"
+            >
+              <Icon name="back-arrow" />
+              {{ $t('common.backToCategories') }}
+            </div>
           </div>
         </div>
-        <div class="subtitle">
-          <div
-            class="back-button"
-            :class="{ visible: mainCategory !== null }"
-            @click="backToCategories"
-          >
-            <Icon name="back-arrow" />
-            {{ $t('common.backToCategories') }}
-          </div>
-        </div>
-      </div>
+        </Transition>
       <div class="search-bar-ct">
         <div class="search-bar">
           <TextInput
@@ -709,6 +712,7 @@ export default {
     backToCategories() {
       this.mainCategory = null
       this.searchValue = ''
+      this.curSectionTitle = ''
       this.hideFiltersMenu()
       this.didReachHome()
     },
@@ -756,6 +760,14 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 250ms ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
 .navigation-ct {
   & .navigation-bar {
     @apply absolute w-navbar top-0 left-0 bottom-0 bg-white;
@@ -774,10 +786,16 @@ export default {
       }
     }
 
+    & hr {
+      border-top-width: 2px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
     & .section-title {
       @apply mx-5;
 
-      margin-top: 2rem;
+      margin-top: 1.25rem;
       height: 2rem;
 
       & .main-title {
@@ -820,7 +838,7 @@ export default {
     & .search-bar-ct {
       @apply mx-6;
 
-      margin-top: 2rem;
+      margin-top: 1.25rem;
       height: 3rem;
       font-size: 0;
 
@@ -833,6 +851,8 @@ export default {
 
       & .filter-bt {
         @apply inline-block;
+        
+        border-radius: 18px
       }
     }
 
