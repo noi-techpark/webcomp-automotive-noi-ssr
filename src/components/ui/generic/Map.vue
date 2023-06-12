@@ -237,6 +237,7 @@ export default {
             fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
             offsetY: 1,
             textAlign: 'center',
+            scale: clustersize < 10 ? 1 : clustersize < 50 ? 1.3 : 1.6,
           }),
           zIndex: this.curFeatureIndex,
         })
