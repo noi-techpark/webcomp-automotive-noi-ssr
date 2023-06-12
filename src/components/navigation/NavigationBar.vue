@@ -17,8 +17,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @input="changeLanguage"
         />
       </div>
+      <div>
       <div class="logo clickable" @click="backToCategories">
         <Icon name="logo" />
+        </div><div class="logo clickable" @click="backToCategories">
+          <Icon name="logo-automotive" />
+        </div>
       </div>
       <div class="section-title">
         <div class="main-title">
@@ -763,9 +767,7 @@ export default {
     }
 
     & .logo {
-      @apply mx-3 mt-4;
-
-      height: 70px;
+      display: inline;
 
       & svg {
         @apply h-full;
