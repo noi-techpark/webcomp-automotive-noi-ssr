@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </vl-layer-tile>
 
       <vl-layer-vector>
-        <vl-source-cluster :distance="40">
+        <vl-source-cluster :distance="45">
           <vl-source-vector :features="points"></vl-source-vector>
         </vl-source-cluster>
         <vl-style-func :factory="markerStyleFunc" />
@@ -100,16 +100,16 @@ export default {
       const clusterIcons = Array(3);
       const circleShape = new CircleShape({
         fill: new Fill({ color: this.primaryColor }),
-        radius: 11,
+        radius: 10,
         stroke: new Stroke({
           color: '#000000',
           width: 2.5,
         })
       });
       clusterIcons[0] = circleShape.clone();
-      circleShape.setRadius(14);
+      circleShape.setRadius(13);
       clusterIcons[1] = circleShape.clone();
-      circleShape.setRadius(17);
+      circleShape.setRadius(16);
       clusterIcons[2] = circleShape;
       return clusterIcons;
     }
