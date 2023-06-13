@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div class="component-view">
+  <div ref="componentView" class="component-view">
     <NavigationBar
       ref="navigationBar"
       :visible-company="visibleCompanyData"
@@ -76,6 +76,14 @@ export default {
         return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
       }
     },
+    width: {
+      type: String,
+      default: '100%'
+    },
+    height: {
+      type: String,
+      default: '100%'
+    },
     showHomeView: {
       type: Boolean,
       default: true,
@@ -121,11 +129,6 @@ export default {
   },
 
   created() {
-    // eslint-disable-next-line nuxt/no-globals-in-created
-    document.documentElement.style.setProperty('--primary-color', this.primaryColor);
-    // eslint-disable-next-line nuxt/no-globals-in-created
-    document.documentElement.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20)); // Make this pls :3);
-
     if (this.language) {
       if (this.$i18n.locale !== this.language) {
         if (typeof this.$i18n.setLocale !== 'undefined') {
@@ -142,6 +145,12 @@ export default {
   },
 
   mounted() {
+    this.$refs.componentView.style.width = this.width;
+    this.$refs.componentView.style.height = this.height;
+
+    this.$refs.componentView.style.setProperty('--primary-color', this.primaryColor);
+    this.$refs.componentView.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
+
     if (this.$route?.query?.company) {
       this.requestedCompanyDisplay = Number(this.$route.query.company)
     }
@@ -212,9 +221,7 @@ export default {
 @import url('~assets/css/main.css');
 
 .component-view {
-  @apply relative w-full h-full overflow-hidden;
-
-  min-height: 800px;
+  @apply relative overflow-hidden;
 }
 
 .full-screen-loader {

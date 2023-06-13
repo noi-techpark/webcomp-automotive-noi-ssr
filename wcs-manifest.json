@@ -87,6 +87,24 @@
         }
       },
       {
+        "key": "width",
+        "type": "string",
+        "label": "Width of Webcomponent (CSS)",
+        "required": false,
+        "options": {
+          "default": "100%"
+        }
+      },
+      {
+        "key": "height",
+        "type": "string",
+        "label": "Height of Webcomponent (CSS)",
+        "required": false,
+        "options": {
+          "default": "100%"
+        }
+      },
+      {
         "key": "showHomeView",
         "type": "bool",
         "label": "Show Home View?",

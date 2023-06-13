@@ -85,8 +85,8 @@ export default {
     points() {
       return this.getCoordinatesOfCompanies(this.companiesWithValidLocationCoordinates);
     },
-    primaryColor() {
-      return document.documentElement.style.getPropertyValue('--primary-color');
+    primaryColor() { // Get PrimaryColor from css of componentView. This property is set in WebComponent.vue:mounted()
+      return document.getElementsByClassName('component-view')[0].style.getPropertyValue('--primary-color');
     },
     mapMarker() {
       return new OlIcon({

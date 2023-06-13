@@ -862,7 +862,8 @@ export default {
     & .results-ct {
       @apply overflow-y-auto overflow-x-hidden;
 
-      height: calc(100% - 10rem - 70px);
+      margin-top: 4px;
+      height: calc(100% - 10rem - 66px);
 
       & .result {
         @apply flex flex-row mx-6 mb-4 cursor-pointer select-none;
