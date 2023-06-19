@@ -105,7 +105,7 @@
         }
       },
       {
-        "key": "showHomeView",
+        "key": "show-home-view",
         "type": "bool",
         "label": "Show Home View?",
         "required": false,
