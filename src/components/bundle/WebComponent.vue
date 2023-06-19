@@ -49,6 +49,13 @@ export default {
   i18n: vueI18n,
   mixins: [ utils ],
 
+  provide() {
+    return {
+      // Provide primary-color for Map.vue
+      'primary-color': this.primaryColor,
+    }
+  },
+
   props: {
     websiteMode: {
       type: String,

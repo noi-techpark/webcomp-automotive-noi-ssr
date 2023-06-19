@@ -71,6 +71,7 @@ export default {
     entries: [
       {
         name: 'NOI Automotive',
+        shadow: true,
         tags: [
           {
             name: 'NoiAutomotive',

@@ -50,6 +50,13 @@ Vue.use(VueLayers)
 
 export default {
   mixins: [utils],
+  inject: {
+    // inject primaryColor from WebComponent.vue
+    primaryColor: {
+      from: 'primary-color',
+      default: '#9626ff'
+    }
+  },
   props: {
     visibleCompanies: {
       type: Array,
@@ -84,9 +91,6 @@ export default {
     },
     points() {
       return this.getCoordinatesOfCompanies(this.companiesWithValidLocationCoordinates);
-    },
-    primaryColor() { // Get PrimaryColor from css of componentView. This property is set in WebComponent.vue:mounted()
-      return document.getElementsByClassName('component-view')[0].style.getPropertyValue('--primary-color');
     },
     mapMarker() {
       return new OlIcon({
