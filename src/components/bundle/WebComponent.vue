@@ -239,6 +239,7 @@ export default {
 
 .component-view {
   @apply relative overflow-hidden;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
 }
 
 .full-screen-loader {

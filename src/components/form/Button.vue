@@ -97,7 +97,7 @@ export default {
   line-height: 44px;
 
   & > svg {
-    @apply align-top mr-2;
+    @apply mr-2;
 
     width: 18px;
     height: 18px;

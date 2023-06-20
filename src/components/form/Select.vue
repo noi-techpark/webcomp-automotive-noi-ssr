@@ -104,7 +104,7 @@ export default {
     padding-bottom: 0.6rem;
 
     & select {
-      @apply bg-transparent text-black text-base appearance-none;
+      @apply bg-transparent text-black text-base appearance-none border-0 p-0;
 
       &:focus {
         @apply outline-none;
