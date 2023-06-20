@@ -133,6 +133,26 @@ export default {
           },
         ],
       })
+      config.module.rules.push(
+        // Process any JS outside of the app with Babel.
+        // Required because twind uses optional chaining, which isn't supported by default
+        {
+          test: /\.(js|cjs|mjs)$/,
+          include: /@twind/,
+          loader: require.resolve('babel-loader'),
+          type: 'javascript/auto',
+          options: {
+            babelrc: false,
+            configFile: false,
+            compact: false,
+            cacheDirectory: true,
+            plugins: [
+              '@babel/plugin-proposal-nullish-coalescing-operator',
+              '@babel/plugin-proposal-optional-chaining',
+            ],
+          },
+        }
+      )
     },
   },
 
