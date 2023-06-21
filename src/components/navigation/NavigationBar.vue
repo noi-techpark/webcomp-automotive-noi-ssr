@@ -26,10 +26,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
         <hr />
         <Transition name="fade">
-        <div v-if="curSectionTitle" class="section-title">
+        <div v-if="resultsList.length == visibleResults.length" class="section-title">
           <div class="main-title">
-            <div class="title" :class="{ visible: mainCategory !== null }">
-              {{ curSectionTitle }}
+            <div class="title">
+              {{ curSectionTitle || $t('common.allCategories') }}
             </div>
           </div>
           <div class="subtitle">
@@ -816,7 +816,7 @@ export default {
         height: 1rem;
 
         & .title {
-          @apply text-xl text-black uppercase hidden;
+          @apply text-xl text-black uppercase;
 
           animation: fade-in 0.3s ease;
 
