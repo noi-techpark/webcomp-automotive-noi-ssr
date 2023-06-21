@@ -15,6 +15,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       @didReachHome="showHome"
       @didFetchCompanies="setCompaniesList"
       @didFilterCompanies="setNewFilteredCompanies"
+      @toggleLoading="toggleLoading"
     />
     <MapView
       :filtered-companies="filteredCompanies"
@@ -229,6 +230,9 @@ export default {
     setCompaniesList(companiesList) {
       this.companiesList = companiesList
     },
+    toggleLoading(isLoading) {
+      this.loading = isLoading || !this.loading;
+    }
   },
 }
 </script>

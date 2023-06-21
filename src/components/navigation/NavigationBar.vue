@@ -669,6 +669,7 @@ export default {
 
   methods: {
     async changeLanguage(lang) {
+      this.$emit('toggleLoading', true);
       if (typeof this.$i18n.setLocale !== 'undefined') {
         this.$i18n.setLocale(lang);
       } else {
