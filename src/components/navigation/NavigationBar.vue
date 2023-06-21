@@ -668,8 +668,16 @@ export default {
   },
 
   methods: {
-    changeLanguage(lang) {
-      this.$i18n.setLocale(lang)
+    async changeLanguage(lang) {
+      if (typeof this.$i18n.setLocale !== 'undefined') {
+        this.$i18n.setLocale(lang);
+      } else {
+        this.$i18n.locale = lang;
+      }
+      await this.fetchResults();
+      if (this.visibleCompany) {
+        this.onCompanyClick(this.visibleCompany.id)
+      }
     },
 
     getResultDataObject(
