@@ -101,8 +101,8 @@ export default {
 
     width: 18px;
     height: 18px;
-    margin-top: 13px;
     fill: #fff;
+    vertical-align: sub;
   }
 
   & > .loader-ct {

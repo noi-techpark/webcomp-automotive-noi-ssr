@@ -882,7 +882,6 @@ export default {
         
         border-radius: 18px;
         position: relative;
-        top: 1.5px;
       }
     }
 
