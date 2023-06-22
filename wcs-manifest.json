@@ -27,8 +27,7 @@
     "basePath": "dist/nuxt-custom-elements/noi-automotive",
     "files": [
       "noi-automotive.js",
-      "home-cover.jpg",
-      "marker.png"
+      "home-cover.jpg"
     ],
     "scripts": [
       {
