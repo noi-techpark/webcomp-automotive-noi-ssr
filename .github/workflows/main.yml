@@ -10,7 +10,8 @@ env:
 
 jobs:
   test:
-    runs-on: ${{ vars.RUNNER_UBUNTU }}
+    # runs-on: ${{ vars.RUNNER_UBUNTU }}
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - name: REUSE Compliance Check
@@ -19,6 +20,7 @@ jobs:
         with:
           build-command: npm run generate
           node-version: ${{env.NODE_VERSION}}
+      - uses: noi-techpark/github-actions/webcomp-test@v2
 
   deploy-test:
     runs-on: ${{ vars.RUNNER_UBUNTU }}
