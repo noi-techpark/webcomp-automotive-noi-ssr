@@ -172,6 +172,15 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    defaultCategory: {
+      type: String,
+      default: 'all',
+      validator(value) {
+        // The value must match one of the mainCategories.id or 'all'
+        return ["all", "automotiveAndMobility", "manufacturing", "agriAutomation"].includes(value);
+      }
+    }
   },
 
   data() {
@@ -665,6 +674,8 @@ export default {
 
   mounted() {
     this.fetchResults()
+    if (this.defaultCategory !== "all")
+      this.showResult(this.mainCategories.find((category) => category.id === this.CATEGORY_PREFIX + this.defaultCategory))
   },
 
   methods: {
