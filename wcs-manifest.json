@@ -88,7 +88,7 @@
       },
       {
         "key": "width",
-        "type": "string",
+        "type": "text",
         "label": "Width of Webcomponent (CSS)",
         "required": false,
         "options": {
@@ -97,7 +97,7 @@
       },
       {
         "key": "height",
-        "type": "string",
+        "type": "text",
         "label": "Height of Webcomponent (CSS)",
         "required": false,
         "options": {
