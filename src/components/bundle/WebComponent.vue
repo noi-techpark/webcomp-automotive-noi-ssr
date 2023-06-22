@@ -11,6 +11,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :visible-company="visibleCompanyData"
       :display-as-website="displayAsWebsite"
       :default-category="defaultCategory"
+      :limit-to-default-category="limitToDefaultCategory"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
@@ -87,6 +88,10 @@ export default {
     defaultCategory: {
       type: String,
       default: 'all'
+    },
+
+    limitToDefaultCategory: {
+      type: Boolean
     },
 
     language: {

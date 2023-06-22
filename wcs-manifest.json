@@ -79,6 +79,15 @@
         }
       },
       {
+        "key": "limit-to-default-category",
+        "type": "null",
+        "label": "Only display default category",
+        "required": false,
+        "options": {
+          "default": false
+        }
+      },
+      {
         "key": "custom-links",
         "type": "text",
         "label": "Custom Links shown in footer",

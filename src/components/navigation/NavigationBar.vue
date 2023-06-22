@@ -35,11 +35,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div class="subtitle">
             <div
               class="back-button"
-              :class="{ visible: mainCategory !== null }"
               @click="backToCategories"
             >
               <Icon name="back-arrow" />
-              {{ $t('common.backToCategories') }}
+              {{ !limitToDefaultCategory ? $t('common.backToCategories') : '' }}
             </div>
           </div>
         </div>
@@ -180,6 +179,10 @@ export default {
         // The value must match one of the mainCategories.id or 'all'
         return ["all", "automotiveAndMobility", "manufacturing", "agriAutomation"].includes(value);
       }
+    },
+
+    limitToDefaultCategory: {
+      type: Boolean
     }
   },
 
@@ -730,11 +733,13 @@ export default {
     },
 
     backToCategories() {
-      this.mainCategory = null
-      this.searchValue = ''
-      this.curSectionTitle = ''
-      this.hideFiltersMenu()
-      this.didReachHome()
+      if(!this.limitToDefaultCategory) {
+        this.mainCategory = null
+        this.searchValue = ''
+        this.curSectionTitle = ''
+        this.hideFiltersMenu()
+        this.didReachHome()
+      }
     },
 
     onCompanyClick(companyId) {
@@ -841,7 +846,7 @@ export default {
         height: 1rem;
 
         & .back-button {
-          @apply text-grey text-sm cursor-pointer select-none hidden;
+          @apply text-grey text-sm cursor-pointer select-none;
 
           animation: fade-in 0.3s ease;
 
