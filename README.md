@@ -54,7 +54,7 @@ If this attribute is set, the webcomponent will load the profile of the given co
 Note: To get the id, you have to go to the [sectorial Overview](https://automotive.noi.bz.it), search for your company, and copy the id from the url
 
 #### default-category
-If this attribute is set, the webcomponent will directly select a category. The user is still able to go back and select another category, unless `limit-to-default-category` is `true`
+If this attribute is set, the webcomponent will directly select a category. The user is still able to go back and select another category, unless [`limit-to-default-category`](#limit-to-default-category) is `true`
 
 > Type: String <br>
 > Options: "automotiveAndMobility", "manufacturing", "agriAutomation"<br>
