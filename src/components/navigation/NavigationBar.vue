@@ -176,10 +176,10 @@ export default {
 
     defaultCategory: {
       type: String,
-      default: 'all',
+      default: '',
       validator(value) {
-        // The value must match one of the mainCategories.id or 'all'
-        return allCategories.includes(value);
+        // The value must match one of the mainCategories.id or be empty
+        return allCategories.includes(value) || value === '';
       }
     },
 
