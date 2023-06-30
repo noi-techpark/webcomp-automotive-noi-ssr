@@ -12,6 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :display-as-website="displayAsWebsite"
       :default-category="defaultCategory"
       :limit-to-default-category="limitToDefaultCategory"
+      :visible-categories="visibleCategoriesAsArray"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
@@ -87,11 +88,16 @@ export default {
 
     defaultCategory: {
       type: String,
-      default: 'all'
+      default: ''
     },
 
     limitToDefaultCategory: {
       type: Boolean
+    },
+
+    visibleCategories: {
+      type: String,
+      default: ''
     },
 
     language: {
@@ -107,11 +113,11 @@ export default {
     },
     width: {
       type: String,
-      default: '100%'
+      default: '1200px'
     },
     height: {
       type: String,
-      default: '100%'
+      default: '675px'
     },
     showHomeView: {
       type: Boolean,
@@ -143,6 +149,14 @@ export default {
 
       return []
     },
+
+    visibleCategoriesAsArray() {
+      if(this.visibleCategories.split(',')[0] === '')
+        return undefined;
+      else { 
+        return this.visibleCategories.split(',').map(category => category.trim());
+      }
+    }
   },
 
   watch: {

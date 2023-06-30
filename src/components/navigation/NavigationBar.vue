@@ -29,16 +29,16 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         <div v-if="resultsList.length == visibleResults.length" class="section-title">
           <div class="main-title">
             <div class="title">
-              {{ curSectionTitle || $t('common.allCategories') }}
+              {{ curSectionTitle }}
             </div>
           </div>
-          <div class="subtitle">
+          <div v-if="displayMultipleCategories" class="subtitle">
             <div
               class="back-button"
               @click="backToCategories"
             >
               <Icon name="back-arrow" />
-              {{ !limitToDefaultCategory ? $t('common.backToCategories') : '' }}
+              {{ $t('common.backToCategories') }}
             </div>
           </div>
         </div>
@@ -156,6 +156,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 import utils from '~/mixins/utils.js'
 
+const allCategories = ["automotiveAndMobility", "manufacturing", "agriAutomation"];
+
 export default {
   mixins: [utils],
 
@@ -177,13 +179,21 @@ export default {
       default: 'all',
       validator(value) {
         // The value must match one of the mainCategories.id or 'all'
-        return ["all", "automotiveAndMobility", "manufacturing", "agriAutomation"].includes(value);
+        return allCategories.includes(value);
       }
     },
 
     limitToDefaultCategory: {
       type: Boolean
-    }
+    },
+
+    visibleCategories: {
+      type: [Array, undefined],
+      default: ()=>allCategories,
+      validator(value) {
+        return (value[0] && value.every((category=>allCategories.includes(category))))
+      }
+    },
   },
 
   data() {
@@ -191,7 +201,6 @@ export default {
       CATEGORY_PREFIX: 'CATEGORY-',
       filters: {},
       searchValue: '',
-      curSectionTitle: null,
       mainCategory: null,
       isFiltersMenuVisible: false,
       areAdvancedFiltersVisible: false,
@@ -241,6 +250,67 @@ export default {
           true
         ),
       ]
+    },
+
+    /**
+     * checks wether defaultCategory is valid. This function trims defaultCategory and is case-insensitive
+     */
+    defaultCategoryValidated() {
+      if (allCategories.includes(this.defaultCategory.trim()))
+        return this.defaultCategory.trim();
+      else {
+        return allCategories.find(category => category.toLowerCase() === this.defaultCategory.trim().toLowerCase()) || "";
+      }
+    },
+
+    /**
+     * Checks wether visibleCategories consists of valid categories
+     * @returns Array of type string, i.e. ["automotiveAndMobility", "manufacturing", "agriAutomation"].
+     */
+    visibleCategoriesValidated() {
+      const visibleCategoriesNormalized = this.visibleCategories.map((category) => {
+        let ret = category.trim();
+        ret = ret.toLowerCase();
+        return ret;
+      });
+      const validCategories = visibleCategoriesNormalized.filter((category => allCategories.some(
+        categoryFromAll => categoryFromAll.toLowerCase() === category
+      )));
+      if (validCategories.length > 0)
+        return validCategories;
+      else
+        return allCategories;
+    },
+
+    categoryFilter() {
+      return {
+        automotiveAndMobility: this.visibleCategoriesValidated.includes("automotiveandmobility"),
+        manufacturing: this.visibleCategoriesValidated.includes("manufacturing"),
+        agriAutomation: this.visibleCategoriesValidated.includes("agriautomation")
+      }
+    },
+
+    /**
+     * like mainCategories, but only consisting of the categories which should be visible
+     */
+    filteredMainCategories() {
+      return this.mainCategories.filter(category=>this.categoryFilter[category.id.replace(this.CATEGORY_PREFIX, '')]);
+    },
+
+    /**
+     * boolean, deciding wether the user should be able to choose a category or not
+     * returns false, if there is only one category to show or limitToDefaultCategory is set (under the condition, that there's even a defaultCategory)
+     */
+    displayMultipleCategories() {
+      return !(this.filteredMainCategories.length <=1 || (this.limitToDefaultCategory && this.defaultCategoryValidated !== ''));
+    },
+
+    curSectionTitle() {
+      if(this.displayMultipleCategories) {
+        return this.getSectorNameFromID(this.mainCategory) || this.$t('common.allCategories');
+      } else {
+        return this.getSectorNameFromID(this.defaultCategoryValidated);
+      }
     },
 
     industrialSectors() {
@@ -468,6 +538,18 @@ export default {
               .includes(cleanSearchVal)
           )
         }
+        // filter according to webcomponent-parameter visibleCategories
+        if (this.categoryFilter) {
+          results = results.filter((r) => {
+            return (
+              r.attributes.specialization && (
+                (this.categoryFilter.automotiveAndMobility && r.attributes.specialization.automotiveAndMobility) ||
+                (this.categoryFilter.manufacturing && r.attributes.specialization.manufacturing) ||
+                (this.categoryFilter.agriAutomation && r.attributes.specialization.agriAutomation)
+              )
+            )
+          })
+        }
 
         if (this.mainCategory && this.mainCategory !== true) {
           results = results.filter((r) => {
@@ -476,8 +558,15 @@ export default {
               r.attributes.specialization[this.mainCategory]
             )
           })
+        } else if(this.defaultCategoryValidated && !this.displayMultipleCategories) {
+          results = results.filter((r) => {
+            return (
+              r.attributes.specialization &&
+              r.attributes.specialization[this.defaultCategoryValidated]
+            )
+          })
         }
-
+        
         if (this.filters.industrialSector) {
           results = results.filter(
             (r) =>
@@ -651,7 +740,7 @@ export default {
     },
 
     resultsList() {
-      return !this.mainCategory ? this.mainCategories : this.visibleResults
+      return (!this.mainCategory && this.displayMultipleCategories) ? this.filteredMainCategories : this.visibleResults
     },
   },
 
@@ -677,8 +766,9 @@ export default {
 
   mounted() {
     this.fetchResults()
-    if (this.defaultCategory !== "all")
-      this.showResult(this.mainCategories.find((category) => category.id === this.CATEGORY_PREFIX + this.defaultCategory))
+    if (this.displayMultipleCategories && this.defaultCategoryValidated !== '') {
+      this.showResult(this.mainCategories.find((category) => category.id === this.CATEGORY_PREFIX + this.defaultCategoryValidated));
+    }
   },
 
   methods: {
@@ -720,7 +810,6 @@ export default {
     showResult(result) {
       if (String(result.id).startsWith(this.CATEGORY_PREFIX)) {
         const categoryId = result.id.replace(this.CATEGORY_PREFIX, '')
-        this.curSectionTitle = result.name
         this.showCategory(categoryId)
       } else if (!result.isPlaceholder) {
         this.onCompanyClick(result.id)
@@ -733,13 +822,10 @@ export default {
     },
 
     backToCategories() {
-      if(!this.limitToDefaultCategory) {
-        this.mainCategory = null
-        this.searchValue = ''
-        this.curSectionTitle = ''
-        this.hideFiltersMenu()
-        this.didReachHome()
-      }
+      this.mainCategory = null
+      this.searchValue = ''
+      this.hideFiltersMenu()
+      this.didReachHome()
     },
 
     onCompanyClick(companyId) {
@@ -780,6 +866,11 @@ export default {
     resetFilters() {
       this.filters = {}
     },
+
+    getSectorNameFromID(id) {
+      if (id && id !== true)
+        return this.mainCategories.find((category) => category.id.replace(this.CATEGORY_PREFIX, '') === id.replace(this.CATEGORY_PREFIX, ''))?.name;
+    }
   },
 }
 </script>
@@ -889,7 +980,7 @@ export default {
       @apply overflow-y-auto overflow-x-hidden;
 
       margin-top: 4px;
-      height: calc(100% - 10rem - 66px);
+      height: calc(100% - 10rem - 76px);
 
       & .result {
         @apply flex flex-row mx-6 mb-4 cursor-pointer select-none;
