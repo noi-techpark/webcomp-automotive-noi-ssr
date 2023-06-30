@@ -164,7 +164,11 @@ export default {
       if (newList.length) {
         this.loading = false
         if (this.requestedCompanyDisplay) {
-          this.showCompanyWithId(this.requestedCompanyDisplay)
+          if(isNaN(Number(this.requestedCompanyDisplay))) {
+            this.showCompanyWithName(this.requestedCompanyDisplay)
+          } else {
+            this.showCompanyWithId(Number(this.requestedCompanyDisplay))
+          }
           this.requestedCompanyDisplay = null
         }
       }
@@ -183,7 +187,7 @@ export default {
     }
 
     if (this.defaultCompany) {
-      this.requestedCompanyDisplay = Number(this.defaultCompany)
+      this.requestedCompanyDisplay = this.defaultCompany
     }
   },
 
@@ -195,7 +199,7 @@ export default {
     this.$refs.componentView.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
 
     if (this.$route?.query?.company) {
-      this.requestedCompanyDisplay = Number(this.$route.query.company)
+      this.requestedCompanyDisplay = this.$route.query.company
     }
   },
 
@@ -203,6 +207,16 @@ export default {
     showCompanyWithId(companyId) {
       const companyData = this.companiesList.find(
         (company) => company.id === companyId
+      )
+      if (companyData) {
+        this.showCompany(companyData)
+      } else {
+        this.resetUrl()
+      }
+    },
+    showCompanyWithName(companyName) {
+      const companyData = this.companiesList.find(
+        (company) => company.attributes.name.toUpperCase() === companyName.toUpperCase()
       )
       if (companyData) {
         this.showCompany(companyData)
