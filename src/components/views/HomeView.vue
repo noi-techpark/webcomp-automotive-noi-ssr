@@ -156,7 +156,9 @@ export default {
 
 <style lang="postcss" scoped>
 .home-view {
-  @apply px-8 py-8 h-full overflow-y-auto;
+  @apply px-8 py-8 overflow-y-auto;
+
+  height: calc(100% - calc(2 * 2rem));
 
   & h1 {
     @apply text-3xl font-bold;
