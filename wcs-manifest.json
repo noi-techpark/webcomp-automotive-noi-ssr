@@ -73,8 +73,16 @@
         "label": "Filter category at startup",
         "required": false,
         "options": {
-          "values": ["automotiveAndMobility", "manufacturing", "agriAutomation", ""],
-          "default": ""
+          "values": ["", "automotiveAndMobility", "manufacturing", "agriAutomation"]
+        }
+      },
+      {
+        "key": "visible-categories",
+        "type": "multiselect",
+        "label": "Only show selected categories",
+        "required": false,
+        "options": {
+          "values": ["", "automotiveAndMobility", "manufacturing", "agriAutomation"]
         }
       },
       {
