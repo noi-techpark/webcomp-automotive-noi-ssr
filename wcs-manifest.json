@@ -110,7 +110,7 @@
         "label": "Width of Webcomponent (CSS)",
         "required": false,
         "options": {
-          "default": "1200px"
+          "default": "100%"
         }
       },
       {
@@ -119,7 +119,7 @@
         "label": "Height of Webcomponent (CSS)",
         "required": false,
         "options": {
-          "default": "675px"
+          "default": "100%"
         }
       },
       {

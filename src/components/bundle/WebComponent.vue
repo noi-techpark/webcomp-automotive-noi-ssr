@@ -113,11 +113,11 @@ export default {
     },
     width: {
       type: String,
-      default: '1200px'
+      default: '100%'
     },
     height: {
       type: String,
-      default: '675px'
+      default: '100%'
     },
     showHomeView: {
       type: Boolean,
