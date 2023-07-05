@@ -102,13 +102,11 @@ export default {
         test: /\.svg$/,
         oneOf: [
           {
-            resourceQuery: /inline/,
-            loader: 'file-loader',
-            query: {
-              name: 'static/image/[name].[hash:8].[ext]',
-            },
+            include: (absolutePath) => absolutePath.includes("search.svg"),
+            loader: 'url-loader',
           },
           {
+            exclude: (absolutePath) => absolutePath.includes("search.svg"),
             loader: 'vue-svg-loader',
             options: {
               // Optional svgo options
@@ -122,6 +120,7 @@ export default {
 
       config.module.rules.push({
         test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
+        exclude: (absolutePath) => absolutePath.includes("search.svg"),
         use: [
           {
             loader: 'url-loader',
