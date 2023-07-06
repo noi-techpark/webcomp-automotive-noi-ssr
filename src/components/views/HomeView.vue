@@ -242,9 +242,9 @@ export default {
   }
 }
 
-@container noi-automotive-component-view (max-width: theme('screens.md')) { /* stylelint-disable-line at-rule-no-unknown */
+@container noi-automotive-component-view (max-width: theme('screens.md')) { 
   .home-view-ct {
-    top: 60cqh !important; /* stylelint-disable-line unit-no-unknown */
+    top: 60cqh !important;
   }
 }
 </style>

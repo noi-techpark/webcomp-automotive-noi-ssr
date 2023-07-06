@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   }
 }
 
-@container noi-automotive-component-view only screen and (max-width: 980px) { /* stylelint-disable-line at-rule-no-unknown */
+@container noi-automotive-component-view only screen and (max-width: 980px) {
   .notification {
     width: 280px;
   }

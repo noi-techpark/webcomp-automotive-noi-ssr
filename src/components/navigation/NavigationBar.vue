@@ -1112,19 +1112,19 @@ export default {
   }
 }
 
-@container noi-automotive-component-view (max-width: theme('screens.md')) { /* stylelint-disable-line at-rule-no-unknown */
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
   .navigation-ct {
     & .navigation-bar {
       @apply w-full;
 
-      bottom: 40cqh; /* stylelint-disable-line unit-no-unknown */
+      bottom: 40cqh;
     }
 
     & .filters-menu {
       @apply left-0;
 
       z-index: 3;
-      bottom: 40cqh; /* stylelint-disable-line unit-no-unknown */
+      bottom: 40cqh;
     }
   }
 }

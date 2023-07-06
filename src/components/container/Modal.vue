@@ -161,7 +161,7 @@ export default {
 }
 
 @media only screen {
-  @container noi-automotive-component-view (max-width: 980px) { /* stylelint-disable-line at-rule-no-unknown */
+  @container noi-automotive-component-view (max-width: 980px) {
     .modal {
       & .box {
         @apply w-auto h-auto m-0 overflow-y-auto !important;

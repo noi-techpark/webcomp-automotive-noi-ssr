@@ -171,7 +171,7 @@ export default {
 }
 
 @media only screen {
-  @container noi-automotive-component-view (max-width: 980px) { /* stylelint-disable-line at-rule-no-unknown */
+  @container noi-automotive-component-view (max-width: 980px) {
     .box {
       &.responsive {
         @apply shadow-none rounded-none;

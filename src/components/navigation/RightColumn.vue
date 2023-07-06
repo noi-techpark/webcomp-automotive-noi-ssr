@@ -30,7 +30,7 @@ export default {
   }
 }
 
-@container noi-automotive-component-view (max-width: theme('screens.md')) { /* stylelint-disable-line at-rule-no-unknown */
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
   .right-column {
     @apply left-0 h-auto bottom-0 z-10;
   }
