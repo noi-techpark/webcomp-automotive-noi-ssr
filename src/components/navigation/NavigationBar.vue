@@ -980,7 +980,7 @@ export default {
       @apply overflow-y-auto overflow-x-hidden;
 
       margin-top: 4px;
-      height: calc(100% - 10rem - 76px);
+      height: calc(100% - 7.5rem - 120px);
 
       & .result {
         @apply flex flex-row mx-6 mb-4 cursor-pointer select-none;
@@ -1112,19 +1112,19 @@ export default {
   }
 }
 
-@media (max-width: theme('screens.md')) {
+@container noi-automotive-component-view (max-width: theme('screens.md')) { /* stylelint-disable-line at-rule-no-unknown */
   .navigation-ct {
     & .navigation-bar {
       @apply w-full;
 
-      bottom: 40vh;
+      bottom: 40cqh; /* stylelint-disable-line unit-no-unknown */
     }
 
     & .filters-menu {
       @apply left-0;
 
       z-index: 3;
-      bottom: 40vh;
+      bottom: 40cqh; /* stylelint-disable-line unit-no-unknown */
     }
   }
 }

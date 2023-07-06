@@ -170,10 +170,12 @@ export default {
   }
 }
 
-@media only screen and (max-width: 980px) {
-  .box {
-    &.responsive {
-      @apply shadow-none rounded-none;
+@media only screen {
+  @container noi-automotive-component-view (max-width: 980px) { /* stylelint-disable-line at-rule-no-unknown */
+    .box {
+      &.responsive {
+        @apply shadow-none rounded-none;
+      }
     }
   }
 }

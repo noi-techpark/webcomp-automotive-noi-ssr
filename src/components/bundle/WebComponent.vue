@@ -284,6 +284,17 @@ export default {
   @apply relative overflow-hidden;
   
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  
+  /**
+   * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
+   * but the current version of stylelint (^13.13.1) still marks it as an error (*-no-unknown).
+   * Upgrading to 14.12.0 or newer would solve this problem
+   *
+   * browser-compatibility: https://developer.mozilla.org/en-US/docs/Web/CSS/@container#browser_compatibility
+   * stylelint 14.12.0: https://github.com/stylelint/stylelint/releases/tag/14.12.0
+   */
+  container-type: size; /* stylelint-disable-line property-no-unknown */
+  container-name: noi-automotive-component-view /* stylelint-disable-line property-no-unknown */
 }
 
 .full-screen-loader {

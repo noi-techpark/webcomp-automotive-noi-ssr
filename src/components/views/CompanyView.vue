@@ -424,7 +424,7 @@ export default {
   }
 }
 
-@media (max-width: theme('screens.md')) {
+@container noi-automotive-component-view (max-width: theme('screens.md')) { /* stylelint-disable-line at-rule-no-unknown */
   .company-view {
     & .data-view {
       & .header {

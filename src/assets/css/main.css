@@ -39,11 +39,13 @@ svg {
   max-width: 600px;
 }
 
-@media only screen and (max-width: 980px) {
-  .center {
-    @apply w-auto;
+@media only screen {
+  @container noi-automotive-component-view (max-width: 980px) { /* stylelint-disable-line at-rule-no-unknown */
+    .center {
+      @apply w-auto;
 
-    margin-right: 25px;
-    margin-left: 25px;
+      margin-right: 25px;
+      margin-left: 25px;
+    }
   }
 }
