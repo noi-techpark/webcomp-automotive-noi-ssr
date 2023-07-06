@@ -94,20 +94,12 @@ export default {
 
   computed: {
     links() {
-      if (this.customLinks) {
-        return this.customLinks
-      }
-
-      if (this.displayAsWebsite) {
-        return [
-          {
-            link: 'https://noi.bz.it/en/privacy-cookie-policy',
-            label: this.$t('common.privacyPolicy'),
-          },
-        ]
-      }
-
-      return []
+      const links = this.customLinks || [];
+      links.push({
+        url: 'https://noi.bz.it/en/privacy-cookie-policy',
+        label: this.$t('common.privacyPolicy'),
+      })
+      return links
     },
 
     uniqueCompaniesNumber() {
