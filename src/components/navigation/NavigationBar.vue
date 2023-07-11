@@ -66,7 +66,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @click="showResult(result)"
         >
           <div class="name">
-            {{ result.name || '' }}
+            {{ 
+              result.name +  
+              (result.isMainCategory ? " (" + filterCount.categories[result.id.replace(CATEGORY_PREFIX, '')] + ")" : "")
+              || ''
+            }}
             <div class="line"></div>
           </div>
           <div class="metric">{{ result.metric || '' }}</div>
@@ -91,6 +95,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           v-model="filters.industrialSector"
           :label="$t('filters.industrialSector')"
           :options="industrialSectors"
+          :filter-count="filterCount.industrialSectors"
           aspect="fill"
           :white-contrast="true"
           class="select"
@@ -99,6 +104,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           v-model="filters.valueChainPosition"
           :label="$t('filters.valueChainPosition')"
           :options="valueChainPositions"
+          :filter-count="filterCount.valueChainPositions"
           aspect="fill"
           :white-contrast="true"
           class="select"
@@ -121,6 +127,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             v-model="filters.turnover"
             :label="$t('filters.turnover')"
             :options="turnovers"
+            :filter-count="filterCount.turnovers"
             aspect="fill"
             :white-contrast="true"
             class="select"
@@ -129,6 +136,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             v-model="filters.employees"
             :label="$t('filters.numberOfEmployees')"
             :options="employees"
+            :filter-count="filterCount.employeeNumber"
             aspect="fill"
             :v-contrast="true"
             class="select"
@@ -137,6 +145,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             v-model="filters.certification"
             :label="$t('filters.certification')"
             :options="certifications"
+            :filter-count="filterCount.certifications"
             aspect="fill"
             :white-contrast="true"
             class="select"
@@ -712,7 +721,11 @@ export default {
         }
       }
 
-      const mappedResults = results.map((r) =>
+      return results
+    },
+
+    mappedResults() {
+      const mappedResults = this.filteredResults.map((r) =>
         this.getResultDataObject(
           false,
           r.id,
@@ -735,13 +748,117 @@ export default {
 
     visibleResults() {
       return this.fetchedData
-        ? this.filteredResults
+        ? this.mappedResults
         : new Array(10).fill(this.getResultDataObject(true))
     },
 
     resultsList() {
       return (!this.mainCategory && this.displayMultipleCategories) ? this.filteredMainCategories : this.visibleResults
     },
+
+    filterCount() {
+      const results = this.filteredResults;
+      const sum = this.filteredResults.length;
+
+      // Initialize count Object
+      const countCategories = {sumCompanies: sum};
+      this.mainCategories.forEach(category => {countCategories[category.id.replace(this.CATEGORY_PREFIX, '')] = 0})
+
+      const countIndustrialSectors = {sumCompanies: sum};
+      this.industrialSectors.forEach(sector => {if (sector.value) countIndustrialSectors[sector.value] = 0});
+      
+      const countValueChainPositions = {sumCompanies: sum};
+      this.valueChainPositions.forEach(position => { if (position.value) countValueChainPositions[position.value] = 0});
+
+      const countTurnovers = {sumCompanies: sum};
+      this.turnovers.forEach(turnover => {if (turnover.value) countTurnovers[turnover.value] = 0});
+
+      const countEmployees = {sumCompanies: sum};
+      this.employees.forEach(employee => {if (employee.value) countEmployees[employee.value] = 0});
+
+      const countCertifications = {sumCompanies: sum};
+      this.certifications.forEach(certification => {if (certification.value && certification.value ) countCertifications[certification.value] = 0});
+
+      const count = {
+        sumCompanies: sum,
+        categories: countCategories,
+        industrialSectors: countIndustrialSectors,
+        valueChainPositions: countValueChainPositions,
+        turnovers: countTurnovers,
+        employeeNumber: countEmployees,
+        certifications: countCertifications
+      }
+
+      // count the number of companies that apply to each filter
+      results.forEach(result => {
+        const attr = result.attributes
+
+        if(attr.specialization) {
+          Object.keys(attr.specialization).forEach(key => {
+            if(attr.specialization[key] && key !== 'id')
+              count.categories[key]++;
+          })
+        }
+
+        if(attr.industrialSector) {
+          count.industrialSectors[attr.industrialSector]++;
+        }
+
+        if(attr.valueChainPosition) {
+          count.valueChainPositions[attr.valueChainPosition]++;
+        }
+
+        if(attr.metrics) {
+          // turnover
+          const turnover = attr.metrics.turnover
+          if(!turnover) {
+            count.turnovers['NOT-DEFINED']++;
+          } else if(turnover < 1000000) {
+            count.turnovers['< 1 Mio']++;
+          } else if (turnover < 2000000) {
+            count.turnovers['1 - 2 Mio']++;
+          } else if (turnover < 10000000) {
+            count.turnovers['2 - 10 Mio']++;
+          } else if (turnover < 50000000) {
+            count.turnovers['10 - 50 Mio']++;
+          } else if (turnover < 250000000) {
+            count.turnovers['50 - 250 Mio']++;
+          } else if (turnover < 500000000) {
+            count.turnovers['250 - 500 Mio']++;
+          } else {
+            count.turnovers['> 500 Mio']++;
+          }
+
+          // employeeNumber
+          const employeeNumber = attr.metrics.employeeNumber;
+          if(!employeeNumber) {
+            count.employeeNumber['NOT-DEFINED']++;
+          } else if (employeeNumber < 5) {
+            count.employeeNumber['<5']++;
+          } else if (employeeNumber < 10) {
+            count.employeeNumber['5-10']++;
+          } else if (employeeNumber < 50) {
+            count.employeeNumber['10-50']++;
+          } else if (employeeNumber < 150) {
+            count.employeeNumber['50-150']++;
+          } else if (employeeNumber < 250) {
+            count.employeeNumber['150-250']++;
+          } else {
+            count.employeeNumber['>250']++;
+          }
+        }
+
+
+        if(attr.certifications) {
+          Object.keys(attr.certifications).forEach(key => {
+            if(attr.certifications[key] && key !== 'id')
+              count.certifications[key]++;
+          })
+        }
+      })
+
+      return count;
+    }
   },
 
   watch: {
@@ -753,7 +870,7 @@ export default {
       }
     },
 
-    filteredResults(newCompaniesList) {
+    mappedResults(newCompaniesList) {
       this.$emit('didFilterCompanies', newCompaniesList)
     },
 
