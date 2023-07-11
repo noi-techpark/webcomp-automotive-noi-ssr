@@ -234,9 +234,24 @@ export default {
   }
 }
 
-@container noi-automotive-component-view (max-width: theme('screens.md')) { 
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
   .home-view-ct {
     top: 60cqh !important;
+
+    & .home-view {
+      & .top-overview {
+        @apply space-x-0;
+
+        & .image-ct {
+          width: 0%;
+          visibility: hidden;
+        }
+
+        & .map-col {
+          width: 100%;
+        }
+      }
+    }
   }
 }
 </style>
