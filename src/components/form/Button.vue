@@ -101,7 +101,7 @@ export default {
 
     width: 18px;
     height: 18px;
-    fill: #fff;
+    fill: var(--primary-color-text);
     vertical-align: sub;
   }
 

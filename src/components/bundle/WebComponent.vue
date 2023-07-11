@@ -197,7 +197,8 @@ export default {
 
     this.$refs.componentView.style.setProperty('--primary-color', this.primaryColor);
     this.$refs.componentView.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
-
+    this.$refs.componentView.style.setProperty('--primary-color-text', this.getTextColor(this.primaryColor));
+    
     if (this.$route?.query?.company) {
       this.requestedCompanyDisplay = this.$route.query.company
     }
