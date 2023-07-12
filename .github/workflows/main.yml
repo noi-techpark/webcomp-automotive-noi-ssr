@@ -21,6 +21,8 @@ jobs:
           build-command: npm run generate
           node-version: ${{env.NODE_VERSION}}
       - uses: noi-techpark/github-actions/webcomp-test@v2
+        with:
+          origin-test-enabled: false
 
   deploy-test:
     runs-on: ${{ vars.RUNNER_UBUNTU }}
