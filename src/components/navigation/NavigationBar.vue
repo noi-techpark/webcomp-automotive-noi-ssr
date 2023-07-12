@@ -318,7 +318,7 @@ export default {
       if(this.displayMultipleCategories) {
         return this.getSectorNameFromID(this.mainCategory) || this.$t('common.allCategories');
       } else {
-        return this.getSectorNameFromID(this.defaultCategoryValidated);
+        return this.getSectorNameFromID(this.defaultCategoryValidated || this.visibleCategories[0]);
       }
     },
 
