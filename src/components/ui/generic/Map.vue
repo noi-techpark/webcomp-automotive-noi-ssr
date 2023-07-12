@@ -25,33 +25,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <vl-source-osm></vl-source-osm>
     </vl-layer-tile>
 
-    <vl-layer-vector
-      v-for="(company, index) in companiesWithValidLocationCoordinates"
-      :key="index"
-    >
-      <vl-feature :id="getSecureMapFeatureId(company.id)">
-        <vl-geom-point
-          :coordinates="[company.coordinates.lng, company.coordinates.lat]"
-        ></vl-geom-point>
-
-        <vl-style-box>
-          <vl-overlay
-            v-if="currentZoom >= 14"
-            :id="getSecureMapFeatureId(company.id) + 'overlay'"
-            :position="[company.coordinates.lng, company.coordinates.lat]"
-          >
-            <div class="alert" @click="clickedBadge(company.id)">
-              {{ company.name }}
-            </div>
-          </vl-overlay>
-          <vl-style-icon
-            src="https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/marker.png"
-            :data-webpack-sync="require('@/assets/image/marker.png')"
-            :anchor="[0.5, 1]"
-            :scale="0.1"
-          ></vl-style-icon>
-        </vl-style-box>
-      </vl-feature>
+      <vl-layer-vector>
+        <vl-source-cluster :distance="45">
+          <vl-source-vector :features="points"></vl-source-vector>
+        </vl-source-cluster>
+        <vl-style-func :factory="markerStyleFunc" />
     </vl-layer-vector>
   </vl-map>
 </template>
@@ -59,11 +37,26 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 import Vue from 'vue'
 import VueLayers from 'vuelayers'
-import 'vuelayers/lib/style.css'
+
+import Style from 'ol/style/Style'
+import OlIcon from 'ol/style/Icon'
+import CircleShape from 'ol/style/Circle'
+import Fill from 'ol/style/Fill'
+import Stroke from 'ol/style/Stroke'
+import OlText from 'ol/style/Text'
+import utils from '~/mixins/utils.js'
 
 Vue.use(VueLayers)
 
 export default {
+  mixins: [utils],
+  inject: {
+    // inject primaryColor from WebComponent.vue
+    primaryColor: {
+      from: 'primary-color',
+      default: '#9626ff'
+    }
+  },
   props: {
     visibleCompanies: {
       type: Array,
@@ -96,6 +89,34 @@ export default {
         this.hasCompanyValidCoordinates(company)
       )
     },
+    points() {
+      return this.getCoordinatesOfCompanies(this.companiesWithValidLocationCoordinates);
+    },
+    mapMarker() {
+      return new OlIcon({
+        color: this.primaryColor,
+        crossOrigin: 'anonymous',
+        src: 'data:image/svg+xml;utf8,' + '<svg width="120" height="120" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><path fill="white" d="M172.268 501.67C26.97 291.031 0 269.413 0 192 0 85.961 85.961 0 192 0s192 85.961 192 192c0 77.413-26.97 99.031-172.268 309.67-9.535 13.774-29.93 13.773-39.464 0zM192 272c44.183 0 80-35.817 80-80s-35.817-80-80-80-80 35.817-80 80 35.817 80 80 80z"/></svg>',
+        scale: 0.25,
+      });
+    },
+    clusterIcon() {
+      const clusterIcons = Array(3);
+      const circleShape = new CircleShape({
+        fill: new Fill({ color: this.primaryColor }),
+        radius: 10,
+        stroke: new Stroke({
+          color: '#000000',
+          width: 2.5,
+        })
+      });
+      clusterIcons[0] = circleShape.clone();
+      circleShape.setRadius(13);
+      clusterIcons[1] = circleShape.clone();
+      circleShape.setRadius(16);
+      clusterIcons[2] = circleShape;
+      return clusterIcons;
+    }
   },
 
   methods: {
@@ -116,6 +137,14 @@ export default {
       return Number(mapFeatureId.split('-')[0])
     },
 
+    getCompany(companyID) {
+      return this.companiesWithValidLocationCoordinates.find(company => company.id === companyID);
+    },
+
+    getCompanyFromMapFeatureID(mapFeatureId) {
+      return this.getCompany(this.getCompanyIdFromMapFeatureId(mapFeatureId));
+    },
+
     handleMapMove() {
       this.currentZoom = this.$refs.map.getView().getZoom()
     },
@@ -131,20 +160,94 @@ export default {
       if (!feature) {
         return
       }
-
-      this.clickedMarker(feature.id_)
-    },
-
-    clickedBadge(companyId) {
-      this.$emit('showCompanyWithId', companyId)
+      if (feature?.values_?.features.length === 1)
+        // feature.values_?.features[0]?.id_ = MapFeatureId
+        this.clickedMarker(feature.values_?.features[0]?.id_)
+      else {
+        // Zoom to the cluster
+        this.$refs.map.getView().animate({
+          zoom: this.$refs.map.getView().getZoom() + 2,
+          duration: 250,
+          anchor: feature?.values_?.geometry?.flatCoordinates,
+        })
+      }
     },
 
     clickedMarker(mapFeatureId) {
-      this.$emit(
-        'showCompanyWithId',
-        this.getCompanyIdFromMapFeatureId(mapFeatureId)
-      )
+        this.$emit(
+          'showCompanyWithId',
+          this.getCompanyIdFromMapFeatureId(mapFeatureId)
+        )
     },
+
+    /**
+     * @param companies: Array of companies, for example companiesWithValidLocationCoordinates
+     * 
+     * @returns Array in GeoJSON Format
+     */
+    getCoordinatesOfCompanies(companies) {
+      const ret = [];
+      for (const company of companies) {
+        const {
+          lat,
+          lng,
+          type = 'Feature',
+          id = this.getSecureMapFeatureId(company.id),
+          geometry = { type: 'Point', coordinates: [lng, lat] },
+        } = company.coordinates;
+        ret.push({ lat, lng, type, id, geometry });
+      }
+      return ret;
+    },
+
+    textFormatForMarkerStyleFunc(mapFeatureId) {
+      let ret = this.getCompanyFromMapFeatureID(mapFeatureId)?.name;
+      if (ret.length > 20) {
+        ret = ret.substring(0, 17) + "...";
+      }
+      return ret
+    },
+
+    getClusterIconAccordingToSize(size) {
+      if(size < 10) {
+        return this.clusterIcon[0];
+      } else if (size < 50) {
+        return this.clusterIcon[1];
+      } else {
+        return this.clusterIcon[2];
+      }
+    },
+
+    markerStyleFunc() {
+      return (feature) => {
+        const clustersize = feature?.values_?.features.length;
+        this.curFeatureIndex++
+        const baseStyle = new Style({
+          image: clustersize <= 1 ? this.mapMarker : this.getClusterIconAccordingToSize(clustersize),
+          text: clustersize <= 1 ? new OlText({
+            text: this.currentZoom >= 14 ? this.textFormatForMarkerStyleFunc(feature?.values_?.features[0]?.id_) : undefined,
+            fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
+            backgroundFill: new Fill({ color: this.primarycolor }),
+            textAlign: 'center',
+            offsetY: -25,
+            scale: 1.2,
+            backgroundStroke: new Stroke({
+              color: this.primarycolor,
+              width: 5,
+            }),
+            padding: [1.25, 1.75, 1.25, 1.75]
+          }) : new OlText({
+            text: "" + clustersize,
+            fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
+            offsetY: 1,
+            textAlign: 'center',
+            scale: clustersize < 10 ? 1 : clustersize < 50 ? 1.3 : 1.6,
+          }),
+          zIndex: this.curFeatureIndex,
+        })
+        return [baseStyle];
+      };
+    }
   },
 }
 </script>
@@ -165,7 +268,7 @@ export default {
     margin-left: -50px;
   }
 
-  & .ol-zoom {
+  & .vl-zoom {
     top: auto !important;
     left: auto !important;
     bottom: 30px;
@@ -173,7 +276,7 @@ export default {
   }
 
   &.is-preview {
-    & .ol-zoom {
+    & .vl-zoom {
       display: none !important;
     }
   }

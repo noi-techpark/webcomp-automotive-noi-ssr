@@ -9,14 +9,17 @@
  ** Default: https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
  */
 module.exports = {
+  purge: [
+    './src/**/*.{js,jsx,ts,tsx,vue}',
+  ],
   theme: {
     fontFamily: {
       sans: ['Hind', 'sans-serif'],
     },
     extend: {
       colors: {
-        primary: '#c70000',
-        'primary-hover': '#ff0000',
+        primary: 'var(--primary-color)', // variable is set in WebComponent.vue
+        'primary-hover': 'var(--primary-hover)',
         secondary: '#F5F5F5',
         'secondary-hover': '#fAfAfA',
         'light-black': '#343434',

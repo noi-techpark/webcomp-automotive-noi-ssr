@@ -126,7 +126,8 @@ export default {
     width: 300px;
     padding-top: 10px;
     padding-bottom: 10px;
-    border-radius: 10px;
+    border: var(--primary-color) solid 3px;
+    border-radius: 40px;
 
     &:focus {
       @apply outline-none bg-input-focus;

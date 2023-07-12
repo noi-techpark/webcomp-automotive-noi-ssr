@@ -160,15 +160,17 @@ export default {
   }
 }
 
-@media only screen and (max-width: 980px) {
-  .modal {
-    & .box {
-      @apply w-auto h-auto m-0 overflow-y-auto !important;
+@media only screen {
+  @container noi-automotive-component-view (max-width: 980px) {
+    .modal {
+      & .box {
+        @apply w-auto h-auto m-0 overflow-y-auto !important;
 
-      top: 15px;
-      right: 15px;
-      bottom: 15px;
-      left: 15px;
+        top: 15px;
+        right: 15px;
+        bottom: 15px;
+        left: 15px;
+      }
     }
   }
 }

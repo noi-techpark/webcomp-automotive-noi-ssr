@@ -31,9 +31,9 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-@media (max-width: theme('screens.md')) {
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
   .map-view {
-    top: 60vh !important;
+    top: 60cqh !important;
   }
 }
 </style>

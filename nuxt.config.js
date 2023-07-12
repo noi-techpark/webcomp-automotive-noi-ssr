@@ -71,6 +71,7 @@ export default {
     entries: [
       {
         name: 'NOI Automotive',
+        shadow: true,
         tags: [
           {
             name: 'NoiAutomotive',
@@ -101,13 +102,11 @@ export default {
         test: /\.svg$/,
         oneOf: [
           {
-            resourceQuery: /inline/,
-            loader: 'file-loader',
-            query: {
-              name: 'static/image/[name].[hash:8].[ext]',
-            },
+            include: (absolutePath) => absolutePath.includes("search.svg"),
+            loader: 'url-loader',
           },
           {
+            exclude: (absolutePath) => absolutePath.includes("search.svg"),
             loader: 'vue-svg-loader',
             options: {
               // Optional svgo options
@@ -121,6 +120,7 @@ export default {
 
       config.module.rules.push({
         test: /\.(png|jpe?g|gif|svg|webp|avif)$/i,
+        exclude: (absolutePath) => absolutePath.includes("search.svg"),
         use: [
           {
             loader: 'url-loader',
@@ -132,6 +132,26 @@ export default {
           },
         ],
       })
+      config.module.rules.push(
+        // Process any JS outside of the app with Babel.
+        // Required because twind uses optional chaining, which isn't supported by default
+        {
+          test: /\.(js|cjs|mjs)$/,
+          include: /@twind/,
+          loader: require.resolve('babel-loader'),
+          type: 'javascript/auto',
+          options: {
+            babelrc: false,
+            configFile: false,
+            compact: false,
+            cacheDirectory: true,
+            plugins: [
+              '@babel/plugin-proposal-nullish-coalescing-operator',
+              '@babel/plugin-proposal-optional-chaining',
+            ],
+          },
+        }
+      )
     },
   },
 

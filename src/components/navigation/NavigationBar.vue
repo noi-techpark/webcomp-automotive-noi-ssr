@@ -17,26 +17,32 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @input="changeLanguage"
         />
       </div>
-      <div class="logo clickable" @click="backToCategories">
-        <Icon name="logo" />
-      </div>
-      <div class="section-title">
-        <div class="main-title">
-          <div class="title" :class="{ visible: mainCategory !== null }">
-            {{ curSectionTitle }}
-          </div>
-        </div>
-        <div class="subtitle">
-          <div
-            class="back-button"
-            :class="{ visible: mainCategory !== null }"
-            @click="backToCategories"
-          >
-            <Icon name="back-arrow" />
-            {{ $t('common.backToCategories') }}
-          </div>
+      <div class="logos-ct">
+        <div class="logo clickable" @click="backToCategories">
+          <Icon name="logo" />
+        </div><div class="logo clickable" @click="backToCategories">
+          <Icon name="logo-automotive" />
         </div>
       </div>
+        <hr />
+        <Transition name="fade">
+        <div v-if="resultsList.length == visibleResults.length" class="section-title">
+          <div class="main-title">
+            <div class="title">
+              {{ curSectionTitle }}
+            </div>
+          </div>
+          <div v-if="displayMultipleCategories" class="subtitle">
+            <div
+              class="back-button"
+              @click="backToCategories"
+            >
+              <Icon name="back-arrow" />
+              {{ $t('common.backToCategories') }}
+            </div>
+          </div>
+        </div>
+        </Transition>
       <div class="search-bar-ct">
         <div class="search-bar">
           <TextInput
@@ -60,7 +66,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @click="showResult(result)"
         >
           <div class="name">
-            {{ result.name || '' }}
+            {{ 
+              result.name +  
+              (result.isMainCategory ? " (" + filterCount.categories[result.id.replace(CATEGORY_PREFIX, '')] + ")" : "")
+              || ''
+            }}
             <div class="line"></div>
           </div>
           <div class="metric">{{ result.metric || '' }}</div>
@@ -85,6 +95,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           v-model="filters.industrialSector"
           :label="$t('filters.industrialSector')"
           :options="industrialSectors"
+          :filter-count="filterCount.industrialSectors"
           aspect="fill"
           :white-contrast="true"
           class="select"
@@ -93,6 +104,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           v-model="filters.valueChainPosition"
           :label="$t('filters.valueChainPosition')"
           :options="valueChainPositions"
+          :filter-count="filterCount.valueChainPositions"
           aspect="fill"
           :white-contrast="true"
           class="select"
@@ -115,6 +127,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             v-model="filters.turnover"
             :label="$t('filters.turnover')"
             :options="turnovers"
+            :filter-count="filterCount.turnovers"
             aspect="fill"
             :white-contrast="true"
             class="select"
@@ -123,6 +136,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             v-model="filters.employees"
             :label="$t('filters.numberOfEmployees')"
             :options="employees"
+            :filter-count="filterCount.employeeNumber"
             aspect="fill"
             :v-contrast="true"
             class="select"
@@ -131,6 +145,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             v-model="filters.certification"
             :label="$t('filters.certification')"
             :options="certifications"
+            :filter-count="filterCount.certifications"
             aspect="fill"
             :white-contrast="true"
             class="select"
@@ -150,6 +165,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 import utils from '~/mixins/utils.js'
 
+const allCategories = ["automotiveAndMobility", "manufacturing", "agriAutomation"];
+
 export default {
   mixins: [utils],
 
@@ -165,6 +182,27 @@ export default {
       type: Boolean,
       default: false,
     },
+
+    defaultCategory: {
+      type: String,
+      default: '',
+      validator(value) {
+        // The value must match one of the mainCategories.id or be empty
+        return allCategories.includes(value) || value === '';
+      }
+    },
+
+    limitToDefaultCategory: {
+      type: Boolean
+    },
+
+    visibleCategories: {
+      type: [Array, undefined],
+      default: ()=>allCategories,
+      validator(value) {
+        return (value[0] && value.every((category=>allCategories.includes(category))))
+      }
+    },
   },
 
   data() {
@@ -172,7 +210,6 @@ export default {
       CATEGORY_PREFIX: 'CATEGORY-',
       filters: {},
       searchValue: '',
-      curSectionTitle: null,
       mainCategory: null,
       isFiltersMenuVisible: false,
       areAdvancedFiltersVisible: false,
@@ -222,6 +259,67 @@ export default {
           true
         ),
       ]
+    },
+
+    /**
+     * checks wether defaultCategory is valid. This function trims defaultCategory and is case-insensitive
+     */
+    defaultCategoryValidated() {
+      if (allCategories.includes(this.defaultCategory.trim()))
+        return this.defaultCategory.trim();
+      else {
+        return allCategories.find(category => category.toLowerCase() === this.defaultCategory.trim().toLowerCase()) || "";
+      }
+    },
+
+    /**
+     * Checks wether visibleCategories consists of valid categories
+     * @returns Array of type string, i.e. ["automotiveAndMobility", "manufacturing", "agriAutomation"].
+     */
+    visibleCategoriesValidated() {
+      const visibleCategoriesNormalized = this.visibleCategories.map((category) => {
+        let ret = category.trim();
+        ret = ret.toLowerCase();
+        return ret;
+      });
+      const validCategories = visibleCategoriesNormalized.filter((category => allCategories.some(
+        categoryFromAll => categoryFromAll.toLowerCase() === category
+      )));
+      if (validCategories.length > 0)
+        return validCategories;
+      else
+        return allCategories;
+    },
+
+    categoryFilter() {
+      return {
+        automotiveAndMobility: this.visibleCategoriesValidated.includes("automotiveandmobility"),
+        manufacturing: this.visibleCategoriesValidated.includes("manufacturing"),
+        agriAutomation: this.visibleCategoriesValidated.includes("agriautomation")
+      }
+    },
+
+    /**
+     * like mainCategories, but only consisting of the categories which should be visible
+     */
+    filteredMainCategories() {
+      return this.mainCategories.filter(category=>this.categoryFilter[category.id.replace(this.CATEGORY_PREFIX, '')]);
+    },
+
+    /**
+     * boolean, deciding wether the user should be able to choose a category or not
+     * returns false, if there is only one category to show or limitToDefaultCategory is set (under the condition, that there's even a defaultCategory)
+     */
+    displayMultipleCategories() {
+      return !(this.filteredMainCategories.length <=1 || (this.limitToDefaultCategory && this.defaultCategoryValidated !== ''));
+    },
+
+    curSectionTitle() {
+      if(this.displayMultipleCategories) {
+        return this.getSectorNameFromID(this.mainCategory) || this.$t('common.allCategories');
+      } else {
+        return this.getSectorNameFromID(this.defaultCategoryValidated || this.visibleCategories[0]);
+      }
     },
 
     industrialSectors() {
@@ -433,11 +531,33 @@ export default {
               ' ' +
               r.attributes.productsAndServices +
               ' ' +
-              r.attributes.references
+              r.attributes.references +
+              ' ' +
+              r.attributes.companyContact.email +
+              ' ' +
+              r.attributes.contactPerson.email +
+              ' ' +
+              r.attributes.contactPerson.personName +
+              ' ' +
+              r.attributes.companyAddressStreet +
+              ' ' +
+              r.attributes.companyAddressStreet.cap
             )
               .toLowerCase()
               .includes(cleanSearchVal)
           )
+        }
+        // filter according to webcomponent-parameter visibleCategories
+        if (this.categoryFilter) {
+          results = results.filter((r) => {
+            return (
+              r.attributes.specialization && (
+                (this.categoryFilter.automotiveAndMobility && r.attributes.specialization.automotiveAndMobility) ||
+                (this.categoryFilter.manufacturing && r.attributes.specialization.manufacturing) ||
+                (this.categoryFilter.agriAutomation && r.attributes.specialization.agriAutomation)
+              )
+            )
+          })
         }
 
         if (this.mainCategory && this.mainCategory !== true) {
@@ -447,8 +567,15 @@ export default {
               r.attributes.specialization[this.mainCategory]
             )
           })
+        } else if(this.defaultCategoryValidated && !this.displayMultipleCategories) {
+          results = results.filter((r) => {
+            return (
+              r.attributes.specialization &&
+              r.attributes.specialization[this.defaultCategoryValidated]
+            )
+          })
         }
-
+        
         if (this.filters.industrialSector) {
           results = results.filter(
             (r) =>
@@ -594,7 +721,11 @@ export default {
         }
       }
 
-      const mappedResults = results.map((r) =>
+      return results
+    },
+
+    mappedResults() {
+      const mappedResults = this.filteredResults.map((r) =>
         this.getResultDataObject(
           false,
           r.id,
@@ -617,13 +748,117 @@ export default {
 
     visibleResults() {
       return this.fetchedData
-        ? this.filteredResults
+        ? this.mappedResults
         : new Array(10).fill(this.getResultDataObject(true))
     },
 
     resultsList() {
-      return !this.mainCategory ? this.mainCategories : this.visibleResults
+      return (!this.mainCategory && this.displayMultipleCategories) ? this.filteredMainCategories : this.visibleResults
     },
+
+    filterCount() {
+      const results = this.filteredResults;
+      const sum = this.filteredResults.length;
+
+      // Initialize count Object
+      const countCategories = {sumCompanies: sum};
+      this.mainCategories.forEach(category => {countCategories[category.id.replace(this.CATEGORY_PREFIX, '')] = 0})
+
+      const countIndustrialSectors = {sumCompanies: sum};
+      this.industrialSectors.forEach(sector => {if (sector.value) countIndustrialSectors[sector.value] = 0});
+      
+      const countValueChainPositions = {sumCompanies: sum};
+      this.valueChainPositions.forEach(position => { if (position.value) countValueChainPositions[position.value] = 0});
+
+      const countTurnovers = {sumCompanies: sum};
+      this.turnovers.forEach(turnover => {if (turnover.value) countTurnovers[turnover.value] = 0});
+
+      const countEmployees = {sumCompanies: sum};
+      this.employees.forEach(employee => {if (employee.value) countEmployees[employee.value] = 0});
+
+      const countCertifications = {sumCompanies: sum};
+      this.certifications.forEach(certification => {if (certification.value && certification.value ) countCertifications[certification.value] = 0});
+
+      const count = {
+        sumCompanies: sum,
+        categories: countCategories,
+        industrialSectors: countIndustrialSectors,
+        valueChainPositions: countValueChainPositions,
+        turnovers: countTurnovers,
+        employeeNumber: countEmployees,
+        certifications: countCertifications
+      }
+
+      // count the number of companies that apply to each filter
+      results.forEach(result => {
+        const attr = result.attributes
+
+        if(attr.specialization) {
+          Object.keys(attr.specialization).forEach(key => {
+            if(attr.specialization[key] && key !== 'id')
+              count.categories[key]++;
+          })
+        }
+
+        if(attr.industrialSector) {
+          count.industrialSectors[attr.industrialSector]++;
+        }
+
+        if(attr.valueChainPosition) {
+          count.valueChainPositions[attr.valueChainPosition]++;
+        }
+
+        if(attr.metrics) {
+          // turnover
+          const turnover = attr.metrics.turnover
+          if(!turnover) {
+            count.turnovers['NOT-DEFINED']++;
+          } else if(turnover < 1000000) {
+            count.turnovers['< 1 Mio']++;
+          } else if (turnover < 2000000) {
+            count.turnovers['1 - 2 Mio']++;
+          } else if (turnover < 10000000) {
+            count.turnovers['2 - 10 Mio']++;
+          } else if (turnover < 50000000) {
+            count.turnovers['10 - 50 Mio']++;
+          } else if (turnover < 250000000) {
+            count.turnovers['50 - 250 Mio']++;
+          } else if (turnover < 500000000) {
+            count.turnovers['250 - 500 Mio']++;
+          } else {
+            count.turnovers['> 500 Mio']++;
+          }
+
+          // employeeNumber
+          const employeeNumber = attr.metrics.employeeNumber;
+          if(!employeeNumber) {
+            count.employeeNumber['NOT-DEFINED']++;
+          } else if (employeeNumber < 5) {
+            count.employeeNumber['<5']++;
+          } else if (employeeNumber < 10) {
+            count.employeeNumber['5-10']++;
+          } else if (employeeNumber < 50) {
+            count.employeeNumber['10-50']++;
+          } else if (employeeNumber < 150) {
+            count.employeeNumber['50-150']++;
+          } else if (employeeNumber < 250) {
+            count.employeeNumber['150-250']++;
+          } else {
+            count.employeeNumber['>250']++;
+          }
+        }
+
+
+        if(attr.certifications) {
+          Object.keys(attr.certifications).forEach(key => {
+            if(attr.certifications[key] && key !== 'id')
+              count.certifications[key]++;
+          })
+        }
+      })
+
+      return count;
+    }
   },
 
   watch: {
@@ -635,7 +870,7 @@ export default {
       }
     },
 
-    filteredResults(newCompaniesList) {
+    mappedResults(newCompaniesList) {
       this.$emit('didFilterCompanies', newCompaniesList)
     },
 
@@ -648,11 +883,23 @@ export default {
 
   mounted() {
     this.fetchResults()
+    if (this.displayMultipleCategories && this.defaultCategoryValidated !== '') {
+      this.showResult(this.mainCategories.find((category) => category.id === this.CATEGORY_PREFIX + this.defaultCategoryValidated));
+    }
   },
 
   methods: {
-    changeLanguage(lang) {
-      this.$i18n.setLocale(lang)
+    async changeLanguage(lang) {
+      this.$emit('toggleLoading', true);
+      if (typeof this.$i18n.setLocale !== 'undefined') {
+        this.$i18n.setLocale(lang);
+      } else {
+        this.$i18n.locale = lang;
+      }
+      await this.fetchResults();
+      if (this.visibleCompany) {
+        this.onCompanyClick(this.visibleCompany.id)
+      }
     },
 
     getResultDataObject(
@@ -680,7 +927,6 @@ export default {
     showResult(result) {
       if (String(result.id).startsWith(this.CATEGORY_PREFIX)) {
         const categoryId = result.id.replace(this.CATEGORY_PREFIX, '')
-        this.curSectionTitle = result.name
         this.showCategory(categoryId)
       } else if (!result.isPlaceholder) {
         this.onCompanyClick(result.id)
@@ -737,11 +983,24 @@ export default {
     resetFilters() {
       this.filters = {}
     },
+
+    getSectorNameFromID(id) {
+      if (id && id !== true)
+        return this.mainCategories.find((category) => category.id.replace(this.CATEGORY_PREFIX, '') === id.replace(this.CATEGORY_PREFIX, ''))?.name;
+    }
   },
 }
 </script>
 
 <style lang="postcss" scoped>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 250ms ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
 .navigation-ct {
   & .navigation-bar {
     @apply absolute w-navbar top-0 left-0 bottom-0 bg-white;
@@ -752,20 +1011,27 @@ export default {
       @apply absolute top-6 right-4 w-14;
     }
 
+    & .logos-ct {
+      height: 100px;
+    }
     & .logo {
-      @apply mx-3 mt-4;
-
-      height: 70px;
+      display: inline;
 
       & svg {
         @apply h-full;
       }
     }
 
+    & hr {
+      border-top-width: 2px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+
     & .section-title {
       @apply mx-5;
 
-      margin-top: 2rem;
+      margin-top: 1.25rem;
       height: 2rem;
 
       & .main-title {
@@ -774,7 +1040,7 @@ export default {
         height: 1rem;
 
         & .title {
-          @apply text-xl text-black uppercase hidden;
+          @apply text-xl text-black uppercase;
 
           animation: fade-in 0.3s ease;
 
@@ -788,7 +1054,7 @@ export default {
         height: 1rem;
 
         & .back-button {
-          @apply text-grey text-sm cursor-pointer select-none hidden;
+          @apply text-grey text-sm cursor-pointer select-none;
 
           animation: fade-in 0.3s ease;
 
@@ -808,7 +1074,7 @@ export default {
     & .search-bar-ct {
       @apply mx-6;
 
-      margin-top: 2rem;
+      margin-top: 1.25rem;
       height: 3rem;
       font-size: 0;
 
@@ -821,13 +1087,17 @@ export default {
 
       & .filter-bt {
         @apply inline-block;
+        
+        border-radius: 18px;
+        position: relative;
       }
     }
 
     & .results-ct {
       @apply overflow-y-auto overflow-x-hidden;
 
-      height: calc(100% - 10rem - 70px);
+      margin-top: 4px;
+      height: calc(100% - 7.5rem - 120px);
 
       & .result {
         @apply flex flex-row mx-6 mb-4 cursor-pointer select-none;
@@ -959,19 +1229,19 @@ export default {
   }
 }
 
-@media (max-width: theme('screens.md')) {
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
   .navigation-ct {
     & .navigation-bar {
       @apply w-full;
 
-      bottom: 40vh;
+      bottom: 40cqh;
     }
 
     & .filters-menu {
       @apply left-0;
 
       z-index: 3;
-      bottom: 40vh;
+      bottom: 40cqh;
     }
   }
 }

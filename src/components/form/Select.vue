@@ -25,6 +25,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :value="option.value"
         >
           {{ option.name }}
+          <!-- Display the number of companies this filter applies to. -->
+          {{
+            filterCount && // check wether filterCount is defined/not null
+            (!selected || selected === option.value) && // if a filter is applied, only display a count for the selected one
+            (filterCount[option.value] || filterCount[option.value] === 0) // don't display a count for "Select..."
+              ? '(' + filterCount[option.value] + ')'
+              : ''
+          }}
         </option>
       </select>
     </div>
@@ -41,6 +49,11 @@ export default {
     options: {
       type: Array,
       required: true,
+    },
+    filterCount: {
+      type: Object,
+      required: false,
+      default: undefined
     },
     prefix: {
       type: String,
@@ -104,7 +117,7 @@ export default {
     padding-bottom: 0.6rem;
 
     & select {
-      @apply bg-transparent text-black text-base appearance-none;
+      @apply bg-transparent text-black text-base appearance-none border-0 p-0;
 
       &:focus {
         @apply outline-none;

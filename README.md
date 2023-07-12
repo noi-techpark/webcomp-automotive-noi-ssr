@@ -8,6 +8,111 @@ SPDX-License-Identifier: CC0-1.0
 
 ![REUSE Compliance](https://github.com/noi-techpark/webcomp-automotive-noi/actions/workflows/reuse.yml/badge.svg)
 
+## Usage
+
+Include the webcompscript file in your HTML and define the web component like this:
+
+```html
+<noi-automotive
+    custom-links="" 
+    default-company="" 
+    default-category="" 
+    limit-to-default-category="false" 
+    visible-categories="" 
+    language="en" 
+    primary-color="#9626ff" 
+    show-home-view="true" 
+    website-mode="true" 
+    width="1200px" 
+    height="675px">
+</noi-automotive>
+```
+
+### Attributes
+
+#### language
+Sets the language of the webcomponenent. (The user can change it later via the language Selector)
+
+> Type: string<br>
+> Options: "en", "de", "it"<br>
+> Default: "en"
+
+#### website-mode
+Affects currently only two things: 
+1. Wether the language Selector is displayed or not
+2. In the case that [`custom-links`](#custom-links) is empty, adds a link to [NOI's privacy and cookie policy](https://noi.bz.it/en/privacy-cookie-policy)
+
+> Type: Boolean<br>
+> Default: false
+
+#### default-company
+If this attribute is set, the webcomponent will load the profile of the given company id
+
+> Type: Number<br>
+> Default: 0
+
+Note: To get the id, you have to go to the [sectorial Overview](https://automotive.noi.bz.it), search for your company, and copy the id from the url
+
+#### default-category
+If this attribute is set, the webcomponent will directly select a category. The user is still able to go back and select another category, unless [`limit-to-default-category`](#limit-to-default-category) is `true`
+
+> Type: String <br>
+> Options: "automotiveAndMobility", "manufacturing", "agriAutomation"<br>
+> Default: ""
+
+#### limit-to-default-category
+If `limit-to-default-category` is `true` the user won't be able to choose another category.
+
+> Type: Boolean <br>
+> Default: false
+
+#### visible-categories
+Filters all companies according to this array. If even one category matches, the company will be shown.
+The string should be in the format of `Array.toString()`, meaning something like this `"automotiveAndMobility,manufacturing,agriAutomation"`
+
+> Type: String<br>
+> Default: ""
+
+Note: Any redundant whitespaces will be ignored (using `trim()`). Furthermore, the check is case-insensitive.<br>
+**If no categories were found in the string, it will default to show all categories.**
+
+#### custom-links
+Adds custom links to the footer.
+The string must be a json array
+
+> Type: Array (JSON) <br>
+> Default: ""
+
+Example: 
+```json
+[{"label": "NOI - Homepage", "url": "https://noi.bz.it"}, {"label": "Open Data Hub", "url": "opendatahub.bz.it"}]
+```
+
+#### primary-color
+Color of map markers/clusters, search button, ...
+must be either a hexcolor in full form (e.g. `#0033FF`) or shorthand form (e.g. `#03F`)
+
+> Type: String <br>
+> Default: `#9626ff`
+
+#### width
+width of the webcomponent. Because the string gets directly inserted as a css-value, it's possible to use functions like `calc()`
+
+> Type: String<br>
+> Default: 1200px
+
+#### height
+height of the webcomponent. Because the string gets directly inserted as a css-value, it's possible to use functions like ``calc()`
+
+> Type: String<br>
+> Default: 675px
+
+#### show-home-view
+If `show-home-view`is false, the webcomponent will hide the homeview (the startpage, which gives a small description about the sectorial overview)
+
+> Type: Boolean<br>
+> Default: true
+
 ## Build Setup
 
 ```bash
@@ -93,11 +198,13 @@ This project is [REUSE](https://reuse.software) compliant, more information abou
 Since the CI for this project checks for REUSE compliance you might find it useful to use a pre-commit hook checking for REUSE compliance locally. The [pre-commit-config](.pre-commit-config.yaml) file in the repository root is already configured to check for REUSE compliance with help of the [pre-commit](https://pre-commit.com) tool.
 
 Install the tool by running:
+
 ```bash
 pip install pre-commit
 ```
+
 Then install the pre-commit hook via the config file by running:
+
 ```bash
 pre-commit install
 ```
-

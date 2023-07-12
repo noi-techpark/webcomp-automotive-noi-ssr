@@ -158,7 +158,7 @@ export default {
   }
 }
 
-@media only screen and (max-width: 980px) {
+@container noi-automotive-component-view only screen and (max-width: 980px) {
   .search-input {
     @apply w-auto;
 

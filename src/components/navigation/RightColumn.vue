@@ -30,7 +30,7 @@ export default {
   }
 }
 
-@media (max-width: theme('screens.md')) {
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
   .right-column {
     @apply left-0 h-auto bottom-0 z-10;
   }

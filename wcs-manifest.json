@@ -1,5 +1,6 @@
 {
   "title": "Automotive NOI",
+  "shortName": "noi-automotive",
   "description": "A web component to display a list and details of automotive/automation businesses and organizations located in South Tyrol.",
   "descriptionAbstract": "List and details of automotive/automation businesses and organizations",
   "license": "AGPL-3.0-or-later",
@@ -26,8 +27,7 @@
     "basePath": "dist/nuxt-custom-elements/noi-automotive",
     "files": [
       "noi-automotive.js",
-      "home-cover.jpg",
-      "marker.png"
+      "home-cover.jpg"
     ],
     "scripts": [
       {
@@ -68,12 +68,75 @@
         }
       },
       {
+        "key": "default-category",
+        "type": "select",
+        "label": "Filter category at startup",
+        "required": false,
+        "options": {
+          "values": ["", "automotiveAndMobility", "manufacturing", "agriAutomation"]
+        }
+      },
+      {
+        "key": "visible-categories",
+        "type": "multiselect",
+        "label": "Only show selected categories",
+        "required": false,
+        "options": {
+          "values": ["", "automotiveAndMobility", "manufacturing", "agriAutomation"]
+        }
+      },
+      {
+        "key": "limit-to-default-category",
+        "type": "null",
+        "label": "Only display default category",
+        "required": false,
+        "options": {
+          "default": false
+        }
+      },
+      {
         "key": "custom-links",
         "type": "text",
         "label": "Custom Links shown in footer",
         "required": false,
         "options": {
           "default": ""
+        }
+      },
+      {
+        "key": "primary-color",
+        "type": "text",
+        "label": "Primary color (Hex Code)",
+        "required": false,
+        "options": {          
+          "default": "#9626ff"
+        }
+      },
+      {
+        "key": "width",
+        "type": "text",
+        "label": "Width of Webcomponent (CSS)",
+        "required": false,
+        "options": {
+          "default": "100%"
+        }
+      },
+      {
+        "key": "height",
+        "type": "text",
+        "label": "Height of Webcomponent (CSS)",
+        "required": false,
+        "options": {
+          "default": "100%"
+        }
+      },
+      {
+        "key": "show-home-view",
+        "type": "bool",
+        "label": "Show Home View?",
+        "required": false,
+        "options": {
+            "default": true
         }
       }
     ]

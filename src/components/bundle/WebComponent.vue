@@ -5,22 +5,27 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div class="component-view">
+  <div ref="componentView" class="component-view">
     <NavigationBar
       ref="navigationBar"
       :visible-company="visibleCompanyData"
       :display-as-website="displayAsWebsite"
+      :default-category="defaultCategory"
+      :limit-to-default-category="limitToDefaultCategory"
+      :visible-categories="visibleCategoriesAsArray"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
       @didFetchCompanies="setCompaniesList"
       @didFilterCompanies="setNewFilteredCompanies"
+      @toggleLoading="toggleLoading"
     />
     <MapView
       :filtered-companies="filteredCompanies"
       @showCompanyWithId="showCompanyWithId"
     />
     <HomeView
+      v-if="showHomeView"
       :companies-list="companiesList"
       :filtered-companies="filteredCompanies"
       :visible="isHomeViewVisible"
@@ -40,11 +45,30 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
+import { setup } from "@twind/core/core";
+import autoprefix from "@twind/preset-autoprefix";
+import ext from "@twind/preset-ext";
+import tailwind from "@twind/preset-tailwind";
+
 import vueI18n from '@/plugins/vueI18n'
 import 'tailwindcss/tailwind.css'
+import utils from '~/mixins/utils.js'
+
+// Setup twind
+setup({
+  presets: [autoprefix(), ext(), tailwind()],
+});
 
 export default {
   i18n: vueI18n,
+  mixins: [ utils ],
+
+  provide() {
+    return {
+      // Provide primary-color for Map.vue
+      'primary-color': this.primaryColor,
+    }
+  },
 
   props: {
     websiteMode: {
@@ -62,10 +86,44 @@ export default {
       default: '',
     },
 
+    defaultCategory: {
+      type: String,
+      default: ''
+    },
+
+    limitToDefaultCategory: {
+      type: Boolean
+    },
+
+    visibleCategories: {
+      type: String,
+      default: ''
+    },
+
     language: {
       type: String,
       default: 'en',
     },
+    primaryColor: {
+      type: String,
+      default: "#9626ff",
+      Validator(value) {
+        return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
+      }
+    },
+    width: {
+      type: String,
+      default: '100%'
+    },
+    height: {
+      type: String,
+      default: '100%'
+    },
+    showHomeView: {
+      type: Boolean,
+      default: true,
+    }
+
   },
 
   data() {
@@ -91,6 +149,14 @@ export default {
 
       return []
     },
+
+    visibleCategoriesAsArray() {
+      if(this.visibleCategories.split(',')[0] === '')
+        return undefined;
+      else { 
+        return this.visibleCategories.split(',').map(category => category.trim());
+      }
+    }
   },
 
   watch: {
@@ -98,7 +164,11 @@ export default {
       if (newList.length) {
         this.loading = false
         if (this.requestedCompanyDisplay) {
-          this.showCompanyWithId(this.requestedCompanyDisplay)
+          if(isNaN(Number(this.requestedCompanyDisplay))) {
+            this.showCompanyWithName(this.requestedCompanyDisplay)
+          } else {
+            this.showCompanyWithId(Number(this.requestedCompanyDisplay))
+          }
           this.requestedCompanyDisplay = null
         }
       }
@@ -117,13 +187,20 @@ export default {
     }
 
     if (this.defaultCompany) {
-      this.requestedCompanyDisplay = Number(this.defaultCompany)
+      this.requestedCompanyDisplay = this.defaultCompany
     }
   },
 
   mounted() {
+    this.$refs.componentView.style.width = this.width;
+    this.$refs.componentView.style.height = this.height;
+
+    this.$refs.componentView.style.setProperty('--primary-color', this.primaryColor);
+    this.$refs.componentView.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
+    this.$refs.componentView.style.setProperty('--primary-color-text', this.getTextColor(this.primaryColor));
+    
     if (this.$route?.query?.company) {
-      this.requestedCompanyDisplay = Number(this.$route.query.company)
+      this.requestedCompanyDisplay = this.$route.query.company
     }
   },
 
@@ -131,6 +208,16 @@ export default {
     showCompanyWithId(companyId) {
       const companyData = this.companiesList.find(
         (company) => company.id === companyId
+      )
+      if (companyData) {
+        this.showCompany(companyData)
+      } else {
+        this.resetUrl()
+      }
+    },
+    showCompanyWithName(companyName) {
+      const companyData = this.companiesList.find(
+        (company) => company.attributes.name.toUpperCase() === companyName.toUpperCase()
       )
       if (companyData) {
         this.showCompany(companyData)
@@ -183,6 +270,9 @@ export default {
     setCompaniesList(companiesList) {
       this.companiesList = companiesList
     },
+    toggleLoading(isLoading) {
+      this.loading = isLoading || !this.loading;
+    }
   },
 }
 </script>
@@ -192,9 +282,19 @@ export default {
 @import url('~assets/css/main.css');
 
 .component-view {
-  @apply relative w-full h-full overflow-hidden;
-
-  min-height: 800px;
+  @apply relative overflow-hidden;
+  
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  
+  /**
+   * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
+   * but some linters still warn about it.
+   *
+   * browser-compatibility: https://developer.mozilla.org/en-US/docs/Web/CSS/@container#browser_compatibility
+   * stylelint 14.12.0: https://github.com/stylelint/stylelint/releases/tag/14.12.0
+   */
+  container-type: size;
+  container-name: noi-automotive-component-view
 }
 
 .full-screen-loader {

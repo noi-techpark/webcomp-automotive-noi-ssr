@@ -94,20 +94,12 @@ export default {
 
   computed: {
     links() {
-      if (this.customLinks) {
-        return this.customLinks
-      }
-
-      if (this.displayAsWebsite) {
-        return [
-          {
-            link: 'https://noi.bz.it/en/privacy-cookie-policy',
-            label: this.$t('common.privacyPolicy'),
-          },
-        ]
-      }
-
-      return []
+      const links = this.customLinks || [];
+      links.push({
+        url: 'https://noi.bz.it/en/privacy-cookie-policy',
+        label: this.$t('common.privacyPolicy'),
+      })
+      return links
     },
 
     uniqueCompaniesNumber() {
@@ -156,10 +148,12 @@ export default {
 
 <style lang="postcss" scoped>
 .home-view {
-  @apply px-8 py-8 h-full overflow-y-auto;
+  @apply px-8 py-8 overflow-y-auto;
+
+  height: calc(100% - calc(2 * 2rem));
 
   & h1 {
-    @apply text-3xl text-base font-bold;
+    @apply text-3xl font-bold;
   }
 
   & .top-overview {
@@ -240,9 +234,24 @@ export default {
   }
 }
 
-@media (max-width: theme('screens.md')) {
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
   .home-view-ct {
-    top: 60vh !important;
+    top: 60cqh !important;
+
+    & .home-view {
+      & .top-overview {
+        @apply space-x-0;
+
+        & .image-ct {
+          width: 0%;
+          visibility: hidden;
+        }
+
+        & .map-col {
+          width: 100%;
+        }
+      }
+    }
   }
 }
 </style>

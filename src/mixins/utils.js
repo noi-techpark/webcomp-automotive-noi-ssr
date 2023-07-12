@@ -132,5 +132,54 @@ export default {
 
       return allCompanies
     },
+    /**
+     * This function calculates wether it's better (according to contrast) to use black or white as textcolor/foreground based on the backgroundcolor.
+     * @param backgroundColor hexcolor, either with 3 or 6 digits
+     * @returns 'black' or 'white'
+     */
+    getTextColor(backgroundColor) {
+      // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+      const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i
+      backgroundColor = backgroundColor.replace(
+        shorthandRegex,
+        function (m, r, g, b) {
+          return r + r + g + g + b + b
+        }
+      )
+
+      const rgb = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
+        backgroundColor
+      )
+      const brightness = Math.round(
+        (parseInt(rgb[1], 16) * 299 +
+          parseInt(rgb[2], 16) * 587 +
+          parseInt(rgb[3], 16) * 114) /
+          1000
+      )
+      return brightness > 125 ? 'black' : 'white'
+    },
+    hexAdjustBrightness(hexColor, percent) {
+        let R = parseInt(hexColor.substring(1,3),16);
+        let G = parseInt(hexColor.substring(3,5),16);
+        let B = parseInt(hexColor.substring(5,7),16);
+    
+        R = parseInt(R * (100 + percent) / 100);
+        G = parseInt(G * (100 + percent) / 100);
+        B = parseInt(B * (100 + percent) / 100);
+    
+        R = (R<255)?R:255;  
+        G = (G<255)?G:255;  
+        B = (B<255)?B:255;  
+    
+        R = Math.round(R)
+        G = Math.round(G)
+        B = Math.round(B)
+    
+        const RR = ((R.toString(16).length===1)?"0"+R.toString(16):R.toString(16));
+        const GG = ((G.toString(16).length===1)?"0"+G.toString(16):G.toString(16));
+        const BB = ((B.toString(16).length===1)?"0"+B.toString(16):B.toString(16));
+    
+        return "#"+RR+GG+BB;
+    }
   },
 }

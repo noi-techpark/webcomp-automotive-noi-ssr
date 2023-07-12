@@ -61,6 +61,7 @@ export default {
       height: 100%;
       border-radius: 50%;
       animation: loading 2s infinite;
+      border-style: solid;
     }
   }
 
