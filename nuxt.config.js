@@ -4,7 +4,9 @@
 
 import i18nOptions from './src/plugins/i18n.options'
 
-export default {
+const matomo = process.env.MATOMO;
+
+const config = {
   ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
   target: 'static',
 
@@ -168,4 +170,19 @@ export default {
   pageTransition: 'zoom-page',
 
   telemetry: false,
+};
+
+// set env var 'MATOMO = true' to enable matomo for websites
+// keep deactivated for webcomponents
+if (matomo && matomo === 'true') {
+  /* eslint-disable no-console */
+  console.log("MATOMO ENABLED");
+  console.log(matomo);
+  /* eslint-enable */
+  config.head.link.push({ rel: 'stylesheet', href: 'https://scripts.opendatahub.com/cookieconsent/opendatahub/cookieconsent.css' });
+  config.head.script = [];
+  config.head.script.push({ body: true, type: 'text/javascript', src: 'https://scripts.opendatahub.com/cookieconsent/cookieconsent.js' });
+  config.head.script.push({ body: true, type: 'text/javascript', src: 'https://scripts.opendatahub.com/cookieconsent/cookieconsent-init.js' });
+  config.head.script.push({ type: 'text/plain', 'data-cookiecategory': 'targeting', src: './matomo.js' });
 }
+export default config;
