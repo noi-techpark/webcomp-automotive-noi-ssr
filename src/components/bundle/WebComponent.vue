@@ -202,6 +202,7 @@ export default {
     if (this.$route?.query?.company) {
       this.requestedCompanyDisplay = this.$route.query.company
     }
+    this.loading = false
   },
 
   methods: {
