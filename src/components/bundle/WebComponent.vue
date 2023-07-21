@@ -106,7 +106,7 @@ export default {
     },
     primaryColor: {
       type: String,
-      default: "#9626ff",
+      default: "#0000ff",
       Validator(value) {
         return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
       }

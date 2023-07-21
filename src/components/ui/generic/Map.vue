@@ -54,7 +54,7 @@ export default {
     // inject primaryColor from WebComponent.vue
     primaryColor: {
       from: 'primary-color',
-      default: '#9626ff'
+      default: '#0000ff'
     }
   },
   props: {

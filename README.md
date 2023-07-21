@@ -20,7 +20,7 @@ Include the webcompscript file in your HTML and define the web component like th
     limit-to-default-category="false" 
     visible-categories="" 
     language="en" 
-    primary-color="#9626ff" 
+    primary-color="#0000ff" 
     show-home-view="true" 
     website-mode="true" 
     width="1200px" 
@@ -93,7 +93,7 @@ Color of map markers/clusters, search button, ...
 must be either a hexcolor in full form (e.g. `#0033FF`) or shorthand form (e.g. `#03F`)
 
 > Type: String <br>
-> Default: `#9626ff`
+> Default: `#0000ff`
 
 #### width
 width of the webcomponent. Because the string gets directly inserted as a css-value, it's possible to use functions like `calc()`
