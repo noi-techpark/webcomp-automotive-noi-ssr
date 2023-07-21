@@ -105,10 +105,6 @@ export default {
       const circleShape = new CircleShape({
         fill: new Fill({ color: this.primaryColor }),
         radius: 10,
-        stroke: new Stroke({
-          color: '#000000',
-          width: 2.5,
-        })
       });
       clusterIcons[0] = circleShape.clone();
       circleShape.setRadius(13);
@@ -241,7 +237,7 @@ export default {
             fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
             offsetY: 1,
             textAlign: 'center',
-            scale: clustersize < 10 ? 1 : clustersize < 50 ? 1.3 : 1.6,
+            scale: clustersize < 10 ? 1 : clustersize < 50 ? 1.3 : 1.4,
           }),
           zIndex: this.curFeatureIndex,
         })
