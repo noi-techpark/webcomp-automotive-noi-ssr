@@ -53,36 +53,17 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             aspect="fill"
           />
         </div>
-        <Button icon="filter" class="filter-bt" @click="toggleFiltersMenu" />
+        <Button icon="filter" class="filter-bt" />
       </div>
       <div class="results-ct">
         <div
-          v-for="(result, index) in resultsList"
-          :key="new Date().getTime() + '-' + index"
-          class="result clickable"
-          :class="{
-            'is-main-category': result.isMainCategory,
-            'is-placeholder': result.isPlaceholder,
-          }"
-          @click="showResult(result)"
-        >
-          <div class="name">
-            {{
-              result.name +
-                (result.isMainCategory
-                  ? ' (' +
-                    filterCount.categories[
-                      result.id.replace(CATEGORY_PREFIX, '')
-                    ] +
-                    ')'
-                  : '') || ''
-            }}
-            <div class="line"></div>
-          </div>
-          <div class="metric">{{ result.metric || '' }}</div>
-          <div class="arrow">
-            <Icon name="arrow-right-compressed" />
-          </div>
+          v-for="(resultItem, index) in resultsList"
+          :key="new Date().getTime() + '-' + index">
+          <ResultCard  
+            :result="resultItem"
+            :index="index"
+            :filter-count="resultItem.isMainCategory ? filterCount.categories[resultItem.id.replace(CATEGORY_PREFIX, '')] : ''"
+            @showResult="showResult"/>
         </div>
         <div v-if="!resultsList.length" class="no-results-notice">
           {{ $t('common.noCompaniesFound') }}
@@ -90,7 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
     </div>
     <div class="filters-menu" :class="{ visible: isFiltersMenuVisible }">
-      <div class="close" @click="hideFiltersMenu">
+      <div class="close">
         <div class="inner">
           <Icon name="cross" class="ico" />
         </div>
@@ -575,9 +556,9 @@ export default {
               ' ' +
               r.attributes.contactPerson.personName +
               ' ' +
-              r.attributes.companyAddressStreet +
+              r.attributes.companyAddressStreet.name +
               ' ' +
-              r.attributes.companyAddressStreet.cap
+              r.attributes.companyAddressStreet.city
             )
               .toLowerCase()
               .includes(cleanSearchVal)
@@ -761,7 +742,6 @@ export default {
           )
         }
       }
-
       return results
     },
 
@@ -778,7 +758,11 @@ export default {
             : 0,
           r.attributes.companyLocation
             ? Number(r.attributes.companyLocation.lng)
-            : 0
+            : 0,
+            r.attributes?.mainImage?.data?.attributes,
+            r.attributes?.companyDescription,
+            r.attributes?.companyAddressStreet?.city,
+            r.attributes?.specialization,
         )
       )
 
@@ -929,11 +913,11 @@ export default {
       this.$emit('didFilterCompanies', newCompaniesList)
     },
 
-    visibleCompany(newVisibleCompany) {
+    /* visibleCompany(newVisibleCompany) {
       if (newVisibleCompany && this.isFiltersMenuVisible) {
         this.hideFiltersMenu()
       }
-    },
+    }, */
   },
 
   mounted() {
@@ -972,7 +956,11 @@ export default {
       metric,
       isMainCategory,
       lat,
-      lng
+      lng,
+      image,
+      companyDescription,
+      city,
+      specialization,
     ) {
       return {
         isPlaceholder,
@@ -984,6 +972,10 @@ export default {
           lat,
           lng,
         },
+        image,
+        companyDescription,
+        city,
+        specialization
       }
     },
 

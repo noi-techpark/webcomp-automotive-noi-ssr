@@ -180,6 +180,14 @@ export default {
         const BB = ((B.toString(16).length===1)?"0"+B.toString(16):B.toString(16));
     
         return "#"+RR+GG+BB;
-    }
+    },
+    truncate(str, length, useWordBoundary ){
+      if (!str) { return ""; }
+      if (str.length <= length) { return str; }
+      const subString = str.slice(0, length-1); // the original check
+      return (useWordBoundary 
+        ? subString.slice(0, subString.lastIndexOf(" ")) 
+        : subString) + "…";
+    },
   },
 }
