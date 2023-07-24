@@ -1,5 +1,5 @@
 {
-  "name": "noiautomotive-web-component",
+  "name": "webcomp-automotive-noi",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,9 @@
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{vue,css}\" --ignore-path .gitignore",
-    "lint": "npm run lint:js && npm run lint:style"
+    "lint": "npm run lint:js && npm run lint:style",
+    "test:ci": "echo no test",
+    "release-production": "chmod 700 ./script/release-production.sh && ./script/release-production.sh"
   },
   "dependencies": {
     "@nuxtjs/i18n": "^7.3.0",
@@ -44,6 +46,7 @@
     "stylelint-config-recommended-scss": "^8.0.0",
     "stylelint-config-recommended-vue": "^1.4.0",
     "vue-svg-loader": "^0.16.0",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "standard-version": "^9.5.0"
   }
 }
