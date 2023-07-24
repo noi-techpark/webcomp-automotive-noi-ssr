@@ -59,11 +59,9 @@ jobs:
       - uses: shaunco/ssh-agent@git-repo-mapping
         with:
           ssh-private-key: |
-            ${{ secrets.DEPLOY_KEY_NIXOS_CONFIG_NARU }}
             ${{ secrets.DEPLOY_KEY_NIXOS_CONFIG_YOSAI }}
             
           repo-mappings: |
-            github.com/codeworks-infrastructure/nixos-config-naru
             github.com/codeworks-infrastructure/nixos-config-yosai
       
       - name: Checkout Naru repository
