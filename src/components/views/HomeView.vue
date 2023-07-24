@@ -15,7 +15,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <div
               class="image"
               :style="{
-                backgroundImage: 'url(https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg)',
+                backgroundImage:
+                  'url(https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg)',
               }"
               :data-webpack-sync="require('@/assets/image/home-cover.jpg')"
             />
@@ -94,7 +95,7 @@ export default {
 
   computed: {
     links() {
-      const links = this.customLinks || [];
+      const links = this.customLinks || []
       links.push({
         url: 'https://noi.bz.it/en/privacy-cookie-policy',
         label: this.$t('common.privacyPolicy'),
@@ -239,6 +240,8 @@ export default {
     top: 60cqh !important;
 
     & .home-view {
+      @apply h-full;
+
       & .top-overview {
         @apply space-x-0;
 

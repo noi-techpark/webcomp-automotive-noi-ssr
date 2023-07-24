@@ -20,29 +20,30 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <div class="logos-ct">
         <div class="logo clickable" @click="backToCategories">
           <Icon name="logo" />
-        </div><div class="logo clickable" @click="backToCategories">
+        </div>
+        <div class="logo clickable" @click="backToCategories">
           <Icon name="logo-automotive" />
         </div>
       </div>
-        <hr />
-        <Transition name="fade">
-        <div v-if="resultsList.length == visibleResults.length" class="section-title">
+      <hr />
+      <Transition name="fade">
+        <div
+          v-if="resultsList.length == visibleResults.length"
+          class="section-title"
+        >
           <div class="main-title">
             <div class="title">
               {{ curSectionTitle }}
             </div>
           </div>
           <div v-if="displayMultipleCategories" class="subtitle">
-            <div
-              class="back-button"
-              @click="backToCategories"
-            >
+            <div class="back-button" @click="backToCategories">
               <Icon name="back-arrow" />
               {{ $t('common.backToCategories') }}
             </div>
           </div>
         </div>
-        </Transition>
+      </Transition>
       <div class="search-bar-ct">
         <div class="search-bar">
           <TextInput
@@ -66,10 +67,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @click="showResult(result)"
         >
           <div class="name">
-            {{ 
-              result.name +  
-              (result.isMainCategory ? " (" + filterCount.categories[result.id.replace(CATEGORY_PREFIX, '')] + ")" : "")
-              || ''
+            {{
+              result.name +
+                (result.isMainCategory
+                  ? ' (' +
+                    filterCount.categories[
+                      result.id.replace(CATEGORY_PREFIX, '')
+                    ] +
+                    ')'
+                  : '') || ''
             }}
             <div class="line"></div>
           </div>
@@ -165,7 +171,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 import utils from '~/mixins/utils.js'
 
-const allCategories = ["automotiveAndMobility", "manufacturing", "agriAutomation"];
+const allCategories = [
+  'automotiveAndMobility',
+  'manufacturing',
+  'agriAutomation',
+]
 
 export default {
   mixins: [utils],
@@ -188,20 +198,23 @@ export default {
       default: '',
       validator(value) {
         // The value must match one of the mainCategories.id or be empty
-        return allCategories.includes(value) || value === '';
-      }
+        return allCategories.includes(value) || value === ''
+      },
     },
 
     limitToDefaultCategory: {
-      type: Boolean
+      type: Boolean,
     },
 
     visibleCategories: {
       type: [Array, undefined],
-      default: ()=>allCategories,
+      default: () => allCategories,
       validator(value) {
-        return (value[0] && value.every((category=>allCategories.includes(category))))
-      }
+        return (
+          value[0] &&
+          value.every((category) => allCategories.includes(category))
+        )
+      },
     },
   },
 
@@ -266,9 +279,15 @@ export default {
      */
     defaultCategoryValidated() {
       if (allCategories.includes(this.defaultCategory.trim()))
-        return this.defaultCategory.trim();
+        return this.defaultCategory.trim()
       else {
-        return allCategories.find(category => category.toLowerCase() === this.defaultCategory.trim().toLowerCase()) || "";
+        return (
+          allCategories.find(
+            (category) =>
+              category.toLowerCase() ===
+              this.defaultCategory.trim().toLowerCase()
+          ) || ''
+        )
       }
     },
 
@@ -277,25 +296,31 @@ export default {
      * @returns Array of type string, i.e. ["automotiveAndMobility", "manufacturing", "agriAutomation"].
      */
     visibleCategoriesValidated() {
-      const visibleCategoriesNormalized = this.visibleCategories.map((category) => {
-        let ret = category.trim();
-        ret = ret.toLowerCase();
-        return ret;
-      });
-      const validCategories = visibleCategoriesNormalized.filter((category => allCategories.some(
-        categoryFromAll => categoryFromAll.toLowerCase() === category
-      )));
-      if (validCategories.length > 0)
-        return validCategories;
-      else
-        return allCategories;
+      const visibleCategoriesNormalized = this.visibleCategories.map(
+        (category) => {
+          let ret = category.trim()
+          ret = ret.toLowerCase()
+          return ret
+        }
+      )
+      const validCategories = visibleCategoriesNormalized.filter((category) =>
+        allCategories.some(
+          (categoryFromAll) => categoryFromAll.toLowerCase() === category
+        )
+      )
+      if (validCategories.length > 0) return validCategories
+      else return allCategories
     },
 
     categoryFilter() {
       return {
-        automotiveAndMobility: this.visibleCategoriesValidated.includes("automotiveandmobility"),
-        manufacturing: this.visibleCategoriesValidated.includes("manufacturing"),
-        agriAutomation: this.visibleCategoriesValidated.includes("agriautomation")
+        automotiveAndMobility: this.visibleCategoriesValidated.includes(
+          'automotiveandmobility'
+        ),
+        manufacturing:
+          this.visibleCategoriesValidated.includes('manufacturing'),
+        agriAutomation:
+          this.visibleCategoriesValidated.includes('agriautomation'),
       }
     },
 
@@ -303,7 +328,10 @@ export default {
      * like mainCategories, but only consisting of the categories which should be visible
      */
     filteredMainCategories() {
-      return this.mainCategories.filter(category=>this.categoryFilter[category.id.replace(this.CATEGORY_PREFIX, '')]);
+      return this.mainCategories.filter(
+        (category) =>
+          this.categoryFilter[category.id.replace(this.CATEGORY_PREFIX, '')]
+      )
     },
 
     /**
@@ -311,14 +339,22 @@ export default {
      * returns false, if there is only one category to show or limitToDefaultCategory is set (under the condition, that there's even a defaultCategory)
      */
     displayMultipleCategories() {
-      return !(this.filteredMainCategories.length <=1 || (this.limitToDefaultCategory && this.defaultCategoryValidated !== ''));
+      return !(
+        this.filteredMainCategories.length <= 1 ||
+        (this.limitToDefaultCategory && this.defaultCategoryValidated !== '')
+      )
     },
 
     curSectionTitle() {
-      if(this.displayMultipleCategories) {
-        return this.getSectorNameFromID(this.mainCategory) || this.$t('common.allCategories');
+      if (this.displayMultipleCategories) {
+        return (
+          this.getSectorNameFromID(this.mainCategory) ||
+          this.$t('common.allCategories')
+        )
       } else {
-        return this.getSectorNameFromID(this.defaultCategoryValidated || this.visibleCategories[0]);
+        return this.getSectorNameFromID(
+          this.defaultCategoryValidated || this.visibleCategories[0]
+        )
       }
     },
 
@@ -551,11 +587,13 @@ export default {
         if (this.categoryFilter) {
           results = results.filter((r) => {
             return (
-              r.attributes.specialization && (
-                (this.categoryFilter.automotiveAndMobility && r.attributes.specialization.automotiveAndMobility) ||
-                (this.categoryFilter.manufacturing && r.attributes.specialization.manufacturing) ||
-                (this.categoryFilter.agriAutomation && r.attributes.specialization.agriAutomation)
-              )
+              r.attributes.specialization &&
+              ((this.categoryFilter.automotiveAndMobility &&
+                r.attributes.specialization.automotiveAndMobility) ||
+                (this.categoryFilter.manufacturing &&
+                  r.attributes.specialization.manufacturing) ||
+                (this.categoryFilter.agriAutomation &&
+                  r.attributes.specialization.agriAutomation))
             )
           })
         }
@@ -567,7 +605,10 @@ export default {
               r.attributes.specialization[this.mainCategory]
             )
           })
-        } else if(this.defaultCategoryValidated && !this.displayMultipleCategories) {
+        } else if (
+          this.defaultCategoryValidated &&
+          !this.displayMultipleCategories
+        ) {
           results = results.filter((r) => {
             return (
               r.attributes.specialization &&
@@ -575,7 +616,7 @@ export default {
             )
           })
         }
-        
+
         if (this.filters.industrialSector) {
           results = results.filter(
             (r) =>
@@ -753,31 +794,46 @@ export default {
     },
 
     resultsList() {
-      return (!this.mainCategory && this.displayMultipleCategories) ? this.filteredMainCategories : this.visibleResults
+      return !this.mainCategory && this.displayMultipleCategories
+        ? this.filteredMainCategories
+        : this.visibleResults
     },
 
     filterCount() {
-      const results = this.filteredResults;
-      const sum = this.filteredResults.length;
+      const results = this.filteredResults
+      const sum = this.filteredResults.length
 
       // Initialize count Object
-      const countCategories = {sumCompanies: sum};
-      this.mainCategories.forEach(category => {countCategories[category.id.replace(this.CATEGORY_PREFIX, '')] = 0})
+      const countCategories = { sumCompanies: sum }
+      this.mainCategories.forEach((category) => {
+        countCategories[category.id.replace(this.CATEGORY_PREFIX, '')] = 0
+      })
 
-      const countIndustrialSectors = {sumCompanies: sum};
-      this.industrialSectors.forEach(sector => {if (sector.value) countIndustrialSectors[sector.value] = 0});
-      
-      const countValueChainPositions = {sumCompanies: sum};
-      this.valueChainPositions.forEach(position => { if (position.value) countValueChainPositions[position.value] = 0});
+      const countIndustrialSectors = { sumCompanies: sum }
+      this.industrialSectors.forEach((sector) => {
+        if (sector.value) countIndustrialSectors[sector.value] = 0
+      })
 
-      const countTurnovers = {sumCompanies: sum};
-      this.turnovers.forEach(turnover => {if (turnover.value) countTurnovers[turnover.value] = 0});
+      const countValueChainPositions = { sumCompanies: sum }
+      this.valueChainPositions.forEach((position) => {
+        if (position.value) countValueChainPositions[position.value] = 0
+      })
 
-      const countEmployees = {sumCompanies: sum};
-      this.employees.forEach(employee => {if (employee.value) countEmployees[employee.value] = 0});
+      const countTurnovers = { sumCompanies: sum }
+      this.turnovers.forEach((turnover) => {
+        if (turnover.value) countTurnovers[turnover.value] = 0
+      })
 
-      const countCertifications = {sumCompanies: sum};
-      this.certifications.forEach(certification => {if (certification.value && certification.value ) countCertifications[certification.value] = 0});
+      const countEmployees = { sumCompanies: sum }
+      this.employees.forEach((employee) => {
+        if (employee.value) countEmployees[employee.value] = 0
+      })
+
+      const countCertifications = { sumCompanies: sum }
+      this.certifications.forEach((certification) => {
+        if (certification.value && certification.value)
+          countCertifications[certification.value] = 0
+      })
 
       const count = {
         sumCompanies: sum,
@@ -786,79 +842,78 @@ export default {
         valueChainPositions: countValueChainPositions,
         turnovers: countTurnovers,
         employeeNumber: countEmployees,
-        certifications: countCertifications
+        certifications: countCertifications,
       }
 
       // count the number of companies that apply to each filter
-      results.forEach(result => {
+      results.forEach((result) => {
         const attr = result.attributes
 
-        if(attr.specialization) {
-          Object.keys(attr.specialization).forEach(key => {
-            if(attr.specialization[key] && key !== 'id')
-              count.categories[key]++;
+        if (attr.specialization) {
+          Object.keys(attr.specialization).forEach((key) => {
+            if (attr.specialization[key] && key !== 'id')
+              count.categories[key]++
           })
         }
 
-        if(attr.industrialSector) {
-          count.industrialSectors[attr.industrialSector]++;
+        if (attr.industrialSector) {
+          count.industrialSectors[attr.industrialSector]++
         }
 
-        if(attr.valueChainPosition) {
-          count.valueChainPositions[attr.valueChainPosition]++;
+        if (attr.valueChainPosition) {
+          count.valueChainPositions[attr.valueChainPosition]++
         }
 
-        if(attr.metrics) {
+        if (attr.metrics) {
           // turnover
           const turnover = attr.metrics.turnover
-          if(!turnover) {
-            count.turnovers['NOT-DEFINED']++;
-          } else if(turnover < 1000000) {
-            count.turnovers['< 1 Mio']++;
+          if (!turnover) {
+            count.turnovers['NOT-DEFINED']++
+          } else if (turnover < 1000000) {
+            count.turnovers['< 1 Mio']++
           } else if (turnover < 2000000) {
-            count.turnovers['1 - 2 Mio']++;
+            count.turnovers['1 - 2 Mio']++
           } else if (turnover < 10000000) {
-            count.turnovers['2 - 10 Mio']++;
+            count.turnovers['2 - 10 Mio']++
           } else if (turnover < 50000000) {
-            count.turnovers['10 - 50 Mio']++;
+            count.turnovers['10 - 50 Mio']++
           } else if (turnover < 250000000) {
-            count.turnovers['50 - 250 Mio']++;
+            count.turnovers['50 - 250 Mio']++
           } else if (turnover < 500000000) {
-            count.turnovers['250 - 500 Mio']++;
+            count.turnovers['250 - 500 Mio']++
           } else {
-            count.turnovers['> 500 Mio']++;
+            count.turnovers['> 500 Mio']++
           }
 
           // employeeNumber
-          const employeeNumber = attr.metrics.employeeNumber;
-          if(!employeeNumber) {
-            count.employeeNumber['NOT-DEFINED']++;
+          const employeeNumber = attr.metrics.employeeNumber
+          if (!employeeNumber) {
+            count.employeeNumber['NOT-DEFINED']++
           } else if (employeeNumber < 5) {
-            count.employeeNumber['<5']++;
+            count.employeeNumber['<5']++
           } else if (employeeNumber < 10) {
-            count.employeeNumber['5-10']++;
+            count.employeeNumber['5-10']++
           } else if (employeeNumber < 50) {
-            count.employeeNumber['10-50']++;
+            count.employeeNumber['10-50']++
           } else if (employeeNumber < 150) {
-            count.employeeNumber['50-150']++;
+            count.employeeNumber['50-150']++
           } else if (employeeNumber < 250) {
-            count.employeeNumber['150-250']++;
+            count.employeeNumber['150-250']++
           } else {
-            count.employeeNumber['>250']++;
+            count.employeeNumber['>250']++
           }
         }
 
-
-        if(attr.certifications) {
-          Object.keys(attr.certifications).forEach(key => {
-            if(attr.certifications[key] && key !== 'id')
-              count.certifications[key]++;
+        if (attr.certifications) {
+          Object.keys(attr.certifications).forEach((key) => {
+            if (attr.certifications[key] && key !== 'id')
+              count.certifications[key]++
           })
         }
       })
 
-      return count;
-    }
+      return count
+    },
   },
 
   watch: {
@@ -883,20 +938,28 @@ export default {
 
   mounted() {
     this.fetchResults()
-    if (this.displayMultipleCategories && this.defaultCategoryValidated !== '') {
-      this.showResult(this.mainCategories.find((category) => category.id === this.CATEGORY_PREFIX + this.defaultCategoryValidated));
+    if (
+      this.displayMultipleCategories &&
+      this.defaultCategoryValidated !== ''
+    ) {
+      this.showResult(
+        this.mainCategories.find(
+          (category) =>
+            category.id === this.CATEGORY_PREFIX + this.defaultCategoryValidated
+        )
+      )
     }
   },
 
   methods: {
     async changeLanguage(lang) {
-      this.$emit('toggleLoading', true);
+      this.$emit('toggleLoading', true)
       if (typeof this.$i18n.setLocale !== 'undefined') {
-        this.$i18n.setLocale(lang);
+        this.$i18n.setLocale(lang)
       } else {
-        this.$i18n.locale = lang;
+        this.$i18n.locale = lang
       }
-      await this.fetchResults();
+      await this.fetchResults()
       if (this.visibleCompany) {
         this.onCompanyClick(this.visibleCompany.id)
       }
@@ -986,18 +1049,24 @@ export default {
 
     getSectorNameFromID(id) {
       if (id && id !== true)
-        return this.mainCategories.find((category) => category.id.replace(this.CATEGORY_PREFIX, '') === id.replace(this.CATEGORY_PREFIX, ''))?.name;
-    }
+        return this.mainCategories.find(
+          (category) =>
+            category.id.replace(this.CATEGORY_PREFIX, '') ===
+            id.replace(this.CATEGORY_PREFIX, '')
+        )?.name
+    },
   },
 }
 </script>
 
 <style lang="postcss" scoped>
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 250ms ease;
 }
 
-.fade-enter-from, .fade-leave-to {
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
@@ -1087,7 +1156,7 @@ export default {
 
       & .filter-bt {
         @apply inline-block;
-        
+
         border-radius: 18px;
         position: relative;
       }
@@ -1097,7 +1166,7 @@ export default {
       @apply overflow-y-auto overflow-x-hidden;
 
       margin-top: 4px;
-      height: calc(100% - 7.5rem - 120px);
+      height: calc(100% - 7.5rem - 55px);
 
       & .result {
         @apply flex flex-row mx-6 mb-4 cursor-pointer select-none;
