@@ -1,0 +1,157 @@
+name: "Build, Test & Deploy Noi Automotive"
+on:
+  push:
+    branches: 
+      - 'development'
+      - 'release'
+      - 'main'
+      - 'master'
+
+jobs:
+  build_test:
+    name: "Build & Test"
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.event.head_commit.message, 'chore(release)') }}  
+    steps:
+      - name: Notify CI Start
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{secrets.MAIL_USER}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: ▶️ ${{ github.ref_name }} - ${{github.repository}} - Started
+          to: automation@flashbeing.com, simonetesta@flashbeing.com
+          from: Codeworks Automation
+          body: | 
+            Pipeline of
+            repository: ${{github.repository}}
+            branch: ${{ github.ref_name }}
+            commit: ${{ github.sha }}
+            started!
+          convert_markdown: true
+
+      - name: Checkout Noi Automotive Repository
+        uses: actions/checkout@v3
+      
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
+      - name: Install
+        run: yarn install
+      
+      - name: Build
+        run: |
+          yarn build 
+      
+      - name: Test
+        run: |
+          yarn test:ci
+  deploy:
+    name: "Deploy"
+    needs: build_test
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.event.head_commit.message, 'chore(release)') }}
+    steps:
+      - uses: shaunco/ssh-agent@git-repo-mapping
+        with:
+          ssh-private-key: |
+            ${{ secrets.DEPLOY_KEY_NIXOS_CONFIG_YOSAI }}
+            
+          repo-mappings: |
+            github.com/codeworks-infrastructure/nixos-config-yosai
+      
+      - name: Checkout Naru repository
+        if: ${{ contains(github.ref, 'development') || contains(github.ref, 'release') }}
+        uses: actions/checkout@v3
+        with:
+          path: naru
+          repository: codeworks-infrastructure/nixos-config-naru
+          ref: main
+      
+      - name: Checkout Yosai repository
+        if: ${{ contains(github.ref, 'main') || contains(github.ref, 'master') }}
+        uses: actions/checkout@v3
+        with:
+          path: yosai
+          repository: codeworks-infrastructure/nixos-config-yosai
+          ref: main
+      
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Deploy Stage
+        if: ${{ contains(github.ref, 'development') || contains(github.ref, 'release') }}
+        run: |
+          cd naru
+          git config user.email "ci@codeworks.build"
+          git config user.name "Codeworks CI"
+          python ops/change-commit.py -b ${{ github.ref_name }} -s noi-automotive -r webcomp-automotive-noi -c ${{ github.sha }}
+          git add services/noi-automotive.nix
+          git commit -m '${{ github.ref_name }} - ${{github.repository}}'
+          git push origin main
+      
+      - name: Deploy Production
+        if: ${{ contains(github.ref, 'main') || contains(github.ref, 'master') }}
+        run: |
+          cd yosai
+          git config user.email "ci@codeworks.build"
+          git config user.name "Codeworks CI"
+          python ops/change-commit.py -b ${{ github.ref_name }} -s noi-automotive -r webcomp-automotive-noi -c ${{ github.sha }}
+          git add services/noi-automotive.nix
+          git commit -m '${{ github.ref_name }} - ${{github.repository}}'
+          git push origin main
+  
+  notify:
+    name: "Notify"
+    needs: [build_test, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify Build & Test Failure
+        if: always() && needs.build_test.result == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{secrets.MAIL_USER}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: 💥 ${{ github.ref_name }} - ${{github.repository}} - failed
+          to: automation@flashbeing.com, simonetesta@flashbeing.com
+          from: Codeworks Automation
+          body: |
+            Build & Test job of
+            repository: ${{github.repository}}
+            branch: ${{ github.ref_name }}
+            commit: ${{ github.sha }}
+            failed!
+      
+      - name: Notify Deploy Failure
+        if: always() && needs.deploy.result == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{secrets.MAIL_USER}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: 💥 ${{ github.ref_name }} - ${{github.repository}} - failed
+          to: automation@flashbeing.com, simonetesta@flashbeing.com
+          from: Codeworks Automation
+          body: |
+            Deploy job of
+            repository: ${{github.repository}}
+            branch: ${{ github.ref_name }}
+            commit: ${{ github.sha }}
+            failed!
