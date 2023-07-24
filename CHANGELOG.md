@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.2](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v1.1.1...v1.1.2) (2023-07-24)
+
+
+### Bug Fixes
+
+* regenerated yarn lock ([36a7e38](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/36a7e38a4908242835f1e7fb5892d6c75cbd5a92))
+* replaced @nuxtjs/i18n with nuxt-i18n due to incompatibilities with the build system ([4e5b4ba](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/4e5b4ba41dbea672aaac41175104a7b43370c922))
+
 ### [1.1.1](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v1.1.0...v1.1.1) (2023-07-24)
 
 ## 1.1.0 (2023-07-24)
