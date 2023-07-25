@@ -58,12 +58,24 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <div class="results-ct">
         <div
           v-for="(resultItem, index) in resultsList"
-          :key="new Date().getTime() + '-' + index">
-          <ResultCard  
-            :result="resultItem"
-            :index="index"
-            :filter-count="resultItem.isMainCategory ? filterCount.categories[resultItem.id.replace(CATEGORY_PREFIX, '')] : ''"
-            @showResult="showResult"/>
+          :key="new Date().getTime() + '-' + index"
+          @click="showResult(resultItem)"
+        >
+          <div v-if="resultItem.isMainCategory" class="mainCategory">
+            <div class="result clickable">
+              <div class="name">
+                {{
+                  resultItem.name + ' (' + filterCount.categories[resultItem.id.replace(CATEGORY_PREFIX, '')] + ')' || ''
+                }}
+                <div class="line"></div>
+              </div>
+              <div class="metric">{{ resultItem.metric || '' }}</div>
+              <div class="arrow">
+                <Icon name="arrow-right-compressed" />
+              </div>
+            </div>
+          </div>
+          <ResultCard v-else :result="resultItem" :index="index" />
         </div>
         <div v-if="!resultsList.length" class="no-results-notice">
           {{ $t('common.noCompaniesFound') }}
