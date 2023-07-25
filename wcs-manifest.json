@@ -109,7 +109,7 @@
         "label": "Primary color (Hex Code)",
         "required": false,
         "options": {          
-          "default": "#9626ff"
+          "default": "#0000ff"
         }
       },
       {
