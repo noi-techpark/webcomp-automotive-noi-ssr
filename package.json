@@ -1,6 +1,6 @@
 {
-  "name": "noiautomotive-web-component",
-  "version": "1.0.0",
+  "name": "webcomp-automotive-noi",
+  "version": "1.1.2",
   "private": true,
   "scripts": {
     "dev": "nuxt",
@@ -9,10 +9,12 @@
     "generate": "nuxt generate",
     "lint:js": "eslint --ext \".js,.vue\" --ignore-path .gitignore .",
     "lint:style": "stylelint \"**/*.{vue,css}\" --ignore-path .gitignore",
-    "lint": "npm run lint:js && npm run lint:style"
+    "lint": "npm run lint:js && npm run lint:style",
+    "test:ci": "echo no test",
+    "release": "standard-version",
+    "release-production": "chmod 700 ./script/release-production.sh && ./script/release-production.sh"
   },
   "dependencies": {
-    "@nuxtjs/i18n": "^7.3.0",
     "@twind/core": "^1.1.3",
     "@twind/preset-autoprefix": "^1.0.7",
     "@twind/preset-ext": "^1.0.7",
@@ -22,6 +24,7 @@
     "core-js": "^3.15.1",
     "nuxt": "^2.15.7",
     "nuxt-custom-elements": "^1.9.2",
+    "nuxt-i18n": "^6.28.1",
     "vue-html2pdf": "^1.8.0",
     "vue-notification": "^1.3.20",
     "vuelayers": "^0.11.37"
@@ -44,6 +47,7 @@
     "stylelint-config-recommended-scss": "^8.0.0",
     "stylelint-config-recommended-vue": "^1.4.0",
     "vue-svg-loader": "^0.16.0",
-    "vue-template-compiler": "^2.6.14"
+    "vue-template-compiler": "^2.6.14",
+    "standard-version": "^9.5.0"
   }
 }
