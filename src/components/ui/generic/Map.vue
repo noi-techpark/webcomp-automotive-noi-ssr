@@ -115,6 +115,13 @@ export default {
     }
   },
 
+  mounted() {
+    // Add eventListener to update map size and re-render map
+    this.$root.$on('refreshMap', () => {
+        this.$refs.map?.refresh()
+    })
+  },
+
   methods: {
     hasCompanyValidCoordinates(company) {
       return (

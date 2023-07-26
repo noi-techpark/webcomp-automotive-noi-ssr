@@ -1032,12 +1032,16 @@ export default {
 
     showFiltersMenu() {
       this.isFiltersMenuVisible = true
-      this.$emit('setGlobalCSSVariable', '--width-filtermenu', '12rem');
+      this.$emit('setGlobalCSSVariable', '--width-filtermenu', '12rem')
+      // Refresh map size, because altering css-width stretches the canvas of the map. (refreshMap is defined in Map.vue in mounted)
+      this.$root.$emit('refreshMap')
     },
 
     hideFiltersMenu() {
       this.isFiltersMenuVisible = false
-      this.$emit('setGlobalCSSVariable', '--width-filtermenu', '0rem');
+      this.$emit('setGlobalCSSVariable', '--width-filtermenu', '0rem')
+      // Refresh map size, because altering css-width stretches the canvas of the map. (refreshMap is defined in Map.vue in mounted)
+      this.$root.$emit('refreshMap')
     },
 
     async fetchResults() {
