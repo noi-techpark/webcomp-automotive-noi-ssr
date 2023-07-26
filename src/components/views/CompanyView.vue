@@ -351,10 +351,9 @@ export default {
           height: 140px;
 
           & .second-image {
-            @apply h-full w-1/2 bg-white bg-cover bg-center;
+            @apply h-full w-1/2 bg-white bg-cover bg-center mix-blend-multiply;
 
             min-width: 200px;
-            mix-blend-mode: multiply;
           }
 
           & .second-desc {

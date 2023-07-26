@@ -56,7 +56,7 @@ export default {
   @apply flex rounded-lg bg-secondary;
 
   & .card-image {
-    @apply h-48 w-48 rounded-t-lg object-scale-down;
+    @apply h-fit w-48 rounded-lg object-top object-scale-down mix-blend-multiply;
   }
 
   & .card-desc {
