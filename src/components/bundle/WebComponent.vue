@@ -19,6 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       @didFetchCompanies="setCompaniesList"
       @didFilterCompanies="setNewFilteredCompanies"
       @toggleLoading="toggleLoading"
+      @setGlobalCSSVariable="setGlobalCSSVariable"
     />
     <MapView
       :filtered-companies="filteredCompanies"
@@ -195,9 +196,10 @@ export default {
     this.$refs.componentView.style.width = this.width;
     this.$refs.componentView.style.height = this.height;
 
-    this.$refs.componentView.style.setProperty('--primary-color', this.primaryColor);
-    this.$refs.componentView.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
-    this.$refs.componentView.style.setProperty('--primary-color-text', this.getTextColor(this.primaryColor));
+    // Define CSS Variables
+    this.setGlobalCSSVariable('--primary-color', this.primaryColor);
+    this.setGlobalCSSVariable('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
+    this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
     
     if (this.$route?.query?.company) {
       this.requestedCompanyDisplay = this.$route.query.company
@@ -273,6 +275,10 @@ export default {
     },
     toggleLoading(isLoading) {
       this.loading = isLoading || !this.loading;
+    },
+    setGlobalCSSVariable(varname, value) {
+      if(this.$refs.componentView)
+        this.$refs.componentView.style.setProperty(varname, value);
     }
   },
 }

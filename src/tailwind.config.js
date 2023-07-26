@@ -36,7 +36,8 @@ module.exports = {
         box: '20px',
       },
       spacing: {
-        navbar: '25rem',
+        navbar: '35rem',
+        filtermenu: '12rem',
       },
     },
   },
