@@ -1306,7 +1306,7 @@ export default {
   }
 
   & .navbar-filter-hidden, & .filters-menu-hidden {
-    @apply transform -translate-x-filtermenu;
+    @apply -translate-x-filtermenu;
   }
 }
 
@@ -1325,7 +1325,7 @@ export default {
     }
 
     & .filters-menu-hidden {
-      @apply transform translate-x-filtermenu;
+      @apply translate-x-filtermenu;
     }
   }
 }
