@@ -1,0 +1,77 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+
+env:
+  NODE_VERSION: 16.x
+
+jobs:
+  test:
+    # runs-on: ${{ vars.RUNNER_UBUNTU }}
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v1
+      - uses: noi-techpark/github-actions/npm-build@v2
+        with:
+          build-command: npm run generate
+          node-version: ${{env.NODE_VERSION}}
+      - uses: noi-techpark/github-actions/webcomp-test@v2
+        with:
+          origin-test-enabled: false
+
+  deploy-test:
+    runs-on: ${{ vars.RUNNER_UBUNTU }}
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    concurrency: deploy-test
+    env:
+      MATOMO: false
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create .env file
+        uses: noi-techpark/github-actions/env-file@v2
+        env:
+          X_API_ENDPOINT: https://bk.opendatahub.com
+          X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
+
+      - uses: noi-techpark/github-actions/npm-build@v2
+        with:
+          build-command: npm run generate
+          node-version: ${{env.NODE_VERSION}}
+
+      - uses: noi-techpark/github-actions/webcomp-push@v2
+        with:
+          keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_TEST}}
+          version-tag: ${{github.sha}}
+
+  # deploy-prod:
+  #   runs-on: ${{ vars.RUNNER_UBUNTU }}
+  #   if: startsWith(github.ref, 'refs/tags/v')
+  #   needs: test
+  #   concurrency: deploy-prod
+  #   env:
+  #     MATOMO: false
+  #   steps:
+  #     - uses: ${{ vars.ACTION_CHECKOUT }}
+
+  #     - name: Create .env file
+  #       uses: noi-techpark/github-actions/env-file@v2
+  #       env:
+  #         X_API_ENDPOINT: https://bk.opendatahub.com
+  #         X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
+
+  #     - uses: noi-techpark/github-actions/npm-build@v2
+  #       with:
+  #         build-command: npm run generate
+  #         node-version: ${{env.NODE_VERSION}}
+
+  #     - uses: noi-techpark/github-actions/webcomp-push@v2
+  #       with:
+  #         keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_PROD}}
+  #         version-tag: ${{github.ref_name}}
+  #         production: "true"
