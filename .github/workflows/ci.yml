@@ -2,8 +2,6 @@ name: 'Build, Test & Deploy Noi Automotive'
 on:
   push:
     branches:
-      - 'development'
-      - 'release'
       - 'main'
       - 'master'
 
@@ -59,20 +57,10 @@ jobs:
       - uses: shaunco/ssh-agent@git-repo-mapping
         with:
           ssh-private-key: |
-            ${{ secrets.DEPLOY_KEY_NIXOS_CONFIG_NARU }}
             ${{ secrets.DEPLOY_KEY_NIXOS_CONFIG_YOSAI }}
 
           repo-mappings: |
-            github.com/codeworks-infrastructure/nixos-config-naru
             github.com/codeworks-infrastructure/nixos-config-yosai
-
-      - name: Checkout Naru repository
-        if: ${{ contains(github.ref, 'development') || contains(github.ref, 'release') }}
-        uses: actions/checkout@v3
-        with:
-          path: naru
-          repository: codeworks-infrastructure/nixos-config-naru
-          ref: main
 
       - name: Checkout Yosai repository
         if: ${{ contains(github.ref, 'main') || contains(github.ref, 'master') }}
@@ -91,17 +79,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-
-      - name: Deploy Stage
-        if: ${{ contains(github.ref, 'development') || contains(github.ref, 'release') }}
-        run: |
-          cd naru
-          git config user.email "ci@codeworks.build"
-          git config user.name "Codeworks CI"
-          python ops/change-commit.py -b ${{ github.ref_name }} -s noi-automotive -r webcomp-automotive-noi -c ${{ github.sha }}
-          git add services/noi-automotive.nix
-          git commit -m '${{ github.ref_name }} - ${{github.repository}}'
-          git push origin main
 
       - name: Deploy Production
         if: ${{ contains(github.ref, 'main') || contains(github.ref, 'master') }}
