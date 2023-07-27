@@ -67,7 +67,12 @@ const config = {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['nuxt-i18n', '@/shared/vuelayers', 'nuxt-custom-elements'],
+  modules: [
+    'nuxt-i18n',
+    '@/shared/vuelayers',
+    'nuxt-custom-elements',
+    ['nuxt-lazy-load', { directiveOnly: true }], // With directiveOnly, only images with v-lazy-load get lazy-loaded
+  ],
 
   customElements: {
     entries: [

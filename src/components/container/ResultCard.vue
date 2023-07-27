@@ -11,8 +11,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       class="card"
     >
       <img
+        v-lazy-load
         class="card-image"
-        :src="result.image ? getApiEndpoint() + getAvailableImageFormat(result.image.formats) : ''"
+        :data-src="result.image ? getApiEndpoint() + getAvailableImageFormat(result.image.formats) : ''"
         alt=""
       />
       <div class="card-desc">
@@ -56,7 +57,7 @@ export default {
   @apply flex rounded-lg bg-secondary;
 
   & .card-image {
-    @apply h-fit w-48 rounded-lg object-top object-scale-down mix-blend-multiply;
+    @apply h-fit w-48 min-w-[12rem] rounded-lg object-top object-scale-down mix-blend-multiply;
   }
 
   & .card-desc {
