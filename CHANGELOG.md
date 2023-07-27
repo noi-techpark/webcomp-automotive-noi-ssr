@@ -1,10 +1,26 @@
-# Changelog
-
 <!--
 SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 
 SPDX-License-Identifier: CC0-1.0
 -->
+
+## [1.2.0](https://github.com/RaphaelSiller/webcomp-automotive-noi/compare/v1.1.2...v1.2.0) (2023-07-27)
+
+
+### Features
+
+* added lazy-load to images in ResultCard ([9422e56](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/9422e5660c5e667aa1ac9bb696bcdbce504d34be))
+* replaced result with resultCard ([dbb65c5](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/dbb65c5b060ee118dae6d9c1e04a626279b9a4ef))
+* show filterMenu, when width >= 1024 (on mount) ([a13f223](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/a13f223a30f612892ecf9ee86f9f453b3eadf0cf))
+
+
+### Bug Fixes
+
+* adjustments for mainImage ([f8fe20a](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/f8fe20a88d7c2a6034960db6a549cc062e2e55b7))
+* Refresh map size when hiding/showing filter-menu, ([224f7ac](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/224f7ac1fd61b65f18bedf7b3445d91f01185b5c))
+* restored CI script ([fa391a0](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/fa391a057a5c5c51ea1a463d4d970e11c5bd2356))
+* restored docker and deployment files ([35abe80](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/35abe80da0df652cb622f8ba9623e60654ab8902))
+* reuse is ok again ([43893e2](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/43893e2620647009788de343e940ecb10deba129))
 
 ### [1.1.2](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v1.1.1...v1.1.2) (2023-07-24)
 
