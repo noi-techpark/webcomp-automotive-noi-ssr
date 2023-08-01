@@ -217,13 +217,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
     </SlidingContainer>
     <!-- Added style="visbility:hidden", because for some reason. The <vue-html2pdf></vue-html2pdf> was visible. Download Still works-->
-    <PdfExporter
-      ref="pdfExporter"
-      style="visibility: hidden;" 
-      :export-name="data.attributes.name"
-      :companies="[data]"
-      :automatic-download="false"
-    />
+    <client-only>
+      <PdfExporter
+        ref="pdfExporter"
+        style="visibility: hidden;" 
+        :export-name="data.attributes.name"
+        :companies="[data]"
+        :automatic-download="false"
+      />
+    </client-only>
   </RightColumn>
 </template>
 
@@ -231,6 +233,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 import utils from '~/mixins/utils.js'
 
 export default {
+  components: {
+    PdfExporter: () => import("@/components-lazy/tools/PdfExporter"),
+  },
+
   mixins: [utils],
 
   props: {

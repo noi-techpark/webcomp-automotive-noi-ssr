@@ -5,38 +5,41 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <vl-map
-    ref="map"
-    :load-tiles-while-animating="true"
-    :load-tiles-while-interacting="true"
-    data-projection="EPSG:4326"
-    class="map"
-    :class="{ 'is-preview': mode === 'preview' }"
-    @singleclick="clickedMap"
-    @moveend="handleMapMove"
-  >
-    <vl-view
-      :zoom.sync="mapConfig.zoom"
-      :center.sync="mapConfig.center"
-      :rotation.sync="mapConfig.rotation"
-    ></vl-view>
+  <client-only>
+    <vl-map
+      ref="map"
+      :load-tiles-while-animating="true"
+      :load-tiles-while-interacting="true"
+      data-projection="EPSG:4326"
+      class="map"
+      :class="{ 'is-preview': mode === 'preview' }"
+      @singleclick="clickedMap"
+      @moveend="handleMapMove"
+    >
+      <vl-view
+        :zoom.sync="mapConfig.zoom"
+        :center.sync="mapConfig.center"
+        :rotation.sync="mapConfig.rotation"
+      ></vl-view>
 
-    <vl-layer-tile id="osm">
-      <vl-source-osm></vl-source-osm>
-    </vl-layer-tile>
+      <vl-layer-tile id="osm">
+        <vl-source-osm></vl-source-osm>
+      </vl-layer-tile>
 
-      <vl-layer-vector>
-        <vl-source-cluster :distance="45">
-          <vl-source-vector :features="points"></vl-source-vector>
-        </vl-source-cluster>
-        <vl-style-func :factory="markerStyleFunc" />
-    </vl-layer-vector>
-  </vl-map>
+        <vl-layer-vector>
+          <vl-source-cluster :distance="45">
+            <vl-source-vector :function="points || []"></vl-source-vector>
+          </vl-source-cluster>
+          <vl-style-func :factory="markerStyleFunc" />
+      </vl-layer-vector>
+    </vl-map>
+  </client-only>
 </template>
 
 <script>
 import Vue from 'vue'
 import VueLayers from 'vuelayers'
+import 'vuelayers/dist/vuelayers.css' // needs css-loader
 
 import Style from 'ol/style/Style'
 import OlIcon from 'ol/style/Icon'
@@ -90,7 +93,7 @@ export default {
       )
     },
     points() {
-      return this.getCoordinatesOfCompanies(this.companiesWithValidLocationCoordinates);
+      return this.getCoordinatesOfCompanies(this.companiesWithValidLocationCoordinates) || [];
     },
     mapMarker() {
       return new OlIcon({
@@ -152,8 +155,8 @@ export default {
       this.currentZoom = this.$refs.map.getView().getZoom()
     },
 
-    clickedMap(mapData) {
-      const feature = this.$refs.map.forEachFeatureAtPixel(
+    async clickedMap(mapData) {
+      const feature = await this.$refs.map.forEachFeatureAtPixel(
         mapData.pixel,
         function (feature) {
           return feature

@@ -7,8 +7,8 @@ import i18nOptions from './src/plugins/i18n.options'
 const matomo = process.env.MATOMO
 
 const config = {
-  ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
-  target: 'static',
+  ssr: true, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  target: 'server',
 
   srcDir: 'src/',
 
@@ -49,8 +49,11 @@ const config = {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/vue-notification', ssr: false },
+    { src: '@/plugins/vue-notification.client.js', ssr: false },
     '@/plugins/notify',
+    { src: '@/plugins/vue-html2pdf.client.js', ssr: false },
+    { src: '@/plugins/vuelayers.client.js', ssr: false },
+    { src: '@/plugins/ol.client.js', ssr: false },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -100,6 +103,16 @@ const config = {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: ['ol', 'vuelayers'],
+    
+    babel: {
+      presets: [
+        ['@nuxt/babel-preset-app', {
+          useBuiltIns: 'entry',
+        }]
+      ],
+    },
+
     extend: (config) => {
       const svgRule = config.module.rules.find((rule) => rule.test.test('.svg'))
 
