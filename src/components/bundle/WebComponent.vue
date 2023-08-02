@@ -46,19 +46,19 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
-// import { setup } from "@twind/core/core";
-// import autoprefix from "@twind/preset-autoprefix";
-// import ext from "@twind/preset-ext";
-// import tailwind from "@twind/preset-tailwind";
+import { setup } from "@twind/core/core"
+import autoprefix from "@twind/preset-autoprefix"
+import ext from "@twind/preset-ext"
+import tailwind from "@twind/preset-tailwind"
 
 import vueI18n from '@/plugins/vueI18n'
 import 'tailwindcss/tailwind.css'
 import utils from '~/mixins/utils.js'
 
 // Setup twind
-// setup({
-//   presets: [autoprefix(), ext(), tailwind()],
-// });
+setup({
+  presets: [autoprefix(), ext(), tailwind()],
+});
 
 export default {
   i18n: vueI18n,

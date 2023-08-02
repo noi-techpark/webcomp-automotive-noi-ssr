@@ -103,8 +103,11 @@ const config = {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ['ol', 'vuelayers'],
-    
+    transpile: ['ol', 'vuelayers', 'twind'],
+    extractCSS: true,
+    tailwindcss: {
+      viewer: false, // disabled because it causes `Error: Cannot find module 'tailwindcss/resolveConfig'`, fixed in https://github.com/nuxt-community/tailwindcss-module/pull/303
+    },
     babel: {
       presets: [
         ['@nuxt/babel-preset-app', {
