@@ -4,7 +4,8 @@
 
 import i18nOptions from './src/plugins/i18n.options'
 
-const matomo = process.env.MATOMO
+const matomo =
+  !process.env.DISABLED_MATOMO || process.env.DISABLED_MATOMO === 'false'
 
 const config = {
   ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
@@ -174,7 +175,7 @@ const config = {
 
 // set env var 'MATOMO = true' to enable matomo for websites
 // keep deactivated for webcomponents
-if (matomo && matomo === 'true') {
+if (matomo) {
   /* eslint-disable no-console */
   console.log('MATOMO ENABLED')
   console.log(matomo)
