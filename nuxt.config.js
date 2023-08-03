@@ -114,6 +114,7 @@ const config = {
       viewer: false, // disabled because it causes `Error: Cannot find module 'tailwindcss/resolveConfig'`, fixed in https://github.com/nuxt-community/tailwindcss-module/pull/303
     },
     babel: {
+      compact: process.env.NODE_ENV === 'production',
       presets: [
         ['@nuxt/babel-preset-app', {
           useBuiltIns: 'entry',
