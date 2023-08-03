@@ -16,7 +16,7 @@ jobs:
         uses: fsfe/reuse-action@v1
       - uses: noi-techpark/github-actions/yarn-build@v2
         with:
-          build-command: yarn generate
+          build-command: yarn build
           node-version: ${{env.NODE_VERSION}}
       - uses: noi-techpark/github-actions/webcomp-test@v2
         with:
