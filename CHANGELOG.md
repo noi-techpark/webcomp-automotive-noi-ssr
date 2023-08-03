@@ -22,6 +22,17 @@ SPDX-License-Identifier: CC0-1.0
 * restored docker and deployment files ([35abe80](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/35abe80da0df652cb622f8ba9623e60654ab8902))
 * reuse is ok again ([43893e2](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/43893e2620647009788de343e940ecb10deba129))
 
+### [1.1.4](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v1.1.3...v1.1.4) (2023-07-27)
+
+### [1.1.3](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v1.1.2...v1.1.3) (2023-07-27)
+
+
+### Bug Fixes
+
+* replaced env MATOMO variable with DISABLED_MATOMO to fix deploy issues ([447c1cc](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/447c1cce1fa164cf60b9846e7cfebeb3f0c27608))
+* restored CI script ([fa391a0](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/fa391a057a5c5c51ea1a463d4d970e11c5bd2356))
+* restored docker and deployment files ([35abe80](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/35abe80da0df652cb622f8ba9623e60654ab8902))
+
 ### [1.1.2](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v1.1.1...v1.1.2) (2023-07-24)
 
 
