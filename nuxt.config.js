@@ -7,10 +7,12 @@ import i18nOptions from './src/plugins/i18n.options'
 const matomo =
   !process.env.DISABLED_MATOMO || process.env.DISABLED_MATOMO === 'false'
 
-const targetConfig = process.env.TARGET_CONFIG === null ? 'server' : 'static';
+const targetConfig = !process.env.TARGET_CONFIG ? 'server' : process.env.TARGET_CONFIG;
+
+console.log(targetConfig);
 
 const config = {
-  ssr: targetConfig === 'server', // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  ssr: targetConfig, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
   target: targetConfig,
 
   srcDir: 'src/',

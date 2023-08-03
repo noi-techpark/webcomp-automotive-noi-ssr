@@ -6,6 +6,10 @@ on:
 
 env:
   NODE_VERSION: 16.x
+  PROJECT_NAME: automotive-noi
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}
+  DOCKER_TAG: ${{ github.sha }}
+  AWS_REGION: "eu-west-1"
 
 jobs:
   test:
@@ -22,32 +26,76 @@ jobs:
         with:
           origin-test-enabled: false
 
-  deploy-test:
+  deploy-website-test:
     runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
     needs: test
-    concurrency: deploy-test
-    env:
-      DISABLED_MATOMO: true
-      TARGET_CONFIG: 'static'
+    concurrency: deploy-website-test
     steps:
       - uses: actions/checkout@v3
 
       - name: Create .env file
         uses: noi-techpark/github-actions/env-file@v2
         env:
+          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          X_SERVER_PORT: 1013
+
+          X_DISABLED_MATOMO: false
+          X_TARGET_CONFIG: 'server'
+
           X_API_ENDPOINT: https://bk.opendatahub.com
           X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
 
       - uses: noi-techpark/github-actions/yarn-build@v2
         with:
-          build-command: yarn generate
+          build-command: yarn build
           node-version: ${{env.NODE_VERSION}}
 
-      - uses: noi-techpark/github-actions/webcomp-push@v2
+      - name: Build and push
+        uses: noi-techpark/github-actions/docker-build-and-push@v2
         with:
-          keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_TEST}}
-          version-tag: ${{github.sha}}
+          docker-username: ${{ github.actor }}
+          docker-password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy application
+        uses: noi-techpark/github-actions/docker-deploy@v2
+        with:
+          hosts: 'test'
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          docker-username: 'noi-techpark-bot'
+          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          project-name: ${{ env.PROJECT_NAME }}
+
+  # WEBCOMP DISABLED FOR NOW, BECAUSE SSR BUILD IS PREFERRED
+
+  # deploy-test:
+  #   runs-on: ubuntu-22.04
+  #   if: github.ref == 'refs/heads/main'
+  #   needs: test
+  #   concurrency: deploy-test
+  #   env:
+  #     DISABLED_MATOMO: true
+  #     TARGET_CONFIG: 'static'
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     - name: Create .env file
+  #       uses: noi-techpark/github-actions/env-file@v2
+  #       env:
+  #         X_API_ENDPOINT: https://bk.opendatahub.com
+  #         X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
+
+  #     - uses: noi-techpark/github-actions/yarn-build@v2
+  #       with:
+  #         build-command: yarn generate
+  #         node-version: ${{env.NODE_VERSION}}
+
+  #     - uses: noi-techpark/github-actions/webcomp-push@v2
+  #       with:
+  #         keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_TEST}}
+  #         version-tag: ${{github.sha}}
 
   # deploy-prod:
   #   runs-on: ${{ vars.RUNNER_UBUNTU }}
