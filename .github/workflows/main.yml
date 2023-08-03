@@ -29,6 +29,7 @@ jobs:
     concurrency: deploy-test
     env:
       DISABLED_MATOMO: true
+      TARGET_CONFIG: 'static'
     steps:
       - uses: actions/checkout@v3
 
