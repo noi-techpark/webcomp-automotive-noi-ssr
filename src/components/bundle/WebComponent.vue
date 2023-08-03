@@ -19,6 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       @didFetchCompanies="setCompaniesList"
       @didFilterCompanies="setNewFilteredCompanies"
       @toggleLoading="toggleLoading"
+      @setGlobalCSSVariable="setGlobalCSSVariable"
     />
     <MapView
       :filtered-companies="filteredCompanies"
@@ -45,10 +46,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
-import { setup } from "@twind/core/core";
-import autoprefix from "@twind/preset-autoprefix";
-import ext from "@twind/preset-ext";
-import tailwind from "@twind/preset-tailwind";
+import { setup } from "@twind/core/core"
+import autoprefix from "@twind/preset-autoprefix"
+import ext from "@twind/preset-ext"
+import tailwind from "@twind/preset-tailwind"
 
 import vueI18n from '@/plugins/vueI18n'
 import 'tailwindcss/tailwind.css'
@@ -195,9 +196,10 @@ export default {
     this.$refs.componentView.style.width = this.width;
     this.$refs.componentView.style.height = this.height;
 
-    this.$refs.componentView.style.setProperty('--primary-color', this.primaryColor);
-    this.$refs.componentView.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
-    this.$refs.componentView.style.setProperty('--primary-color-text', this.getTextColor(this.primaryColor));
+    // Define CSS Variables
+    this.setGlobalCSSVariable('--primary-color', this.primaryColor);
+    this.setGlobalCSSVariable('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
+    this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
     
     if (this.$route?.query?.company) {
       this.requestedCompanyDisplay = this.$route.query.company
@@ -273,6 +275,10 @@ export default {
     },
     toggleLoading(isLoading) {
       this.loading = isLoading || !this.loading;
+    },
+    setGlobalCSSVariable(varname, value) {
+      if(this.$refs.componentView)
+        this.$refs.componentView.style.setProperty(varname, value);
     }
   },
 }
@@ -283,7 +289,7 @@ export default {
 @import url('~assets/css/main.css');
 
 .component-view {
-  @apply relative overflow-hidden;
+  @apply relative overflow-hidden w-full h-full;
   
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   

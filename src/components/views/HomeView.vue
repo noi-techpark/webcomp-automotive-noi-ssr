@@ -26,11 +26,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <!-- TODO: add here optional top description -->
             </div>
             <div class="map-ct clickable" @click="showMapView()">
+              <client-only>
               <Map
-                mode="preview"
-                :visible-companies="filteredCompanies"
-                class="map"
-              />
+                  mode="preview"
+                  :visible-companies="filteredCompanies"
+                  class="map"
+                />
+              </client-only>
             </div>
           </div>
         </div>
@@ -66,6 +68,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <script>
 export default {
+  components: {
+    Map: () => import("@/components-lazy/ui/generic/Map"),
+  },
+  
   props: {
     companiesList: {
       type: Array,

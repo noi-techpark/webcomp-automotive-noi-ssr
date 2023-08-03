@@ -1,0 +1,12 @@
+version: "3.4"
+services:
+  app:
+    image: ${DOCKER_IMAGE}:${DOCKER_TAG}
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+    ports:
+      - "${SERVER_PORT}:3000"

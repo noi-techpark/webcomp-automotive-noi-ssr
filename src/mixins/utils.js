@@ -180,6 +180,24 @@ export default {
         const BB = ((B.toString(16).length===1)?"0"+B.toString(16):B.toString(16));
     
         return "#"+RR+GG+BB;
+    },
+    truncate(str, length, useWordBoundary ){
+      if (!str) { return ""; }
+      if (str.length <= length) { return str; }
+      const subString = str.slice(0, length-1); // the original check
+      return (useWordBoundary 
+        ? subString.slice(0, subString.lastIndexOf(" ")) 
+        : subString) + "…";
+    },
+    /*
+     * returns true, when width (in px) of component-view is greater or equal than 768
+     */
+    landscapeMode(minWidth) {
+      /*
+       * NOTE: To change the value for the css container queries, you'll need to configure tailwind.config.js. 
+       * For more info, read this: https://v2.tailwindcss.com/docs/breakpoints
+       */
+      return document.getElementsByClassName('component-view')[0].clientWidth >= (minWidth || 768)
     }
   },
 }

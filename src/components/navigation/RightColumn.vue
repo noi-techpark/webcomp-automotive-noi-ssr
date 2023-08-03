@@ -23,8 +23,9 @@ export default {
 
 <style lang="postcss" scoped>
 .right-column {
-  @apply absolute top-0 left-navbar right-0 pointer-events-none h-full;
+  @apply absolute top-0 right-0 pointer-events-none h-full;
 
+  left: calc(theme('space.navbar') + var(--width-filtermenu));
   &.visible {
     @apply pointer-events-auto;
   }
