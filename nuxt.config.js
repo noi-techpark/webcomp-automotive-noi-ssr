@@ -8,8 +8,8 @@ const matomo =
   !process.env.DISABLED_MATOMO || process.env.DISABLED_MATOMO === 'false'
 
 const config = {
-  ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
-  target: 'static',
+  ssr: true, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  target: 'server',
 
   srcDir: 'src/',
 
@@ -50,8 +50,11 @@ const config = {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/vue-notification', ssr: false },
+    { src: '@/plugins/vue-notification.client.js', ssr: false },
     '@/plugins/notify',
+    { src: '@/plugins/vue-html2pdf.client.js', ssr: false },
+    { src: '@/plugins/vuelayers.client.js', ssr: false },
+    { src: '@/plugins/ol.client.js', ssr: false },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -68,7 +71,12 @@ const config = {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['nuxt-i18n', '@/shared/vuelayers', 'nuxt-custom-elements'],
+  modules: [
+    'nuxt-i18n',
+    '@/shared/vuelayers',
+    'nuxt-custom-elements',
+    ['nuxt-lazy-load', { directiveOnly: true }], // With directiveOnly, only images with v-lazy-load get lazy-loaded
+  ],
 
   customElements: {
     entries: [
@@ -96,6 +104,19 @@ const config = {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: ['ol', 'vuelayers', 'twind'],
+    extractCSS: true,
+    tailwindcss: {
+      viewer: false, // disabled because it causes `Error: Cannot find module 'tailwindcss/resolveConfig'`, fixed in https://github.com/nuxt-community/tailwindcss-module/pull/303
+    },
+    babel: {
+      presets: [
+        ['@nuxt/babel-preset-app', {
+          useBuiltIns: 'entry',
+        }]
+      ],
+    },
+
     extend: (config) => {
       const svgRule = config.module.rules.find((rule) => rule.test.test('.svg'))
 

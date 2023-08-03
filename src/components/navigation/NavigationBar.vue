@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div class="navigation-ct">
-    <div class="navigation-bar">
+    <div class="navigation-bar" :class="{ 'navbar-filter-hidden': !isFiltersMenuVisible }">
       <div v-if="displayAsWebsite" class="lang-selector">
         <Select
           :value="$i18n.locale"
@@ -57,39 +57,32 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
       <div class="results-ct">
         <div
-          v-for="(result, index) in resultsList"
+          v-for="(resultItem, index) in resultsList"
           :key="new Date().getTime() + '-' + index"
-          class="result clickable"
-          :class="{
-            'is-main-category': result.isMainCategory,
-            'is-placeholder': result.isPlaceholder,
-          }"
-          @click="showResult(result)"
+          @click="showResult(resultItem)"
         >
-          <div class="name">
-            {{
-              result.name +
-                (result.isMainCategory
-                  ? ' (' +
-                    filterCount.categories[
-                      result.id.replace(CATEGORY_PREFIX, '')
-                    ] +
-                    ')'
-                  : '') || ''
-            }}
-            <div class="line"></div>
+          <div v-if="resultItem.isMainCategory" class="mainCategory">
+            <div class="result clickable">
+              <div class="name">
+                {{
+                  resultItem.name + ' (' + filterCount.categories[resultItem.id.replace(CATEGORY_PREFIX, '')] + ')' || ''
+                }}
+                <div class="line"></div>
+              </div>
+              <div class="metric">{{ resultItem.metric || '' }}</div>
+              <div class="arrow">
+                <Icon name="arrow-right-compressed" />
+              </div>
+            </div>
           </div>
-          <div class="metric">{{ result.metric || '' }}</div>
-          <div class="arrow">
-            <Icon name="arrow-right-compressed" />
-          </div>
+          <ResultCard v-else :result="resultItem" :index="index" />
         </div>
         <div v-if="!resultsList.length" class="no-results-notice">
           {{ $t('common.noCompaniesFound') }}
         </div>
       </div>
     </div>
-    <div class="filters-menu" :class="{ visible: isFiltersMenuVisible }">
+    <div ref="filtersmenu" class="filters-menu" :class="{ 'filters-menu-hidden': !isFiltersMenuVisible }">
       <div class="close" @click="hideFiltersMenu">
         <div class="inner">
           <Icon name="cross" class="ico" />
@@ -224,8 +217,8 @@ export default {
       filters: {},
       searchValue: '',
       mainCategory: null,
-      isFiltersMenuVisible: false,
-      areAdvancedFiltersVisible: false,
+      isFiltersMenuVisible: true,
+      areAdvancedFiltersVisible: true,
       fetchedData: null,
     }
   },
@@ -575,9 +568,9 @@ export default {
               ' ' +
               r.attributes.contactPerson.personName +
               ' ' +
-              r.attributes.companyAddressStreet +
+              r.attributes.companyAddressStreet.name +
               ' ' +
-              r.attributes.companyAddressStreet.cap
+              r.attributes.companyAddressStreet.city
             )
               .toLowerCase()
               .includes(cleanSearchVal)
@@ -761,7 +754,6 @@ export default {
           )
         }
       }
-
       return results
     },
 
@@ -778,7 +770,11 @@ export default {
             : 0,
           r.attributes.companyLocation
             ? Number(r.attributes.companyLocation.lng)
-            : 0
+            : 0,
+            r.attributes?.mainImage?.data?.attributes,
+            r.attributes?.companyDescription,
+            r.attributes?.companyAddressStreet?.city,
+            r.attributes?.specialization,
         )
       )
 
@@ -928,12 +924,6 @@ export default {
     mappedResults(newCompaniesList) {
       this.$emit('didFilterCompanies', newCompaniesList)
     },
-
-    visibleCompany(newVisibleCompany) {
-      if (newVisibleCompany && this.isFiltersMenuVisible) {
-        this.hideFiltersMenu()
-      }
-    },
   },
 
   mounted() {
@@ -948,6 +938,11 @@ export default {
             category.id === this.CATEGORY_PREFIX + this.defaultCategoryValidated
         )
       )
+    }
+    if (this.landscapeMode(1024)) {
+      this.showFiltersMenu()
+    } else {
+      this.hideFiltersMenu()
     }
   },
 
@@ -972,7 +967,11 @@ export default {
       metric,
       isMainCategory,
       lat,
-      lng
+      lng,
+      image,
+      companyDescription,
+      city,
+      specialization,
     ) {
       return {
         isPlaceholder,
@@ -984,6 +983,10 @@ export default {
           lat,
           lng,
         },
+        image,
+        companyDescription,
+        city,
+        specialization
       }
     },
 
@@ -1004,13 +1007,11 @@ export default {
     backToCategories() {
       this.mainCategory = null
       this.searchValue = ''
-      this.hideFiltersMenu()
       this.didReachHome()
     },
 
     onCompanyClick(companyId) {
       const companyData = this.fetchedData.find((c) => c.id === companyId)
-      this.hideFiltersMenu()
       this.$emit('onCompanyClick', companyData)
     },
 
@@ -1023,15 +1024,24 @@ export default {
     },
 
     toggleFiltersMenu() {
-      this.isFiltersMenuVisible = !this.isFiltersMenuVisible
+      if (this.isFiltersMenuVisible)
+        this.hideFiltersMenu();
+      else
+        this.showFiltersMenu();
     },
 
     showFiltersMenu() {
       this.isFiltersMenuVisible = true
+      this.$emit('setGlobalCSSVariable', '--width-filtermenu', '12rem')
+      // Refresh map size, because altering css-width stretches the canvas of the map. (refreshMap is defined in Map.vue in mounted)
+      this.$root.$emit('refreshMap')
     },
 
     hideFiltersMenu() {
       this.isFiltersMenuVisible = false
+      this.$emit('setGlobalCSSVariable', '--width-filtermenu', '0rem')
+      // Refresh map size, because altering css-width stretches the canvas of the map. (refreshMap is defined in Map.vue in mounted)
+      this.$root.$emit('refreshMap')
     },
 
     async fetchResults() {
@@ -1072,7 +1082,7 @@ export default {
 
 .navigation-ct {
   & .navigation-bar {
-    @apply absolute w-navbar top-0 left-0 bottom-0 bg-white;
+    @apply absolute w-navbar top-0 left-filtermenu bottom-0 bg-white transition duration-300;
 
     z-index: 2;
 
@@ -1231,11 +1241,9 @@ export default {
   }
 
   & .filters-menu {
-    @apply absolute top-0 left-navbar bottom-0 transition duration-300 bg-secondary px-5;
+    @apply absolute w-filtermenu top-0 bottom-0 bg-secondary px-5 drop-shadow-xl transition duration-300;
 
-    width: 15rem;
     z-index: 1;
-    transform: translateX(-100%);
 
     & .top-title {
       @apply text-lg text-black uppercase my-5;
@@ -1258,7 +1266,7 @@ export default {
     }
 
     & .list {
-      @apply absolute overflow-y-scroll top-20 bottom-0 left-0 right-0 px-5;
+      @apply absolute overflow-y-auto top-20 bottom-0 left-0 right-0 px-5;
 
       & .select {
         @apply mb-4;
@@ -1296,21 +1304,28 @@ export default {
       @apply transform-none;
     }
   }
+
+  & .navbar-filter-hidden, & .filters-menu-hidden {
+    @apply -translate-x-filtermenu;
+  }
 }
 
 @container noi-automotive-component-view (max-width: theme('screens.md')) {
   .navigation-ct {
     & .navigation-bar {
-      @apply w-full;
-
+      @apply w-full left-0 transform-none;
+      
       bottom: 40cqh;
     }
 
     & .filters-menu {
-      @apply left-0;
+      @apply right-0;
 
-      z-index: 3;
-      bottom: 40cqh;
+      z-index: 11;
+    }
+
+    & .filters-menu-hidden {
+      @apply translate-x-filtermenu;
     }
   }
 }

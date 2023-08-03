@@ -7,11 +7,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <section>
     <p class="p-6">{{ isPdfReady ? 'Pdf downloaded' : 'Generating pdf...' }}</p>
-    <PdfExporter
-      :export-name="'All companies - ' + lang"
-      :companies="companies"
-      @hasGeneratedMultiPagePdf="didGeneratePdf"
-    />
+    <client-only>
+      <PdfExporter
+        :export-name="'All companies - ' + lang"
+        :companies="companies"
+        @hasGeneratedMultiPagePdf="didGeneratePdf"
+      />
+    </client-only>
   </section>
 </template>
 
@@ -19,6 +21,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 import utils from '~/mixins/utils.js'
 
 export default {
+  components: {
+    PdfExporter: () => import("@/components-lazy/tools/PdfExporter"),
+  },
+  
   mixins: [utils],
 
   data() {

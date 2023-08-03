@@ -27,7 +27,8 @@
     "agriAutomation": "Agri-Automation",
     "ecosystemAutomotive": "Ecosystem Automotive",
     "contactPerson": "Kontaktperson",
-    "downloadPdf": "PDF herunterladen"
+    "downloadPdf": "PDF herunterladen",
+    "privacyPolicy": "Privacy & Cookie Policy"
   },
   "filters": {
     "searchPlaceholder": "Unternehmen, keyword...",
