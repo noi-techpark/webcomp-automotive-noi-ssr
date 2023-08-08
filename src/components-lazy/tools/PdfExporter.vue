@@ -98,136 +98,135 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   <!-- prettier-ignore -->
                   <p class="text">{{ removeUnnecessaryNewlines(data.attributes.companyDescription) }}</p>
 
-                    <h2>{{ $t('common.productsAndServices') }}</h2>
-                    <!-- prettier-ignore -->
-                    <p class="text">{{ removeUnnecessaryNewlines(data.attributes.productsAndServices) }}</p>
+                  <h2>{{ $t('common.productsAndServices') }}</h2>
+                  <!-- prettier-ignore -->
+                  <p class="text">{{ removeUnnecessaryNewlines(data.attributes.productsAndServices) }}</p>
 
-                    <h2>{{ $t('common.references') }}</h2>
-                    <!-- prettier-ignore -->
-                    <p class="text">{{ removeUnnecessaryNewlines(data.attributes.references) }}</p>
-                  </div>
+                  <h2>{{ $t('common.references') }}</h2>
+                  <!-- prettier-ignore -->
+                  <p class="text">{{ removeUnnecessaryNewlines(data.attributes.references) }}</p>
                 </div>
               </div>
             </div>
-            <div class="footer">
-              <div class="column primary">
-                <p class="uppercase">
-                  {{ data.attributes.legalName }}
-                </p>
-                <p v-if="data.attributes.companyAddressStreet">
-                  {{ data.attributes.companyAddressStreet.name }}
-                </p>
-                <p
-                  v-if="
-                    data.attributes.companyLocation &&
-                    data.attributes.companyAddressStreet
-                  "
+          </div>
+          <div class="footer">
+            <div class="column primary">
+              <p class="uppercase">
+                {{ data.attributes.legalName }}
+              </p>
+              <p v-if="data.attributes.companyAddressStreet">
+                {{ data.attributes.companyAddressStreet.name }}
+              </p>
+              <p
+                v-if="
+                  data.attributes.companyLocation &&
+                  data.attributes.companyAddressStreet
+                "
+              >
+                {{ data.attributes.companyLocation.cap }}
+                {{ data.attributes.companyAddressStreet.city }}
+              </p>
+              <p v-if="data.attributes.companyContact">
+                <a :href="'tel:' + data.attributes.companyContact.phoneNumber"
+                  >T {{ data.attributes.companyContact.phoneNumber }}</a
                 >
-                  {{ data.attributes.companyLocation.cap }}
-                  {{ data.attributes.companyAddressStreet.city }}
-                </p>
-                <p v-if="data.attributes.companyContact">
-                  <a :href="'tel:' + data.attributes.companyContact.phoneNumber"
-                    >T {{ data.attributes.companyContact.phoneNumber }}</a
-                  >
-                </p>
-                <p v-if="data.attributes.companyContact">
-                  <a :href="'mailto:' + data.attributes.companyContact.email">{{
-                    data.attributes.companyContact.email
-                  }}</a>
-                </p>
-                <p v-if="data.attributes.companyContact">
-                  <a
-                    :href="
-                      appendPrefixToUrl(data.attributes.companyContact.website)
-                    "
-                    >{{ data.attributes.companyContact.website }}</a
-                  >
-                </p>
-              </div>
-              <div class="column second">
-                <p v-if="data.attributes.companyContact" class="mb-6">
-                  {{ $t('common.contact') }}:
-                  <a :href="'mailto:' + data.attributes.contactPerson.email">{{
-                    data.attributes.contactPerson.personName
-                  }}</a>
-                  <span v-if="data.attributes.contactPerson.role"
-                    >({{ data.attributes.contactPerson.role }})</span
-                  >
-                </p>
-                <p
-                  v-if="
-                    data.attributes.metrics && data.attributes.metrics.turnover
+              </p>
+              <p v-if="data.attributes.companyContact">
+                <a :href="'mailto:' + data.attributes.companyContact.email">{{
+                  data.attributes.companyContact.email
+                }}</a>
+              </p>
+              <p v-if="data.attributes.companyContact">
+                <a
+                  :href="
+                    appendPrefixToUrl(data.attributes.companyContact.website)
                   "
+                  >{{ data.attributes.companyContact.website }}</a
                 >
-                  {{ $t('filters.turnover') }}:
-                  {{
-                    formatWithThousandSeparator(data.attributes.metrics.turnover)
-                  }}
-                  €
-                </p>
-                <p
-                  v-if="
-                    data.attributes.metrics &&
-                    data.attributes.metrics.employeeNumber
-                  "
-                >
-                  {{ $t('common.employees') }}:
-                  {{ data.attributes.metrics.employeeNumber }}
-                </p>
-                <p
-                  v-if="
-                    data.attributes.metrics && data.attributes.metrics.exportRatio
-                  "
-                >
-                  {{ $t('common.exportRatio') }}:
-                  {{ data.attributes.metrics.exportRatio }}%
-                </p>
-                <p
-                  v-if="
-                    data.attributes.metrics && data.attributes.metrics.rAndDRatio
-                  "
-                >
-                  {{ $t('common.researchAndDevelopmentRatio') }}:
-                  {{ data.attributes.metrics.rAndDRatio }}%
-                </p>
-                <p
-                  v-if="
-                    data.attributes.certifications &&
-                    getEnabledCertifications(data).length
-                  "
-                >
-                  {{ $t('common.certifications') }}:
-                  {{ getEnabledCertifications(data).join(', ') }}
-                </p>
-              </div>
-              <div class="column logo-ct">
-                <div
-                  class="logo"
-                  :style="{
-                    backgroundImage:
-                      data.attributes.logo &&
-                      data.attributes.logo.data &&
-                      data.attributes.logo.data.attributes.formats
-                        ? 'url(' +
-                          getApiEndpoint() +
-                          getAvailableImageFormat(
-                            data.attributes.logo.data.attributes.formats
-                          ) +
-                          ')'
-                        : undefined,
-                  }"
-                ></div>
-              </div>
+              </p>
             </div>
-            <div class="page-num">
-              {{ startCompanyNumber + index + 1 }}
+            <div class="column second">
+              <p v-if="data.attributes.companyContact" class="mb-6">
+                {{ $t('common.contact') }}:
+                <a :href="'mailto:' + data.attributes.contactPerson.email">{{
+                  data.attributes.contactPerson.personName
+                }}</a>
+                <span v-if="data.attributes.contactPerson.role"
+                  >({{ data.attributes.contactPerson.role }})</span
+                >
+              </p>
+              <p
+                v-if="
+                  data.attributes.metrics && data.attributes.metrics.turnover
+                "
+              >
+                {{ $t('filters.turnover') }}:
+                {{
+                  formatWithThousandSeparator(data.attributes.metrics.turnover)
+                }}
+                €
+              </p>
+              <p
+                v-if="
+                  data.attributes.metrics &&
+                  data.attributes.metrics.employeeNumber
+                "
+              >
+                {{ $t('common.employees') }}:
+                {{ data.attributes.metrics.employeeNumber }}
+              </p>
+              <p
+                v-if="
+                  data.attributes.metrics && data.attributes.metrics.exportRatio
+                "
+              >
+                {{ $t('common.exportRatio') }}:
+                {{ data.attributes.metrics.exportRatio }}%
+              </p>
+              <p
+                v-if="
+                  data.attributes.metrics && data.attributes.metrics.rAndDRatio
+                "
+              >
+                {{ $t('common.researchAndDevelopmentRatio') }}:
+                {{ data.attributes.metrics.rAndDRatio }}%
+              </p>
+              <p
+                v-if="
+                  data.attributes.certifications &&
+                  getEnabledCertifications(data).length
+                "
+              >
+                {{ $t('common.certifications') }}:
+                {{ getEnabledCertifications(data).join(', ') }}
+              </p>
+            </div>
+            <div class="column logo-ct">
+              <div
+                class="logo"
+                :style="{
+                  backgroundImage:
+                    data.attributes.logo &&
+                    data.attributes.logo.data &&
+                    data.attributes.logo.data.attributes.formats
+                      ? 'url(' +
+                        getApiEndpoint() +
+                        getAvailableImageFormat(
+                          data.attributes.logo.data.attributes.formats
+                        ) +
+                        ')'
+                      : undefined,
+                }"
+              ></div>
             </div>
           </div>
-        </section>
-      </vue-html2pdf>
-    </span>
-  </ClientOnly>
+          <div class="page-num">
+            {{ startCompanyNumber + index + 1 }}
+          </div>
+        </div>
+      </section>
+    </vue-html2pdf>
+  </span>
 </template>
 
 <script>
@@ -235,7 +234,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 import utils from '~/mixins/utils.js'
 
 export default {
-
   mixins: [utils],
 
   props: {

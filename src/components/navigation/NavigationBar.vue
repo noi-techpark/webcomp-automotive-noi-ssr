@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <div class="navigation-ct">
     <div class="navigation-bar" :class="{ 'navbar-filter-hidden': !isFiltersMenuVisible }">
-      <div v-if="displayAsWebsite" class="lang-selector">
+      <div class="lang-selector">
         <Select
           :value="$i18n.locale"
           :options="availableLanguages"

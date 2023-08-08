@@ -192,12 +192,19 @@ export default {
     /*
      * returns true, when width (in px) of component-view is greater or equal than 768
      */
-    landscapeMode(minWidth) {
+    landscapeMode(minWidth = 768) {
       /*
        * NOTE: To change the value for the css container queries, you'll need to configure tailwind.config.js. 
        * For more info, read this: https://v2.tailwindcss.com/docs/breakpoints
        */
-      return document.getElementsByClassName('component-view')[0].clientWidth >= (minWidth || 768)
+      const rootElement1 = this.$root.$el
+      const rootElement2 = document.getElementsByClassName('component-view')[0]
+      const width = rootElement1?.clientWidth || rootElement2?.clientWidth
+      
+      if (width)
+        return width >= minWidth
+      else
+        return false
     }
   },
 }

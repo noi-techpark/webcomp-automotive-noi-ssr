@@ -201,7 +201,7 @@ export default {
     this.setGlobalCSSVariable('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
     this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
     
-    if (this.$route?.params?.companyName) {
+    if (this.displayAsWebsite && this.$route?.params?.companyName) {
       this.requestedCompanyDisplay = this.$route.params.companyName
     }
     this.loading = false
@@ -246,8 +246,10 @@ export default {
     },
 
     historyPush(path) {
-      const encodedPath = encodeURI(path)
-      history.pushState(encodedPath, "", encodedPath)
+      if(this.displayAsWebsite) {
+        const encodedPath = encodeURI(path)
+        history.pushState('', '', encodedPath)
+      }
     },
 
     showHome() {

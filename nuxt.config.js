@@ -12,7 +12,7 @@ const targetConfig = !process.env.TARGET_CONFIG ? 'server' : process.env.TARGET_
 console.log(targetConfig);
 
 const config = {
-  ssr: targetConfig, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  ssr: targetConfig === 'server', // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
   target: targetConfig,
 
   srcDir: 'src/',
@@ -98,6 +98,12 @@ const config = {
                 customLinks: '[]',
               },
             }, */
+          },{
+            name: 'CompanieMapping',
+            path: '@/components-lazy/ui/generic/Map',
+          },{
+            name: 'PdfExport',
+            path: '@/components-lazy/tools/PdfExporter',
           },
         ],
       },
@@ -109,7 +115,7 @@ const config = {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: ['ol', 'vuelayers', 'twind'],
-    extractCSS: true,
+    extractCSS: targetConfig === 'server',
     tailwindcss: {
       viewer: false, // disabled because it causes `Error: Cannot find module 'tailwindcss/resolveConfig'`, fixed in https://github.com/nuxt-community/tailwindcss-module/pull/303
     },
