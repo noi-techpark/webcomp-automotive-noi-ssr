@@ -50,10 +50,14 @@ import { setup } from "@twind/core/core"
 import autoprefix from "@twind/preset-autoprefix"
 import ext from "@twind/preset-ext"
 import tailwind from "@twind/preset-tailwind"
+import resolveConfig from 'tailwindcss/resolveConfig'
 
 import vueI18n from '@/plugins/vueI18n'
 import 'tailwindcss/tailwind.css'
 import utils from '~/mixins/utils.js'
+
+import tailwindConfig from '~/tailwind.config.js'
+const twConfig = resolveConfig(tailwindConfig)
 
 // Setup twind
 setup({
@@ -68,6 +72,7 @@ export default {
     return {
       // Provide primary-color for Map.vue
       'primary-color': this.primaryColor,
+      'tailwind-config': twConfig,
     }
   },
 

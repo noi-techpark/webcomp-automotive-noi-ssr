@@ -25,7 +25,7 @@ export default {
 .right-column {
   @apply absolute top-0 right-0 pointer-events-none h-full;
 
-  left: calc(theme('space.navbar') + var(--width-filtermenu));
+  left: calc(theme('space.navbar') + var(--width-filtersmenu));
   &.visible {
     @apply pointer-events-auto;
   }

@@ -152,7 +152,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </div>
         <Button
           :value="$t('filters.resetFilters')"
-          class="button"
+          class="reset-filters-bt"
           type="secondary"
           @click="resetFilters"
         />
@@ -172,6 +172,14 @@ const allCategories = [
 
 export default {
   mixins: [utils],
+
+  inject: {
+    // inject tailwind-config from WebComponent.vue
+    twConfig: {
+      from: 'tailwind-config',
+      default: undefined
+    }
+  },
 
   props: {
     visibleCompany: {
@@ -939,6 +947,13 @@ export default {
         )
       )
     }
+
+    if(this.displayAsWebsite) {
+      this.$refs.filtersmenu.style.setProperty('width', this.twConfig.theme.space.filtersmenu);
+    } else {
+      this.$refs.filtersmenu.style.setProperty('width', "calc(theme('space.filtersmenu') - theme('spacing.10'))");
+    }
+
     if (this.landscapeMode(1024)) {
       this.showFiltersMenu()
     } else {
@@ -1032,14 +1047,14 @@ export default {
 
     showFiltersMenu() {
       this.isFiltersMenuVisible = true
-      this.$emit('setGlobalCSSVariable', '--width-filtermenu', '12rem')
+      this.$emit('setGlobalCSSVariable', '--width-filtersmenu', this.twConfig.theme.space.filtersmenu)
       // Refresh map size, because altering css-width stretches the canvas of the map. (refreshMap is defined in Map.vue in mounted)
       this.$root.$emit('refreshMap')
     },
 
     hideFiltersMenu() {
       this.isFiltersMenuVisible = false
-      this.$emit('setGlobalCSSVariable', '--width-filtermenu', '0rem')
+      this.$emit('setGlobalCSSVariable', '--width-filtersmenu', '0rem')
       // Refresh map size, because altering css-width stretches the canvas of the map. (refreshMap is defined in Map.vue in mounted)
       this.$root.$emit('refreshMap')
     },
@@ -1082,7 +1097,7 @@ export default {
 
 .navigation-ct {
   & .navigation-bar {
-    @apply absolute w-navbar top-0 left-filtermenu bottom-0 bg-white transition duration-300;
+    @apply absolute w-navbar top-0 left-filtersmenu bottom-0 bg-white transition duration-300;
 
     z-index: 2;
 
@@ -1187,7 +1202,7 @@ export default {
           @apply flex-grow text-base text-black pr-4;
 
           & .line {
-            @apply w-8 bg-black hidden;
+            @apply w-8 bg-black;
 
             height: 1px;
           }
@@ -1241,7 +1256,7 @@ export default {
   }
 
   & .filters-menu {
-    @apply absolute w-filtermenu top-0 bottom-0 bg-secondary px-5 drop-shadow-xl transition duration-300;
+    @apply absolute top-0 bottom-0 bg-secondary px-5 drop-shadow-xl transition duration-300;
 
     z-index: 1;
 
@@ -1295,8 +1310,12 @@ export default {
         }
       }
 
-      & .button {
-        @apply mb-3;
+      & .reset-filters-bt {
+        @apply text-base text-primary text-black cursor-pointer select-none mb-3 px-0;
+
+        &:hover {
+          @apply text-primary-hover;
+        }
       }
     }
 
@@ -1306,7 +1325,7 @@ export default {
   }
 
   & .navbar-filter-hidden, & .filters-menu-hidden {
-    @apply -translate-x-filtermenu;
+    transform: translateX(calc(theme('space.filtersmenu') * -1));
   }
 }
 
@@ -1325,7 +1344,7 @@ export default {
     }
 
     & .filters-menu-hidden {
-      @apply translate-x-filtermenu;
+      transform: translateX(calc(theme('space.filtersmenu')));
     }
   }
 }
