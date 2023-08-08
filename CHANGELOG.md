@@ -4,6 +4,34 @@ SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 SPDX-License-Identifier: CC0-1.0
 -->
 
+## [1.3.0](https://github.com/RaphaelSiller/webcomp-automotive-noi/compare/v1.1.2...v1.3.0) (2023-08-08)
+
+
+### Features
+
+* added lazy-load to images in ResultCard ([e0eee0d](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/e0eee0db014beb475fa92c8dea39ccf3a617ce57))
+* added option to open all Categories, ([0aa67d9](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/0aa67d959ef7ee418bd50c27b8fa4c863b684582))
+* implemented SSR ([4c11112](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/4c11112f976cf0be1692fd53b23b763be059577b))
+* replaced GET-params with dynamic route ([49f5330](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/49f5330f7413bebcf03b7c620dd6bd3dbddef58e))
+* replaced result with resultCard ([dbb65c5](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/dbb65c5b060ee118dae6d9c1e04a626279b9a4ef))
+* show filterMenu, when width >= 1024 (on mount) ([a13f223](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/a13f223a30f612892ecf9ee86f9f453b3eadf0cf))
+
+
+### Bug Fixes
+
+* adjustments for mainImage ([f8fe20a](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/f8fe20a88d7c2a6034960db6a549cc062e2e55b7))
+* **css:** width of filtersmenu was different as a webcomponent ([3526cbc](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/3526cbcf38ccb33592f6ffbb28b56bdc0e613601))
+* map didn't show any markers ([fb4dc74](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/fb4dc74aacea185e663ea3c5f5c1d9da4491ee1f))
+* Refresh map size when hiding/showing filter-menu, ([224f7ac](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/224f7ac1fd61b65f18bedf7b3445d91f01185b5c))
+* remove error message for babel compact ([3f9b532](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/3f9b532519620df72d156d3c6731f2755c690d05))
+* replaced env MATOMO variable with DISABLED_MATOMO to fix deploy issues ([447c1cc](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/447c1cce1fa164cf60b9846e7cfebeb3f0c27608))
+* restored CI script ([fa391a0](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/fa391a057a5c5c51ea1a463d4d970e11c5bd2356))
+* restored docker and deployment files ([35abe80](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/35abe80da0df652cb622f8ba9623e60654ab8902))
+* reuse is ok again ([43893e2](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/43893e2620647009788de343e940ecb10deba129))
+* reuse is ok again ([9ad3649](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/9ad3649fce5d8364e7983172de09db3c4745a6a5))
+* twind (css) didn't work correctly using ssr ([be07293](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/be07293aed1a0de491bf4c737fe897adcd894336))
+* webcomp generation works again ([09a6a18](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/09a6a18c4801e580238565fb9695247ca670a341))
+
 ## [1.2.0](https://github.com/RaphaelSiller/webcomp-automotive-noi/compare/v1.1.2...v1.2.0) (2023-07-27)
 
 
