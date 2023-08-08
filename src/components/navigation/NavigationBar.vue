@@ -56,6 +56,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         <Button icon="filter" class="filter-bt" @click="toggleFiltersMenu" />
       </div>
       <div class="results-ct">
+        <div v-if="resultsList.length !== visibleResults.length" class="result clickable" @click="showCategory(true)">
+          <div class="name">
+            <b>{{  $t('common.allCategories') + ' (' + filterCount.sumCompanies + ')' }}</b>
+            <div class="line"></div>
+          </div>
+          <div class="arrow">
+            <Icon name="arrow-right-compressed" />
+          </div>
+        </div>
         <div
           v-for="(resultItem, index) in resultsList"
           :key="new Date().getTime() + '-' + index"
