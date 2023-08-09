@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           }"
         >
           <div class="data-view">
-            <div class="header">
+            <div class="header-profile">
               <strong>NOI</strong> | {{ $t('common.ecosystemAutomotive') }}
             </div>
             <div class="top-overview">
@@ -356,7 +356,7 @@ export default {
   & .data-view {
     @apply py-8;
 
-    & .header {
+    & .header-profile {
       @apply relative text-right pt-6 pb-4 left-5;
 
       font-size: 0.7rem;

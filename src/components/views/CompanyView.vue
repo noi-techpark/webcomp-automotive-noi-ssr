@@ -9,25 +9,25 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <ViewBackground :visible="visible" />
     <SlidingContainer class="container" :visible="visible">
       <div class="company-view">
-        <div class="close" @click="hideCompany">
+        <div v-if="!displayAsWebsite" class="close" @click="hideCompany">
           <div class="inner">
             <Icon name="cross" />
           </div>
         </div>
         <div class="data-view">
-          <div class="header">
-            <h1>{{ data.attributes.name }}</h1>
+          <div class="header-profile">
+            <h1>{{ data?.attributes?.name}}</h1>
             <div
               class="logo"
               :style="{
                 backgroundImage:
-                  data.attributes.logo &&
-                  data.attributes.logo.data &&
-                  data.attributes.logo.data.attributes.formats
+                  data?.attributes?.logo &&
+                  data?.attributes?.logo.data &&
+                  data?.attributes?.logo.data?.attributes?.formats
                     ? 'url(' +
                       getApiEndpoint() +
                       getAvailableImageFormat(
-                        data.attributes.logo.data.attributes.formats
+                        data?.attributes?.logo.data?.attributes?.formats
                       ) +
                       ')'
                     : undefined,
@@ -40,13 +40,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 class="image"
                 :style="{
                   backgroundImage:
-                    data.attributes.mainImage &&
-                    data.attributes.mainImage.data &&
-                    data.attributes.mainImage.data.attributes.formats
+                    data?.attributes?.mainImage &&
+                    data?.attributes?.mainImage.data &&
+                    data?.attributes?.mainImage.data?.attributes?.formats
                       ? 'url(' +
                         getApiEndpoint() +
                         getAvailableImageFormat(
-                          data.attributes.mainImage.data.attributes.formats
+                          data?.attributes?.mainImage.data?.attributes?.formats
                         ) +
                         ')'
                       : undefined,
@@ -55,20 +55,20 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </div>
             <div class="col">
               <p class="top-desc">
-                {{ data.attributes.mainImageDescription }}
+                {{ data?.attributes?.mainImageDescription }}
               </p>
-              <div v-if="data.attributes?.auxiliaryImage?.data?.attributes?.formats" class="middle-desc">
+              <div v-if="data?.attributes?.auxiliaryImage?.data?.attributes?.formats" class="middle-desc">
                 <div
                   class="second-image"
                   :style="{
                     backgroundImage:
-                      data.attributes.auxiliaryImage &&
-                      data.attributes.auxiliaryImage.data &&
-                      data.attributes.auxiliaryImage.data.attributes.formats
+                      data?.attributes?.auxiliaryImage &&
+                      data?.attributes?.auxiliaryImage.data &&
+                      data?.attributes?.auxiliaryImage.data?.attributes?.formats
                         ? 'url(' +
                           getApiEndpoint() +
                           getAvailableImageFormat(
-                            data.attributes.auxiliaryImage.data.attributes
+                            data?.attributes?.auxiliaryImage.data?.attributes
                               .formats
                           ) +
                           ')'
@@ -76,7 +76,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   }"
                 ></div>
                 <p class="second-desc">
-                  {{ data.attributes.auxiliaryImageDescription }}
+                  {{ data?.attributes?.auxiliaryImageDescription }}
                 </p>
               </div>
             </div>
@@ -85,38 +85,38 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <div class="col">
               <h2>{{ $t('common.company') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.companyDescription) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.companyDescription) }}</p>
 
               <h2>{{ $t('common.productsAndServices') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.productsAndServices) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.productsAndServices) }}</p>
 
               <h2>{{ $t('common.references') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.references) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.references) }}</p>
             </div>
             <!--
             <div
               v-if="
-                data.attributes.contactPerson &&
-                data.attributes.contactPerson.personName
+                data?.attributes?.contactPerson &&
+                data?.attributes?.contactPerson.personName
               "
               class="col"
             >
               <h2 class="pt-5">{{ $t('common.contactPerson') }}</h2>
-              <p class="text">{{ data.attributes.contactPerson.personName }}</p>
-              <p v-if="data.attributes.contactPerson.email" class="text">
+              <p class="text">{{ data?.attributes?.contactPerson.personName }}</p>
+              <p v-if="data?.attributes?.contactPerson.email" class="text">
                 <a
-                  :href="'mailto:' + data.attributes.contactPerson.email"
+                  :href="'mailto:' + data?.attributes?.contactPerson.email"
                   class="link"
-                  >{{ data.attributes.contactPerson.email }}</a
+                  >{{ data?.attributes?.contactPerson.email }}</a
                 >
               </p>
-              <p v-if="data.attributes.companyContact.phoneNumber" class="text">
+              <p v-if="data?.attributes?.companyContact.phoneNumber" class="text">
                 <a
-                  :href="'tel:' + data.attributes.companyContact.phoneNumber"
+                  :href="'tel:' + data?.attributes?.companyContact.phoneNumber"
                   class="link"
-                  >{{ data.attributes.companyContact.phoneNumber }}</a
+                  >{{ data?.attributes?.companyContact.phoneNumber }}</a
                 >
               </p>
             </div>
@@ -129,48 +129,48 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         <div class="footer">
           <div class="column">
             <p class="uppercase">
-              {{ data.attributes.legalName }}
+              {{ data?.attributes?.legalName }}
             </p>
-            <p v-if="data.attributes.companyAddressStreet">
-              {{ data.attributes.companyAddressStreet.name }}
+            <p v-if="data?.attributes?.companyAddressStreet">
+              {{ data?.attributes?.companyAddressStreet.name }}
             </p>
             <p
               v-if="
-                data.attributes.companyLocation &&
-                data.attributes.companyAddressStreet
+                data?.attributes?.companyLocation &&
+                data?.attributes?.companyAddressStreet
               "
             >
-              {{ data.attributes.companyLocation.cap }}
-              {{ data.attributes.companyAddressStreet.city }}
+              {{ data?.attributes?.companyLocation.cap }}
+              {{ data?.attributes?.companyAddressStreet.city }}
             </p>
-            <p v-if="data.attributes.companyContact">
-              <a :href="'tel:' + data.attributes.companyContact.phoneNumber">{{
-                data.attributes.companyContact.phoneNumber
+            <p v-if="data?.attributes?.companyContact">
+              <a :href="'tel:' + data?.attributes?.companyContact.phoneNumber">{{
+                data?.attributes?.companyContact.phoneNumber
               }}</a>
             </p>
-            <p v-if="data.attributes.companyContact">
-              <a :href="'mailto:' + data.attributes.companyContact.email">{{
-                data.attributes.companyContact.email
+            <p v-if="data?.attributes?.companyContact">
+              <a :href="'mailto:' + data?.attributes?.companyContact.email">{{
+                data?.attributes?.companyContact.email
               }}</a>
             </p>
-            <p v-if="data.attributes.companyContact">
+            <p v-if="data?.attributes?.companyContact">
               <a
                 :href="
-                  appendPrefixToUrl(data.attributes.companyContact.website)
+                  appendPrefixToUrl(data?.attributes?.companyContact.website)
                 "
                 target="_blank"
-                >{{ data.attributes.companyContact.website }}</a
+                >{{ data?.attributes?.companyContact.website }}</a
               >
             </p>
           </div>
           <div class="column second">
-            <p v-if="data.attributes.companyContact">
+            <p v-if="data?.attributes?.companyContact">
               {{ $t('common.contact') }}:
-              <a :href="'mailto:' + data.attributes.contactPerson.email">{{
-                data.attributes.contactPerson.personName
+              <a :href="'mailto:' + data?.attributes?.contactPerson.email">{{
+                data?.attributes?.contactPerson.personName
               }}</a>
-              <span v-if="data.attributes.contactPerson.role"
-                >({{ data.attributes.contactPerson.role }})</span
+              <span v-if="data?.attributes?.contactPerson.role"
+                >({{ data?.attributes?.contactPerson.role }})</span
               >
             </p>
             <p v-if="data?.attributes?.contactPerson?.phoneNumber" class="text">
@@ -179,41 +179,41 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               }}</a>
             </p>
             <p
-              v-if="data.attributes.metrics && data.attributes.metrics.turnover"
+              v-if="data?.attributes?.metrics && data?.attributes?.metrics.turnover"
             >
               {{ $t('filters.turnover') }}:
               {{
-                formatWithThousandSeparator(data.attributes.metrics.turnover)
+                formatWithThousandSeparator(data?.attributes?.metrics.turnover)
               }}
               €
             </p>
             <p
               v-if="
-                data.attributes.metric && data.attributes.metrics.employeeNumber
+                data?.attributes?.metric && data?.attributes?.metrics.employeeNumber
               "
             >
               {{ $t('common.employees') }}:
-              {{ data.attributes.metrics.employeeNumber }}
+              {{ data?.attributes?.metrics.employeeNumber }}
             </p>
             <p
               v-if="
-                data.attributes.metrics && data.attributes.metrics.exportRatio
+                data?.attributes?.metrics && data?.attributes?.metrics.exportRatio
               "
             >
               {{ $t('common.exportRatio') }}:
-              {{ data.attributes.metrics.exportRatio }}%
+              {{ data?.attributes?.metrics.exportRatio }}%
             </p>
             <p
               v-if="
-                data.attributes.metrics && data.attributes.metrics.rAndDRatio
+                data?.attributes?.metrics && data?.attributes?.metrics.rAndDRatio
               "
             >
               {{ $t('common.researchAndDevelopmentRatio') }}:
-              {{ data.attributes.metrics.rAndDRatio }}%
+              {{ data?.attributes?.metrics.rAndDRatio }}%
             </p>
             <p
               v-if="
-                data.attributes.certifications && enabledCertifications.length
+                data?.attributes?.certifications && enabledCertifications.length
               "
             >
               {{ $t('common.certifications') }}:
@@ -228,7 +228,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <PdfExporter
         ref="pdfExporter"
         style="visibility: hidden;" 
-        :export-name="data.attributes.name"
+        :export-name="data?.attributes?.name"
         :companies="[data]"
         :automatic-download="false"
       />
@@ -257,6 +257,10 @@ export default {
       type: Boolean,
       required: true,
     },
+    displayAsWebsite: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -272,11 +276,11 @@ export default {
         Other: this.$t('filters.other'),
       }
 
-      if (this.data.attributes.certifications) {
+      if (this.data?.attributes?.certifications) {
         for (const [certificationId, certificationName] of Object.entries(
           CERTIFICATES_NAMES
         )) {
-          if (this.data.attributes.certifications[certificationId] === true) {
+          if (this.data?.attributes?.certifications[certificationId] === true) {
             certifications.push(certificationName)
           }
         }
@@ -321,7 +325,7 @@ export default {
   & .data-view {
     @apply px-8 py-8;
 
-    & .header {
+    & .header-profile {
       @apply flex flex-row;
 
       & h1 {
@@ -439,7 +443,7 @@ export default {
 @container noi-automotive-component-view (max-width: theme('screens.md')) {
   .company-view {
     & .data-view {
-      & .header {
+      & .header-profile {
         & h1 {
           @apply mt-12;
         }
