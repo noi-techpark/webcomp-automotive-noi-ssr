@@ -95,6 +95,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <!-- prettier-ignore -->
               <p class="text">{{ removeUnnecessaryNewlines(data.attributes.references) }}</p>
             </div>
+            <!--
             <div
               v-if="
                 data.attributes.contactPerson &&
@@ -119,6 +120,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 >
               </p>
             </div>
+            -->
           </div>
           <div class="download-bt" @click="downloadPdf">
             {{ $t('common.downloadPdf') }} ↓
@@ -170,6 +172,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <span v-if="data.attributes.contactPerson.role"
                 >({{ data.attributes.contactPerson.role }})</span
               >
+            </p>
+            <p v-if="data?.attributes?.contactPerson?.phoneNumber" class="text">
+              <a :href="'tel:' + data?.attributes?.contactPerson.phoneNumber" class="link">{{ 
+                data?.attributes?.contactPerson.phoneNumber 
+              }}</a>
             </p>
             <p
               v-if="data.attributes.metrics && data.attributes.metrics.turnover"
