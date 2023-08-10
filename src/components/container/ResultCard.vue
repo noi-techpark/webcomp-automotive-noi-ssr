@@ -18,7 +18,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         {{ result.name }}
       </h5>
       <p class="card-company-desc">
-        {{ truncate(result.companyDescription, 175, true) }}
+        {{ truncate(result.companyDescription, maxDescriptionLength, true) }}
       </p>
       <p class="card-company-city">
         {{ result.city }}
@@ -38,6 +38,10 @@ export default {
       type: Object,
       default: () => {},
     },
+    maxDescriptionLength: {
+      type: Number,
+      default: 175,
+    }
   },
 }
 </script>
