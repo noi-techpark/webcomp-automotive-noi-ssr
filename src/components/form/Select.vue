@@ -12,6 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       'not-valid': !valid,
       fill: aspect === 'fill',
       'white-contrast': whiteContrast,
+      primary: primary,
       'centered-text': centeredText,
     }"
   >
@@ -86,6 +87,10 @@ export default {
       type: Boolean,
       default: true,
     },
+    primary: {
+      type: Boolean,
+      default: false,
+    },
     centeredText: {
       type: Boolean,
       default: false,
@@ -117,7 +122,7 @@ export default {
     padding-bottom: 0.6rem;
 
     & select {
-      @apply bg-transparent text-black text-base appearance-none border-0 p-0;
+      @apply bg-transparent text-inherit text-base appearance-none border-0 p-0;
 
       &:focus {
         @apply outline-none;
@@ -152,6 +157,17 @@ export default {
       & select {
         @apply text-center;
       }
+    }
+  }
+
+  &.primary {
+    & .selector {
+      background-color: var(--primary-color);
+      color: var(--primary-color-text);
+    }
+
+    & .selector:hover {
+      background-color: var(--primary-hover); 
     }
   }
 
