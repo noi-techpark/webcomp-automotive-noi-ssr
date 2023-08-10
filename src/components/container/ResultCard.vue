@@ -5,28 +5,24 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div class="result clickable" @click="$emit('showResult', result)">
+  <div :class="landscapeMode() ? 'desktop' : 'mobile'" class="card clickable" data-te-ripple-init data-te-ripple-color="dark">
     <!-- card design from https://tailwind-elements.com/docs/standard/components/cards/ -->
-    <div
-      class="card"
-    >
-      <img
-        v-lazy-load
-        class="card-image"
-        :data-src="result.image ? getApiEndpoint() + getAvailableImageFormat(result.image.formats) : ''"
-        alt=""
-      />
-      <div class="card-desc">
-        <h5>
-          {{ result.name }}
-        </h5>
-        <p class="card-company-desc">
-          {{ truncate(result.companyDescription, 175, true) }}
-        </p>
-        <p class="card-company-city">
-          {{ result.city }}
-        </p>
-      </div>
+    <img
+      v-lazy-load
+      class="card-image"
+      :data-src="result.image ? getApiEndpoint() + getAvailableImageFormat(result.image.formats) : ''"
+      alt=""
+    />
+    <div class="card-desc">
+      <h5>
+        {{ result.name }}
+      </h5>
+      <p class="card-company-desc">
+        {{ truncate(result.companyDescription, 175, true) }}
+      </p>
+      <p class="card-company-city">
+        {{ result.city }}
+      </p>
     </div>
   </div>
 </template>
@@ -47,40 +43,54 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-.result {
-  @apply flex flex-row mx-6 mb-4 cursor-pointer select-none;
+.desktop {
+  &.card {
+    @apply flex flex-row mx-6 mb-4 cursor-pointer select-none rounded-lg bg-secondary shadow;
 
-  animation: fade-in 0.3s ease;
-}
-
-.card {
-  @apply flex rounded-lg bg-secondary;
-
-  & .card-image {
-    @apply h-fit w-48 min-w-[12rem] rounded-lg object-top object-scale-down mix-blend-multiply;
-  }
-
-  & .card-desc {
-    @apply flex flex-col justify-start p-4 pt-0.5;
-
-    & h5 {
-      @apply mb-2 text-lg font-bold;
-    }
-
-    & .card-company-desc {
-      @apply mb-4 text-base;
-    }
-
-    & .card-company-city {
-      @apply text-xs;
-    }
-  }
-}
-@container noi-automotive-component-view (max-width: theme('screens.md')) {
-  .card {
-  
     & .card-image {
-      @apply h-24 w-24;
+      @apply h-fit w-48 min-w-[12rem] rounded-lg object-top object-scale-down;
+    }
+
+    & .card-desc {
+      @apply flex flex-col justify-start p-4 pt-0.5;
+
+      & h5 {
+        @apply mb-2 text-lg font-bold;
+      }
+
+      & .card-company-desc {
+        @apply mb-4 text-base;
+      }
+
+      & .card-company-city {
+        @apply text-xs;
+      }
+    }
+  }
+}
+.mobile {
+
+  &.card {
+    @apply block m-4 rounded-lg bg-white shadow;
+
+    & .card-image {
+      @apply h-32 mx-auto rounded-lg object-scale-down;
+    }
+
+    & .card-desc {
+      @apply p-4 pt-0.5;
+
+      & h5 {
+        @apply mb-1 text-lg font-bold;
+      }
+
+      & .card-company-desc {
+        @apply mb-4 text-base;
+      }
+
+      & .card-company-city {
+        @apply text-xs;
+      }
     }
   }
 }
