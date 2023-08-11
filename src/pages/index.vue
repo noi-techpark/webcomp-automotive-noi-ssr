@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             TODO: add here optional top description 
           </div>
           -->
-          <div class="map-ct clickable" @click="showMapView()">
+          <div class="map-ct clickable" data-not-lazy @click="showMapView()">
             <client-only>
               <link
                 rel="stylesheet"
