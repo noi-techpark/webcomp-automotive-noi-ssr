@@ -28,6 +28,7 @@ const config = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      { name: 'google-site-verification', content: 'xFg36VV3r7ycMqVCrgMcxwwHrOiZKU7j9zzjlZH9PNY' }, // Google Console verification token for Raphael Siller
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
