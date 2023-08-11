@@ -49,6 +49,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               :filter-count="filterCount.industrialSectors"
               aspect="fill"
               :white-contrast="true"
+              primary
               class="select"
             />
             <Select
@@ -58,6 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               :filter-count="filterCount.valueChainPositions"
               aspect="fill"
               :white-contrast="true"
+              primary
               class="select"
             />
             <div
@@ -81,6 +83,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 :filter-count="filterCount.turnovers"
                 aspect="fill"
                 :white-contrast="true"
+                primary
                 class="select"
               />
               <Select
@@ -90,6 +93,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 :filter-count="filterCount.employeeNumber"
                 aspect="fill"
                 :v-contrast="true"
+                primary
                 class="select"
               />
               <Select
@@ -99,6 +103,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 :filter-count="filterCount.certifications"
                 aspect="fill"
                 :white-contrast="true"
+                primary
                 class="select"
               />
             </div>
@@ -121,7 +126,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               :to="'/actors/' + encodeURIComponent(resultItem.name)"
               target="_blank"
             >
-              <ResultCard :result="resultItem" :max-description-length="250" :index="index" />
+              <ResultCard :result="resultItem" :max-description-length="300" :index="index" />
             </NuxtLink>
           </div>
           <div v-if="!visibleResults.length" class="no-results-notice">
@@ -244,7 +249,7 @@ export default {
     width: calc(100% - 2 * theme('spacing.6'));
     height: 200px;
     top: 100px !important;
-    z-index: 1;
+    z-index: 2;
     
     background-image: url('https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg');
     background-position: center;
@@ -257,19 +262,19 @@ export default {
     & .search-bar {
       @apply absolute mx-12 h-12;
 
-      width: calc(100% - (theme('spacing.12') * 2));
+      width: 30%;
       top: calc(50% - ((theme('spacing.12') + 4px) / 2));
     }
   }
 
   & .company-list {
-    @apply relative flex h-fit mx-auto;
+    @apply relative flex h-fit mx-auto pt-5;
 
-    width: 1200px;
+    max-width: 1300px;
     top: calc(100px + 25vh + 2 * theme('spacing.4'));
 
     & aside {
-      @apply bg-secondary drop-shadow-xl;
+      @apply pl-5;
 
       flex: 30%;
 
@@ -281,7 +286,7 @@ export default {
         }
 
         & .map-ct {
-          @apply bg-white cursor-pointer;
+          @apply bg-secondary drop-shadow-xl cursor-pointer;
 
           height: 240px;
           width: 100%;
@@ -297,7 +302,10 @@ export default {
       }
 
       & .filters-menu {
-        @apply relative px-5;
+        @apply relative bg-secondary drop-shadow-xl px-5 my-5;
+
+        border: 3px solid var(--primary-color);
+        border-radius: 0.5rem;
 
         z-index: 1;
 
@@ -347,15 +355,13 @@ export default {
     }
 
     & main {
-      @apply bg-secondary;
-
       flex: 70%;
 
       & .results-ct {
-      @apply ml-8 h-full;
+      @apply h-full;
 
-        & .desktop.card {
-          @apply ml-0;
+        & .card {
+          @apply bg-secondary;
         }
 
         & .no-results-notice {
@@ -366,7 +372,7 @@ export default {
   }
 }
 .full-screen-loader {
-  @apply absolute flex items-center justify-center top-0 right-0 bottom-0 left-0 bg-white bg-opacity-75 z-30 opacity-0 pointer-events-none;
+  @apply fixed flex items-center justify-center top-0 right-0 bottom-0 left-0 bg-white bg-opacity-75 z-30 opacity-0 pointer-events-none;
 
   &.visible {
     @apply opacity-100 pointer-events-auto;
