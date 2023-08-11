@@ -412,10 +412,11 @@ export default {
       )
     }
 
+    // Account for Margin Collapsing (Explanation of margin collapsing: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Box_Model/Mastering_margin_collapsing)
     if(this.displayAsWebsite) {
       this.$refs.filtersmenu.style.setProperty('width', this.twConfig.theme.space.filtersmenu);
     } else {
-      this.$refs.filtersmenu.style.setProperty('width', "calc(theme('space.filtersmenu') - theme('spacing.10'))");
+      this.$refs.filtersmenu.style.setProperty('width', "calc(" + this.twConfig.theme.space.filtersmenu + " - " + this.twConfig.theme.spacing[10] + ")");
     }
 
     if (this.landscapeMode(1024)) {
