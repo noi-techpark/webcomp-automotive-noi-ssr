@@ -110,10 +110,12 @@ export default {
   }
 
   &.primary {
-    @apply bg-primary text-white;
+    font-size: 1.25rem;
+    background-color: var(--primary-color);
+    color: var(--primary-color-text);
 
     &:hover {
-      @apply bg-primary-hover;
+      background-color: var(--primary-hover);
     }
   }
 

@@ -49,7 +49,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               :filter-count="filterCount.industrialSectors"
               aspect="fill"
               :white-contrast="true"
-              primary
               class="select"
             />
             <Select
@@ -59,58 +58,39 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               :filter-count="filterCount.valueChainPositions"
               aspect="fill"
               :white-contrast="true"
-              primary
               class="select"
             />
-            <div
-              class="advanced-filters-bt"
-              @click="toggleAdvancedFiltersVisibility"
-            >
-              {{
-                areAdvancedFiltersVisible
-                  ? $t('filters.hideAdvanced') + ' ↑'
-                  : $t('filters.showAdvanced') + ' ↓'
-              }}
-            </div>
-            <div
-              class="advanced-filters-ct"
-              :class="{ visible: areAdvancedFiltersVisible }"
-            >
-              <Select
-                v-model="filters.turnover"
-                :label="$t('filters.turnover')"
-                :options="turnovers"
-                :filter-count="filterCount.turnovers"
-                aspect="fill"
-                :white-contrast="true"
-                primary
-                class="select"
-              />
-              <Select
-                v-model="filters.employees"
-                :label="$t('filters.numberOfEmployees')"
-                :options="employees"
-                :filter-count="filterCount.employeeNumber"
-                aspect="fill"
-                :v-contrast="true"
-                primary
-                class="select"
-              />
-              <Select
-                v-model="filters.certification"
-                :label="$t('filters.certification')"
-                :options="certifications"
-                :filter-count="filterCount.certifications"
-                aspect="fill"
-                :white-contrast="true"
-                primary
-                class="select"
-              />
-            </div>
+            <Select
+              v-model="filters.employees"
+              :label="$t('filters.numberOfEmployees')"
+              :options="employees"
+              :filter-count="filterCount.employeeNumber"
+              aspect="fill"
+              :v-contrast="true"
+              class="select"
+            />
+            <Select
+              v-model="filters.turnover"
+              :label="$t('filters.turnover')"
+              :options="turnovers"
+              :filter-count="filterCount.turnovers"
+              aspect="fill"
+              :white-contrast="true"
+              class="select"
+            />
+            <Select
+              v-model="filters.certification"
+              :label="$t('filters.certification')"
+              :options="certifications"
+              :filter-count="filterCount.certifications"
+              aspect="fill"
+              :white-contrast="true"
+              class="select"
+            />
             <Button
               :value="$t('filters.resetFilters')"
               class="reset-filters-bt"
-              type="secondary"
+              type="primary"
               @click="resetFilters"
             />
           </div>
@@ -244,31 +224,34 @@ export default {
 <style>
 .homepage {
   & .search-bar-ct {
-    @apply fixed mx-6 my-4 rounded-lg;
+    @apply fixed my-4 rounded-lg;
 
-    width: calc(100% - 2 * theme('spacing.6'));
+    max-width: calc(100% - 2.5rem);
+    width: 1500px;
     height: 200px;
     top: 100px !important;
+    left: 50%;
+    transform: translate(-50%, 0);
     z-index: 2;
     
     background-image: url('https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg');
     background-position: center;
     background-size: cover;
 
-    &.narrow {
-      height: 10vh !important;
-    }
-
     & .search-bar {
       @apply absolute mx-12 h-12;
 
-      width: 30%;
+      width: calc(1300px * 0.3);
       top: calc(50% - ((theme('spacing.12') + 4px) / 2));
+
+      & input {
+        @apply rounded-lg;
+      }
     }
   }
 
   & .company-list {
-    @apply relative flex h-fit mx-auto pt-5;
+    @apply relative flex h-fit mx-auto;
 
     max-width: 1300px;
     top: calc(100px + 25vh + 2 * theme('spacing.4'));
@@ -302,11 +285,9 @@ export default {
       }
 
       & .filters-menu {
-        @apply relative bg-secondary drop-shadow-xl px-5 my-5;
+        @apply relative bg-secondary drop-shadow-xl px-5 my-5 rounded-lg;
 
         border: 3px solid var(--primary-color);
-        border-radius: 0.5rem;
-
         z-index: 1;
 
         & .top-title {
@@ -314,37 +295,28 @@ export default {
         }
 
         & .list {
-          @apply relative overflow-y-auto h-fit left-0 right-0 px-5;
+          @apply relative overflow-y-auto h-[480px] left-0 right-0 px-5 pb-5;
 
           & .select {
             @apply mb-4;
-          }
 
-          & .advanced-filters-bt {
-            @apply text-base text-primary text-black cursor-pointer select-none mb-3;
+            & label {
+              @apply w-fit py-1 px-3 rounded-lg;
 
-            &:hover {
-              @apply text-primary-hover;
-            }
-          }
-
-          & .advanced-filters-ct {
-            @apply overflow-hidden;
-
-            transition: max-height 0.3s ease;
-            max-height: 0;
-
-            & .select:first-child {
-              @apply mt-4;
+              font-size: 1.25rem;
+              background-color: var(--primary-color);
+              color: var(--primary-color-text);
             }
 
-            &.visible {
-              max-height: 300px;
+            & .selector {
+              @apply py-1;
+
+              border: 2px solid blue;
             }
           }
 
           & .reset-filters-bt {
-            @apply text-base text-primary text-black cursor-pointer select-none mb-3 px-0;
+            @apply absolute right-5;
 
             &:hover {
               @apply text-primary-hover;
