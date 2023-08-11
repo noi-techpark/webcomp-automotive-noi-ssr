@@ -4,6 +4,32 @@
 
 export default {
   computed: {
+    mainCategories() {
+      return [
+        this.getResultDataObject(
+          false,
+          this.CATEGORY_PREFIX + 'automotiveAndMobility',
+          this.$t('common.automotiveAndMobility'),
+          null,
+          true
+        ),
+        this.getResultDataObject(
+          false,
+          this.CATEGORY_PREFIX + 'manufacturing',
+          this.$t('common.manufacturing'),
+          null,
+          true
+        ),
+        this.getResultDataObject(
+          false,
+          this.CATEGORY_PREFIX + 'agriAutomation',
+          this.$t('common.agriAutomation'),
+          null,
+          true
+        ),
+      ]
+    },
+    
     industrialSectors() {
       return [
         {
@@ -197,4 +223,392 @@ export default {
       ]
     },
   },
+
+  data() {
+    return {
+      CATEGORY_PREFIX: 'CATEGORY-', // if you change it here, you also have to change it in ~/components/navigation/NavigationBar.vue
+    }
+  },
+
+  methods: {
+    getResultDataObject(
+      isPlaceholder,
+      id,
+      name,
+      metric,
+      isMainCategory,
+      lat,
+      lng,
+      image,
+      companyDescription,
+      city,
+      specialization,
+    ) {
+      return {
+        isPlaceholder,
+        id,
+        name,
+        metric,
+        isMainCategory,
+        coordinates: {
+          lat,
+          lng,
+        },
+        image,
+        companyDescription,
+        city,
+        specialization
+      }
+    },
+
+    filterResults(results = [], filters, searchValue, categoryFilter, mainCategory, defaultCategoryValidated, displayMultipleCategories) {
+      if (results.length > 0) {
+        if (searchValue) {
+          const cleanSearchVal = searchValue.toLowerCase()
+          results = results.filter((r) =>
+            (
+              r.attributes.name +
+              ' ' +
+              r.attributes.companyDescription +
+              ' ' +
+              r.attributes.productsAndServices +
+              ' ' +
+              r.attributes.references +
+              ' ' +
+              r.attributes.companyContact.email +
+              ' ' +
+              r.attributes.contactPerson.email +
+              ' ' +
+              r.attributes.contactPerson.personName +
+              ' ' +
+              r.attributes.companyAddressStreet.name +
+              ' ' +
+              r.attributes.companyAddressStreet.city
+            )
+              .toLowerCase()
+              .includes(cleanSearchVal)
+          )
+        }
+        // filter according to webcomponent-parameter visibleCategories
+        if (categoryFilter) {
+          results = results.filter((r) => {
+            return (
+              r.attributes.specialization &&
+              ((categoryFilter.automotiveAndMobility &&
+                r.attributes.specialization.automotiveAndMobility) ||
+                (categoryFilter.manufacturing &&
+                  r.attributes.specialization.manufacturing) ||
+                (categoryFilter.agriAutomation &&
+                  r.attributes.specialization.agriAutomation))
+            )
+          })
+        }
+
+        if (mainCategory && mainCategory !== true) {
+          results = results.filter((r) => {
+            return (
+              r.attributes.specialization &&
+              r.attributes.specialization[mainCategory]
+            )
+          })
+        } else if (
+          defaultCategoryValidated &&
+          displayMultipleCategories
+        ) {
+          results = results.filter((r) => {
+            return (
+              r.attributes.specialization &&
+              r.attributes.specialization[defaultCategoryValidated]
+            )
+          })
+        }
+
+        if (filters.industrialSector) {
+          results = results.filter(
+            (r) =>
+              r.attributes.industrialSector === filters.industrialSector
+          )
+        }
+
+        if (filters.valueChainPosition) {
+          results = results.filter(
+            (r) =>
+              r.attributes.valueChainPosition ===
+              filters.valueChainPosition
+          )
+        }
+
+        if (filters.turnover) {
+          switch (filters.turnover) {
+            case '< 1 Mio':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.turnover < 1000000
+              )
+              break
+            case '1 - 2 Mio':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.turnover >= 1000000 &&
+                  r.attributes.metrics.turnover < 2000000
+              )
+              break
+            case '2 - 10 Mio':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.turnover >= 2000000 &&
+                  r.attributes.metrics.turnover < 10000000
+              )
+              break
+            case '10 - 50 Mio':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.turnover >= 10000000 &&
+                  r.attributes.metrics.turnover < 50000000
+              )
+              break
+            case '50 - 250 Mio':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.turnover >= 5000000 &&
+                  r.attributes.metrics.turnover < 250000000
+              )
+              break
+            case '250 - 500 Mio':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.turnover >= 25000000 &&
+                  r.attributes.metrics.turnover < 500000000
+              )
+              break
+            case '> 500 Mio':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.turnover >= 500000000
+              )
+              break
+            case 'NOT-DEFINED':
+              results = results.filter(
+                (r) => r.attributes.metrics && !r.attributes.metrics.turnover
+              )
+              break
+          }
+        }
+
+        if (filters.employees) {
+          switch (filters.employees) {
+            case '<5':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.employeeNumber < 5
+              )
+              break
+            case '5-10':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.employeeNumber >= 5 &&
+                  r.attributes.metrics.employeeNumber < 10
+              )
+              break
+            case '10-50':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.employeeNumber >= 10 &&
+                  r.attributes.metrics.employeeNumber < 50
+              )
+              break
+            case '50-150':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.employeeNumber >= 50 &&
+                  r.attributes.metrics.employeeNumber < 150
+              )
+              break
+            case '150-250':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.employeeNumber >= 150 &&
+                  r.attributes.metrics.employeeNumber < 250
+              )
+              break
+            case '>250':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics &&
+                  r.attributes.metrics.employeeNumber >= 250
+              )
+              break
+            case 'NOT-DEFINED':
+              results = results.filter(
+                (r) =>
+                  r.attributes.metrics && !r.attributes.metrics.employeeNumber
+              )
+              break
+          }
+        }
+
+        if (filters.certification) {
+          results = results.filter(
+            (r) =>
+              r.attributes.certifications &&
+              r.attributes.certifications[filters.certification] === true
+          )
+        }
+      }
+      return results
+    },
+
+    mapResults(results) {
+      const mappedResults = results.map((r) =>
+        this.getResultDataObject(
+          false,
+          r.id,
+          r.attributes.name,
+          null,
+          false,
+          r.attributes.companyLocation
+            ? Number(r.attributes.companyLocation.lat)
+            : 0,
+          r.attributes.companyLocation
+            ? Number(r.attributes.companyLocation.lng)
+            : 0,
+            r.attributes?.mainImage?.data?.attributes,
+            r.attributes?.companyDescription,
+            r.attributes?.companyAddressStreet?.city,
+            r.attributes?.specialization,
+        )
+      )
+
+      mappedResults.sort((a, b) => a.name.localeCompare(b.name))
+
+      return mappedResults
+    },
+
+    countFilters(results) {
+      const sum = results.length
+
+      // Initialize count Object
+      const countCategories = { sumCompanies: sum }
+      this.mainCategories.forEach((category) => {
+        countCategories[category.id.replace(this.CATEGORY_PREFIX, '')] = 0
+      })
+
+      const countIndustrialSectors = { sumCompanies: sum }
+      this.industrialSectors.forEach((sector) => {
+        if (sector.value) countIndustrialSectors[sector.value] = 0
+      })
+
+      const countValueChainPositions = { sumCompanies: sum }
+      this.valueChainPositions.forEach((position) => {
+        if (position.value) countValueChainPositions[position.value] = 0
+      })
+
+      const countTurnovers = { sumCompanies: sum }
+      this.turnovers.forEach((turnover) => {
+        if (turnover.value) countTurnovers[turnover.value] = 0
+      })
+
+      const countEmployees = { sumCompanies: sum }
+      this.employees.forEach((employee) => {
+        if (employee.value) countEmployees[employee.value] = 0
+      })
+
+      const countCertifications = { sumCompanies: sum }
+      this.certifications.forEach((certification) => {
+        if (certification.value && certification.value)
+          countCertifications[certification.value] = 0
+      })
+
+      const count = {
+        sumCompanies: sum,
+        categories: countCategories,
+        industrialSectors: countIndustrialSectors,
+        valueChainPositions: countValueChainPositions,
+        turnovers: countTurnovers,
+        employeeNumber: countEmployees,
+        certifications: countCertifications,
+      }
+
+      // count the number of companies that apply to each filter
+      results.forEach((result) => {
+        const attr = result.attributes
+
+        if (attr.specialization) {
+          Object.keys(attr.specialization).forEach((key) => {
+            if (attr.specialization[key] && key !== 'id')
+              count.categories[key]++
+          })
+        }
+
+        if (attr.industrialSector) {
+          count.industrialSectors[attr.industrialSector]++
+        }
+
+        if (attr.valueChainPosition) {
+          count.valueChainPositions[attr.valueChainPosition]++
+        }
+
+        if (attr.metrics) {
+          // turnover
+          const turnover = attr.metrics.turnover
+          if (!turnover) {
+            count.turnovers['NOT-DEFINED']++
+          } else if (turnover < 1000000) {
+            count.turnovers['< 1 Mio']++
+          } else if (turnover < 2000000) {
+            count.turnovers['1 - 2 Mio']++
+          } else if (turnover < 10000000) {
+            count.turnovers['2 - 10 Mio']++
+          } else if (turnover < 50000000) {
+            count.turnovers['10 - 50 Mio']++
+          } else if (turnover < 250000000) {
+            count.turnovers['50 - 250 Mio']++
+          } else if (turnover < 500000000) {
+            count.turnovers['250 - 500 Mio']++
+          } else {
+            count.turnovers['> 500 Mio']++
+          }
+
+          // employeeNumber
+          const employeeNumber = attr.metrics.employeeNumber
+          if (!employeeNumber) {
+            count.employeeNumber['NOT-DEFINED']++
+          } else if (employeeNumber < 5) {
+            count.employeeNumber['<5']++
+          } else if (employeeNumber < 10) {
+            count.employeeNumber['5-10']++
+          } else if (employeeNumber < 50) {
+            count.employeeNumber['10-50']++
+          } else if (employeeNumber < 150) {
+            count.employeeNumber['50-150']++
+          } else if (employeeNumber < 250) {
+            count.employeeNumber['150-250']++
+          } else {
+            count.employeeNumber['>250']++
+          }
+        }
+
+        if (attr.certifications) {
+          Object.keys(attr.certifications).forEach((key) => {
+            if (attr.certifications[key] && key !== 'id')
+              count.certifications[key]++
+          })
+        }
+      })
+
+      return count
+    },
+  }
 }
