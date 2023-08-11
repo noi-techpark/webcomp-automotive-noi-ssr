@@ -231,7 +231,9 @@ export default {
        * For more info, read this: https://v2.tailwindcss.com/docs/breakpoints
        */
       const rootElement1 = this.$root.$el
-      const rootElement2 = document.getElementsByClassName('component-view')[0]
+      let rootElement2 
+      if (typeof window !== 'undefined')
+        rootElement2 = document.getElementsByClassName('component-view')[0]
       const width = rootElement1?.clientWidth || rootElement2?.clientWidth
       
       if (width)
