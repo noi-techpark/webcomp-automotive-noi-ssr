@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div :class="landscapeMode() ? 'desktop' : 'mobile'" class="card clickable">
+  <article :class="landscapeMode() ? 'desktop' : 'mobile'" class="card clickable">
     <!-- card design from https://tailwind-elements.com/docs/standard/components/cards/ -->
     <img
       class="card-image"
@@ -23,7 +23,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         {{ result.city }}
       </p>
     </div>
-  </div>
+  </article>
 </template>
 
 <script>

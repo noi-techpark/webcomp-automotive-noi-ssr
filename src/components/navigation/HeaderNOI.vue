@@ -8,6 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   <header class="header">
     <div class="lang-selector">
       <Select
+        :aria-label="$t('common.languageSelector')"
         :value="$i18n.locale"
         :options="availableLanguages"
         aspect="fill"
@@ -18,11 +19,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       />
     </div>
     <div class="logos-ct">
-      <nuxt-link class="logo clickable" to="/">
-        <Icon name="logo" />
-      </nuxt-link>
-      <nuxt-link class="logo clickable" to="/">
-        <Icon name="logo-automotive" />
+      <nuxt-link class="logo clickable" to="/" aria-label="NOI Logo">
+        <Icon name="logo" alt="NOI Logo"/>
+        <Icon name="logo-automotive" alt="NOI Automotive Automation Logo"/>
       </nuxt-link>
     </div>
     <hr />

@@ -10,12 +10,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     :load-tiles-while-animating="true"
     :load-tiles-while-interacting="true"
     data-projection="EPSG:4326"
+    :aria-hidden="mode === 'preview'"
     class="map"
     :class="{ 'is-preview': mode === 'preview' }"
     @singleclick="clickedMap"
     @moveend="handleMapMove"
   >
     <vl-view
+      :tabindex="mode === 'preview' ? -1 : 0"
       :zoom.sync="mapConfig.zoom"
       :center.sync="mapConfig.center"
       :rotation.sync="mapConfig.rotation"

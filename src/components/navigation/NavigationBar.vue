@@ -725,7 +725,7 @@ export default {
       & .advanced-filters-bt {
         @apply text-base text-primary text-black cursor-pointer select-none mb-3;
 
-        &:hover {
+        &:hover, &:focus {
           @apply text-primary-hover;
         }
       }
@@ -748,7 +748,7 @@ export default {
       & .reset-filters-bt {
         @apply text-base text-primary text-black cursor-pointer select-none mb-3 px-0;
 
-        &:hover {
+        &:hover, &:focus {
           @apply text-primary-hover;
         }
       }

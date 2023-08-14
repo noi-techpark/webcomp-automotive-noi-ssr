@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <div ref="homepage" class="homepage"  style="height: 100vh;">
     <HeaderNOI />
-    <div ref="searchBar" class="search-bar-ct">
+    <div ref="searchBar" class="search-bar-ct" role=search>
       <div class="search-bar">
         <TextInput
           v-model="searchValue"
@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </div>
     <div class="company-list">
       <aside>
-        <div class="map-col">
+        <div class="map-col" aria-hidden="true">
           <!--
           <div class="top-desc">
             TODO: add here optional top description 
@@ -39,53 +39,73 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </client-only>
           </div>
         </div>
-        <div ref="filtersmenu" class="filters-menu">
-          <div class="top-title">{{ $t('common.filters') }}</div>
+        <div ref="filtersmenu" class="filters-menu" role="menu" :aria-label="$t('common.filters')">
+          <h1 class="top-title">{{ $t('common.filters') }}</h1>
           <div class="list">
             <Select
               v-model="filters.industrialSector"
               :label="$t('filters.industrialSector')"
+              :aria-label="'filter: ' + $t('filters.industrialSector')"
+              aria-controls="actorsList"
               :options="industrialSectors"
               :filter-count="filterCount.industrialSectors"
               aspect="fill"
               :white-contrast="true"
               class="select"
+              role="menuitem"
+              aria-haspopup="listbox"
             />
             <Select
               v-model="filters.valueChainPosition"
               :label="$t('filters.valueChainPosition')"
+              :aria-label="'filter: ' + $t('filters.valueChainPosition')"
+              aria-controls="actorsList"
               :options="valueChainPositions"
               :filter-count="filterCount.valueChainPositions"
               aspect="fill"
               :white-contrast="true"
               class="select"
+              role="menuitem"
+              aria-haspopup="listbox"
             />
             <Select
               v-model="filters.employees"
               :label="$t('filters.numberOfEmployees')"
+              :aria-label="'filter: ' + $t('filters.numberOfEmployees')"
+              aria-controls="actorsList"
               :options="employees"
               :filter-count="filterCount.employeeNumber"
               aspect="fill"
               :v-contrast="true"
               class="select"
+              role="menuitem"
+              aria-haspopup="listbox"
             />
             <Select
               v-model="filters.turnover"
               :label="$t('filters.turnover')"
+              :aria-label="'filter: ' + $t('filters.turnover')"
+              aria-controls="actorsList"
               :options="turnovers"
               :filter-count="filterCount.turnovers"
               aspect="fill"
               :white-contrast="true"
               class="select"
+              role="menuitem"
+              aria-haspopup="listbox"
             />
             <Select
               v-model="filters.certification"
               :label="$t('filters.certification')"
+              :aria-label="'filter: ' + $t('filters.certification')"
+              aria-controls="actorsList"
               :options="certifications"
               :filter-count="filterCount.certifications"
               aspect="fill"
               :white-contrast="true"
               class="select"
+              role="menuitem"
+              aria-haspopup="listbox"
             />
             <Button
               :value="$t('filters.resetFilters')"
@@ -97,7 +117,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </div>
       </aside>
       <main>
-        <div class="results-ct">
+        <div id="actorsList" class="results-ct" aria-live="polite">
           <div
             v-for="(resultItem, index) in visibleResults"
             :key="new Date().getTime() + '-' + index"
@@ -188,6 +208,12 @@ export default {
     this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
 
     window.addEventListener('scroll', this.adjustHeaderHeight)
+
+    document.onkeyup = function(e) {
+      if (e.ctrlKey && e.key === 'k') {
+        this.getDocumentById('searchbar').focus()
+      }
+    };
   },
   methods: {
     async fetchResults() {
@@ -317,10 +343,6 @@ export default {
 
           & .reset-filters-bt {
             @apply absolute right-5;
-
-            &:hover {
-              @apply text-primary-hover;
-            }
           }
         }
       }

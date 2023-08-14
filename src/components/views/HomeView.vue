@@ -235,7 +235,7 @@ export default {
     & a {
       @apply mr-2;
 
-      &:hover {
+      &:hover, &:focus {
         @apply underline;
       }
     }

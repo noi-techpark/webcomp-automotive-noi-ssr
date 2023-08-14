@@ -28,7 +28,8 @@
     "ecosystemAutomotive": "Ecosystem Automotive",
     "contactPerson": "Persona di riferimento",
     "downloadPdf": "Scarica PDF",
-    "privacyPolicy": "Privacy & Cookie Policy"
+    "privacyPolicy": "Privacy & Cookie Policy",
+    "languageSelector": "Selettore lingua"
   },
   "filters": {
     "searchPlaceholder": "Azienda, parola chiave...",

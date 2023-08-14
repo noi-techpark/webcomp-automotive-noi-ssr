@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <InputLabel v-if="label" :text="label" :required="required" />
     <div class="selector">
       {{ prefix ? prefix : '' }}
-      <select v-model="selected" :required="required">
+      <select :id="label" v-model="selected" :aria-label="ariaLabel || label" aria-controls="actorsList" :required="required" >
         <option
           v-for="option in options"
           :key="option.value"
@@ -44,6 +44,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 export default {
   props: {
     label: {
+      type: String,
+      default: '',
+    },
+    ariaLabel: {
+      type: String,
+      default: '',
+    },
+    
+    ariaControls: {
       type: String,
       default: '',
     },
@@ -125,7 +134,7 @@ export default {
       @apply bg-transparent text-inherit text-base appearance-none border-0 p-0;
 
       &:focus {
-        @apply outline-none;
+        background-color: color-mix(in srgb, var(--primary-color) 25%, theme('colors.secondary'))
       }
     }
   }
@@ -166,7 +175,7 @@ export default {
       color: var(--primary-color-text);
     }
 
-    & .selector:hover {
+    &:hover, &:focus {
       background-color: var(--primary-hover); 
     }
   }

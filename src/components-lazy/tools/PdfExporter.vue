@@ -440,7 +440,7 @@ export default {
     & .contact-bt {
       @apply text-base my-8;
 
-      &:hover {
+      &:hover, &:focus {
         @apply underline;
       }
     }

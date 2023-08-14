@@ -122,9 +122,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </div>
             -->
           </div>
-          <div class="download-bt" @click="downloadPdf">
+          <button class="download-bt" @click="downloadPdf">
             {{ $t('common.downloadPdf') }} ↓
-          </div>
+          </button>
         </div>
         <div class="footer">
           <div class="column">
@@ -409,7 +409,7 @@ export default {
     & .download-bt {
       @apply text-base my-8 cursor-pointer;
 
-      &:hover {
+      &:hover, &:focus {
         @apply underline;
       }
     }
