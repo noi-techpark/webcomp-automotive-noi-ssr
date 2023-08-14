@@ -62,7 +62,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.$t('home.meta.description'),
+          content: this.truncate(this.removeUnnecessaryNewlines(this.companyData?.attributes?.productsAndServices), 160, true),
         },
       ],
     }
