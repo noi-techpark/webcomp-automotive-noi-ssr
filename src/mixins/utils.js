@@ -8,11 +8,15 @@ export default {
       return this.$config?.apiEndpoint || 'https://bk.opendatahub.com'
     },
 
-    getApiCompaniesPath() {
+    getApiPublishedCompaniesPath() {
       return (
         this.$config?.apiCompaniesPath ||
         '/api/published-companies/?fields[0]=data_'
       )
+    },
+
+    getApiCompaniesPath() {
+      return '/api/companies'
     },
 
     copyToClipboard(text) {
@@ -104,7 +108,7 @@ export default {
       while (fetchedAllCompanies === false || currentLoop >= SAFE_LOOP_LIMIT) {
         const response = await fetch(
           this.getApiEndpoint() +
-            this.getApiCompaniesPath() +
+            this.getApiPublishedCompaniesPath() +
             this.$i18n.locale +
             '&pagination[start]=' +
             currentLoop * FETCH_LIMIT +
@@ -132,6 +136,35 @@ export default {
 
       return allCompanies
     },
+
+    async fetchCompanyById(companyId) {
+      const response = await fetch(
+        this.getApiEndpoint() +
+          this.getApiPublishedCompaniesPath() +
+          this.$i18n.locale +
+          '&' + encodeURIComponent('filters[companyId][$eq]') + "=" + encodeURIComponent(companyId)
+      ).catch(() => {
+        alert('Sorry, an error has occurred while fetching the company.')
+      })
+      const fetchedCompany = await response.json()
+
+      return fetchedCompany
+    },
+
+    async fetchCompanyByName(companyName) {
+      const response = await fetch(
+        this.getApiEndpoint() +
+          this.getApiCompaniesPath() +
+          "?locale=" + this.$i18n.locale +
+          '&' + encodeURIComponent('filters[name][$eq]') + "=" + encodeURIComponent(companyName)
+      ).catch(() => {
+        alert('Sorry, an error has occurred while fetching the company.')
+      })
+      const fetchedCompany = await response.json()
+
+      return fetchedCompany
+    },
+
     /**
      * This function calculates wether it's better (according to contrast) to use black or white as textcolor/foreground based on the backgroundcolor.
      * @param backgroundColor hexcolor, either with 3 or 6 digits
@@ -192,12 +225,21 @@ export default {
     /*
      * returns true, when width (in px) of component-view is greater or equal than 768
      */
-    landscapeMode(minWidth) {
+    landscapeMode(minWidth = 768) {
       /*
        * NOTE: To change the value for the css container queries, you'll need to configure tailwind.config.js. 
        * For more info, read this: https://v2.tailwindcss.com/docs/breakpoints
        */
-      return document.getElementsByClassName('component-view')[0].clientWidth >= (minWidth || 768)
+      const rootElement1 = this.$root.$el
+      let rootElement2 
+      if (typeof window !== 'undefined')
+        rootElement2 = document.getElementsByClassName('component-view')[0]
+      const width = rootElement1?.clientWidth || rootElement2?.clientWidth
+      
+      if (width)
+        return width >= minWidth
+      else
+        return false
     }
   },
 }

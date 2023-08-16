@@ -37,7 +37,7 @@ module.exports = {
       },
       spacing: {
         navbar: '35rem',
-        filtermenu: '12rem',
+        filtersmenu: '13rem',
       },
     },
   },

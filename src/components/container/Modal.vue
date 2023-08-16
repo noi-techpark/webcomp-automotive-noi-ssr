@@ -129,7 +129,7 @@ export default {
         fill: #444;
       }
 
-      &:hover {
+      &:hover, &:focus {
         @apply bg-secondary-hover;
       }
     }

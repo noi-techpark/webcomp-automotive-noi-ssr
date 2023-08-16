@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div
+  <button
     class="button clickable"
     :class="{
       loading,
@@ -28,7 +28,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       class="loader-ct"
       :colorscheme="type === 'secondary' ? 'colored' : 'white'"
     />
-  </div>
+  </button>
 </template>
 
 <script>
@@ -110,17 +110,19 @@ export default {
   }
 
   &.primary {
-    @apply bg-primary text-white;
+    font-size: 1.25rem;
+    background-color: var(--primary-color);
+    color: var(--primary-color-text);
 
-    &:hover {
-      @apply bg-primary-hover;
+    &:hover, &:focus {
+      background-color: var(--primary-hover);
     }
   }
 
   &.secondary {
     @apply bg-input text-black;
 
-    &:hover {
+    &:hover, &:focus {
       @apply bg-input-focus;
     }
 
@@ -190,7 +192,7 @@ export default {
   &.enhanced-contrast {
     background-color: rgba(255, 255, 255, 0.2);
 
-    &:hover {
+    &:hover, &:focus {
       background-color: rgba(255, 255, 255, 0.3);
     }
   }

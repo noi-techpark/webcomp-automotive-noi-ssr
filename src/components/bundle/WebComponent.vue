@@ -50,10 +50,14 @@ import { setup } from "@twind/core/core"
 import autoprefix from "@twind/preset-autoprefix"
 import ext from "@twind/preset-ext"
 import tailwind from "@twind/preset-tailwind"
+import resolveConfig from 'tailwindcss/resolveConfig'
 
 import vueI18n from '@/plugins/vueI18n'
 import 'tailwindcss/tailwind.css'
 import utils from '~/mixins/utils.js'
+
+import tailwindConfig from '~/tailwind.config.js'
+const twConfig = resolveConfig(tailwindConfig)
 
 // Setup twind
 setup({
@@ -68,6 +72,7 @@ export default {
     return {
       // Provide primary-color for Map.vue
       'primary-color': this.primaryColor,
+      'tailwind-config': twConfig,
     }
   },
 
@@ -201,8 +206,8 @@ export default {
     this.setGlobalCSSVariable('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
     this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
     
-    if (this.$route?.query?.company) {
-      this.requestedCompanyDisplay = this.$route.query.company
+    if (this.displayAsWebsite && this.$route?.params?.companyName) {
+      this.requestedCompanyDisplay = this.$route.params.companyName
     }
     this.loading = false
   },
@@ -231,12 +236,8 @@ export default {
 
     showCompany(companyData) {
       this.visibleCompanyData = companyData
-      if (this.$router) {
-        this.$router.replace({
-          name: this.$router.name,
-          query: { company: companyData.id },
-        })
-      }
+      this.historyPush('/companies/' + companyData.attributes.name)
+      this.$emit('changeTitle', companyData.attributes.name)
     },
 
     hideCompany() {
@@ -245,11 +246,14 @@ export default {
     },
 
     resetUrl() {
-      if (this.$router) {
-        this.$router.replace({
-          name: this.$router.name,
-          query: { company: undefined },
-        })
+      this.historyPush('/companies/')
+      this.$emit('changeTitle', '')
+    },
+
+    historyPush(path) {
+      if(this.displayAsWebsite) {
+        const encodedPath = encodeURI(path)
+        history.pushState('', '', encodedPath)
       }
     },
 

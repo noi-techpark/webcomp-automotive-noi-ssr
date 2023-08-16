@@ -12,7 +12,7 @@ const targetConfig = !process.env.TARGET_CONFIG ? 'server' : process.env.TARGET_
 console.log(targetConfig);
 
 const config = {
-  ssr: targetConfig, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  ssr: targetConfig === 'server', // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
   target: targetConfig,
 
   srcDir: 'src/',
@@ -28,6 +28,7 @@ const config = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      { name: 'google-site-verification', content: 'xFg36VV3r7ycMqVCrgMcxwwHrOiZKU7j9zzjlZH9PNY' }, // Google Console verification token for Raphael Siller
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -79,7 +80,8 @@ const config = {
     'nuxt-i18n',
     '@/shared/vuelayers',
     'nuxt-custom-elements',
-    ['nuxt-lazy-load', { directiveOnly: true }], // With directiveOnly, only images with v-lazy-load get lazy-loaded
+    // ['nuxt-lazy-load', { directiveOnly: true }], // With directiveOnly, only images with v-lazy-load get lazy-loaded
+    'nuxt-lazy-load',
   ],
 
   customElements: {
@@ -98,6 +100,12 @@ const config = {
                 customLinks: '[]',
               },
             }, */
+          },{
+            name: 'CompanieMapping',
+            path: '@/components-lazy/ui/generic/Map',
+          },{
+            name: 'PdfExport',
+            path: '@/components-lazy/tools/PdfExporter',
           },
         ],
       },
@@ -109,11 +117,12 @@ const config = {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: ['ol', 'vuelayers', 'twind'],
-    extractCSS: true,
+    extractCSS: targetConfig === 'server',
     tailwindcss: {
       viewer: false, // disabled because it causes `Error: Cannot find module 'tailwindcss/resolveConfig'`, fixed in https://github.com/nuxt-community/tailwindcss-module/pull/303
     },
     babel: {
+      compact: process.env.NODE_ENV === 'production',
       presets: [
         ['@nuxt/babel-preset-app', {
           useBuiltIns: 'entry',

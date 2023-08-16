@@ -7,7 +7,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <RightColumn class="map-view" :visible="true">
     <client-only>
-      <Map
+      <link rel="stylesheet" href="https://unpkg.com/vuelayers/dist/vuelayers.css">
+      <CompanieMapping
         :visible-companies="filteredCompanies"
         @showCompanyWithId="showCompanyWithId"
       />
@@ -18,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 export default {
   components: {
-    Map: () => import("@/components-lazy/ui/generic/Map"),
+    CompanieMapping: () => import("@/components-lazy/ui/generic/Map"),
   },
   props: {
     filteredCompanies: {
