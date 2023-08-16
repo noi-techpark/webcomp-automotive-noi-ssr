@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </div>
     <div class="company-list">
       <aside>
-        <div class="map-col" aria-hidden="true">
+        <div class="map-col">
           <!--
           <div class="top-desc">
             TODO: add here optional top description 
@@ -118,17 +118,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </aside>
       <main>
         <div id="actorsList" class="results-ct" aria-live="polite">
-          <div
+          <NuxtLink
             v-for="(resultItem, index) in visibleResults"
             :key="new Date().getTime() + '-' + index"
+            :to="'/actors/' + encodeURIComponent(resultItem.name)"
+            target="_blank"
+            :aria-label="$t('company.profile') + resultItem.name"
           >
-            <NuxtLink
-              :to="'/actors/' + encodeURIComponent(resultItem.name)"
-              target="_blank"
-            >
-              <ResultCard :result="resultItem" :max-description-length="300" :index="index" />
-            </NuxtLink>
-          </div>
+            <ResultCard :result="resultItem" :max-description-length="300" :index="index" />
+          </NuxtLink>
           <div v-if="!visibleResults.length" class="no-results-notice">
             {{ $t('common.noCompaniesFound') }}
           </div>
@@ -210,11 +208,17 @@ export default {
     window.addEventListener('scroll', this.adjustHeaderHeight)
 
     document.onkeyup = function(e) {
-      if (e.ctrlKey && e.key === 'k') {
+      if (e.ctrlKey && e.key === 'k') { // Ctrl+K: focus searchbar
         e.preventDefault();
         e.stopPropagation();
         document.getElementById('searchbar').focus()
         return false
+      } else if (e.key === 'Tab') { // tab: scroll element into view, so it's completely visible
+        const activeElement = document.activeElement
+        if(activeElement.parentElement.id === 'actorsList') {
+          console.log("activeElement: %o", document.activeElement)
+          document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }
       }
     };
   },
@@ -239,11 +243,13 @@ export default {
     adjustHeaderHeight() {
       const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
       const newHeight = ((200 - scrollTop > 75) ? (200 - scrollTop) : 75)
-      const animation = this.$refs.searchBar.animate({height: newHeight + 'px'}, 500)
-      const searchBarStyle = this.$refs.searchBar.style 
-      animation.onfinish = function () {
-        animation.cancel()
-        searchBarStyle.height = newHeight + 'px'
+      if(this.$refs.searchBar) {
+        const animation = this.$refs.searchBar.animate({height: newHeight + 'px'}, 500)
+        const searchBarStyle = this.$refs.searchBar.style 
+        animation.onfinish = function () {
+          animation.cancel()
+          searchBarStyle.height = newHeight + 'px'
+        }
       }
     }
   },
