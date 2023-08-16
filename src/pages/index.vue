@@ -211,7 +211,10 @@ export default {
 
     document.onkeyup = function(e) {
       if (e.ctrlKey && e.key === 'k') {
-        this.getDocumentById('searchbar').focus()
+        e.preventDefault();
+        e.stopPropagation();
+        document.getElementById('searchbar').focus()
+        return false
       }
     };
   },
