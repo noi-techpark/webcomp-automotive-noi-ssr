@@ -55,6 +55,7 @@ const config = {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '@/plugins/vue-notification.server.js', ssr: true },
     { src: '@/plugins/vue-notification.client.js', ssr: false },
     '@/plugins/notify',
     { src: '@/plugins/vue-html2pdf.client.js', ssr: false },

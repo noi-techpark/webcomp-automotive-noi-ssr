@@ -232,9 +232,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 // import VueHtml2pdf from 'vue-html2pdf'
 import utils from '~/mixins/utils.js'
+import notify from '~/mixins/notify.js'
 
 export default {
-  mixins: [utils],
+  mixins: [utils, notify],
 
   props: {
     companies: {
@@ -297,6 +298,7 @@ export default {
 
   methods: {
     generatePdf() {
+      this.notifyInfo(this.$t('common.startPdfGeneration'))
       this.$refs.mainExportPdf.generatePdf()
     },
 
@@ -305,6 +307,7 @@ export default {
     },
 
     hasGeneratedPdf() {
+      this.notifySuccess(this.$t('common.endPdfGeneration'))
       this.$emit('hasGeneratedPdf')
       if (this.automaticDownload) {
         if (

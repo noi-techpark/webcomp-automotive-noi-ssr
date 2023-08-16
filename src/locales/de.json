@@ -28,6 +28,8 @@
     "ecosystemAutomotive": "Ecosystem Automotive",
     "contactPerson": "Kontaktperson",
     "downloadPdf": "PDF herunterladen",
+    "startPdfGeneration": "Generiere PDF ...",
+    "endPdfGeneration": "PDF wurde generiert",
     "privacyPolicy": "Privacy & Cookie Policy",
     "languageSelector": "Sprachauswahl"
   },
@@ -61,7 +63,7 @@
   },
   "company": {
     "contactReferencePerson": "Kontakt Kontaktperson",
-    "profile": "Unternehmensprofil",
+    "profile": "Unternehmensprofil ",
     "footerDescription": "Weitere Unternehmensinformation",
     "footerDescription2": "Kontaktinformationen, Metriken und andere Informationen",
     "legalName": "rechtlicher Name",
