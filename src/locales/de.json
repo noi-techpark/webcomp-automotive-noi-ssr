@@ -60,7 +60,17 @@
     "notDefined": "Nicht definiert"
   },
   "company": {
-    "contactReferencePerson": "Kontakt Kontaktperson"
+    "contactReferencePerson": "Kontakt Kontaktperson",
+    "profile": "Unternehmensprofil",
+    "footerDescription": "Weitere Unternehmensinformation",
+    "footerDescription2": "Kontaktinformationen, Metriken und andere Informationen",
+    "legalName": "rechtlicher Name",
+    "companyAddressStreet": "Addresse (Straße)",
+    "companyLocation": "PLZ und Stadt",
+    "phoneNumber": "Telefonnummer",
+    "phoneNumberContactPerson": "Telefonnummer der Kontaktperson",
+    "email": "Email",
+    "website": "Webseite von "
   },
   "home": {
     "meta": {

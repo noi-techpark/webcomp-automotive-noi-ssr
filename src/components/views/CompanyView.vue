@@ -14,67 +14,55 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <Icon name="cross" />
           </div>
         </div>
-        <div class="data-view">
+        <main class="data-view">
           <div class="header-profile">
             <h1>{{ data?.attributes?.name}}</h1>
-            <div
+            <img
               class="logo"
-              :style="{
-                backgroundImage:
-                  data?.attributes?.logo &&
+              :src="data?.attributes?.logo &&
                   data?.attributes?.logo.data &&
                   data?.attributes?.logo.data?.attributes?.formats
-                    ? 'url(' +
-                      getApiEndpoint() +
+                    ? getApiEndpoint() +
                       getAvailableImageFormat(
                         data?.attributes?.logo.data?.attributes?.formats
-                      ) +
-                      ')'
-                    : undefined,
-              }"
-            ></div>
+                      )
+                    : ''"
+              :alt="'Logo ' + data?.attributes?.name"
+            />
           </div>
           <div class="top-overview">
             <div class="col">
-              <div
+              <img
                 class="image"
-                :style="{
-                  backgroundImage:
-                    data?.attributes?.mainImage &&
+                :src="data?.attributes?.mainImage &&
                     data?.attributes?.mainImage.data &&
                     data?.attributes?.mainImage.data?.attributes?.formats
-                      ? 'url(' +
-                        getApiEndpoint() +
+                      ? getApiEndpoint() +
                         getAvailableImageFormat(
                           data?.attributes?.mainImage.data?.attributes?.formats
-                        ) +
-                        ')'
-                      : undefined,
-                }"
-              ></div>
+                        )
+                      : ''"
+                :alt="data?.attributes?.mainImageDescription"
+              />
             </div>
             <div class="col">
               <p class="top-desc">
                 {{ data?.attributes?.mainImageDescription }}
               </p>
               <div v-if="data?.attributes?.auxiliaryImage?.data?.attributes?.formats" class="middle-desc">
-                <div
+                <img
                   class="second-image"
-                  :style="{
-                    backgroundImage:
-                      data?.attributes?.auxiliaryImage &&
+                  :src="data?.attributes?.auxiliaryImage &&
                       data?.attributes?.auxiliaryImage.data &&
                       data?.attributes?.auxiliaryImage.data?.attributes?.formats
-                        ? 'url(' +
-                          getApiEndpoint() +
+                        ? getApiEndpoint() +
                           getAvailableImageFormat(
                             data?.attributes?.auxiliaryImage.data?.attributes
                               .formats
-                          ) +
-                          ')'
-                        : undefined,
-                  }"
-                ></div>
+                          )
+                        : ''"
+                  :alt="data?.attributes?.auxiliaryImageDescription"
+                />
                 <p class="second-desc">
                   {{ data?.attributes?.auxiliaryImageDescription }}
                 </p>
@@ -125,13 +113,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <button class="download-bt" @click="downloadPdf">
             {{ $t('common.downloadPdf') }} ↓
           </button>
-        </div>
-        <div class="footer">
+        </main>
+        <footer class="footer" :aria-label="$t('company.footerDescription')">
           <div class="column">
-            <p class="uppercase">
+            <p class="uppercase" :aria-label="$t('company.legalName')">
               {{ data?.attributes?.legalName }}
             </p>
-            <p v-if="data?.attributes?.companyAddressStreet">
+            <p v-if="data?.attributes?.companyAddressStreet" :aria-label="$t('company.companyAddressStreet')">
               {{ data?.attributes?.companyAddressStreet.name }}
             </p>
             <p
@@ -139,21 +127,22 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 data?.attributes?.companyLocation &&
                 data?.attributes?.companyAddressStreet
               "
+              :aria-label="$t('company.companyLocation')"
             >
               {{ data?.attributes?.companyLocation.cap }}
               {{ data?.attributes?.companyAddressStreet.city }}
             </p>
-            <p v-if="data?.attributes?.companyContact">
+            <p v-if="data?.attributes?.companyContact" :aria-label="$t('company.phoneNumber')">
               <a :href="'tel:' + data?.attributes?.companyContact.phoneNumber">{{
                 data?.attributes?.companyContact.phoneNumber
               }}</a>
             </p>
-            <p v-if="data?.attributes?.companyContact">
+            <p v-if="data?.attributes?.companyContact" :aria-label="$t('company.email')">
               <a :href="'mailto:' + data?.attributes?.companyContact.email">{{
                 data?.attributes?.companyContact.email
               }}</a>
             </p>
-            <p v-if="data?.attributes?.companyContact">
+            <p v-if="data?.attributes?.companyContact" :aria-label="$t('company.website') + data?.attributes?.name">
               <a
                 :href="
                   appendPrefixToUrl(data?.attributes?.companyContact.website)
@@ -163,8 +152,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               >
             </p>
           </div>
-          <div class="column second">
-            <p v-if="data?.attributes?.companyContact">
+          <div class="column second" :aria-label="$t('company.footerDescription2')">
+            <p v-if="data?.attributes?.companyContact" :aria-label="$t('common.contact')">
               {{ $t('common.contact') }}:
               <a :href="'mailto:' + data?.attributes?.contactPerson.email">{{
                 data?.attributes?.contactPerson.personName
@@ -173,7 +162,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 >({{ data?.attributes?.contactPerson.role }})</span
               >
             </p>
-            <p v-if="data?.attributes?.contactPerson?.phoneNumber" class="text">
+            <p v-if="data?.attributes?.contactPerson?.phoneNumber" class="text" :aria-label="$t('company.phoneNumberContactPerson')">
               <a :href="'tel:' + data?.attributes?.contactPerson.phoneNumber" class="link">{{ 
                 data?.attributes?.contactPerson.phoneNumber 
               }}</a>
@@ -220,7 +209,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               {{ enabledCertifications.join(', ') }}
             </p>
           </div>
-        </div>
+        </footer>
       </div>
     </SlidingContainer>
     <!-- Added style="visbility:hidden", because for some reason. The <vue-html2pdf></vue-html2pdf> was visible. Download Still works-->

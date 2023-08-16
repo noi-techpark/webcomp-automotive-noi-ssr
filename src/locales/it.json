@@ -60,7 +60,17 @@
     "notDefined": "Non definito"
   },
   "company": {
-    "contactReferencePerson": "Contatta la persona di riferimento"
+    "contactReferencePerson": "Contatta la persona di riferimento",
+    "profile": "Profilo aziendale",
+    "footerDescription": "Ulteriori informazioni sull'azienda",
+    "footerDescription2": "informazioni di contatto, metriche e altre informazioni",
+    "legalName": "nome legale",
+    "companyAddressStreet": "Indirizzo (via)",
+    "companyLocation": "CAP e citta",
+    "phoneNumber": "Numero di telefono",
+    "phoneNumberContactPerson": "Numero di telefono della persona di contatto",
+    "email": "Email",
+    "website": "Sito web di "
   },
   "home": {
     "meta": {
