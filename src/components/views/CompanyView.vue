@@ -299,6 +299,7 @@ export default {
     @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
 
     border-radius: 50%;
+    z-index: 9998;
 
     & .inner {
       @apply flex h-full w-full items-center justify-center;

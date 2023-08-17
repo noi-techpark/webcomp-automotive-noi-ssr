@@ -25,7 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             TODO: add here optional top description 
           </div>
           -->
-          <div class="map-ct clickable" data-not-lazy @click="showMapView()">
+          <div class="map-ct clickable" data-not-lazy @click="showMapModal()">
             <client-only>
               <link
                 rel="stylesheet"
@@ -142,6 +142,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 import utils from '~/mixins/utils.js'
 import filters from '~/mixins/filters.js'
+import WebComponent from '@/components/bundle/WebComponent'
 
 export default {
   components: {
@@ -230,6 +231,9 @@ export default {
     toggleAdvancedFiltersVisibility() {
       this.areAdvancedFiltersVisible = !this.areAdvancedFiltersVisible
     },
+    setFilters(newFilters) {
+      this.filters = newFilters
+    },
     resetFilters() {
       this.filters = {}
     },
@@ -237,8 +241,17 @@ export default {
       if(this.$refs.homepage)
         this.$refs.homepage.style.setProperty(varname, value)
     },
-    showMapView() {
-      alert("Under construction: Clicking on this map preview should open a popup containing the WebComponent")
+    showMapModal() {
+      this.$modal.show(WebComponent, 
+        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters},
+        {name: 'webcomponent', focusTrap: true, width: '90%', height:  this.isInLandscapeMode ? '90%' : '85%', transition: 'modal',},
+      )
+    },
+    mapModalBeforeOpen() {
+      this.$root.$on('set-filters', this.setFilters)
+    },
+    mapModalClosed() {
+      this.$root.$off('set-filters', this.setFilters)
     },
     adjustHeaderHeight() {
       const scrollTop = document.body.scrollTop || document.documentElement.scrollTop

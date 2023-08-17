@@ -57,6 +57,7 @@ const config = {
   plugins: [
     { src: '@/plugins/vue-notification.server.js', ssr: true },
     { src: '@/plugins/vue-notification.client.js', ssr: false },
+    '@/plugins/vue-js-modal.js',
     '@/plugins/notify',
     { src: '@/plugins/vue-html2pdf.client.js', ssr: false },
     { src: '@/plugins/vuelayers.client.js', ssr: false },

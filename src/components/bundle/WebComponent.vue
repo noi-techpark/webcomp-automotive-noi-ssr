@@ -13,6 +13,8 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :default-category="defaultCategory"
       :limit-to-default-category="limitToDefaultCategory"
       :visible-categories="visibleCategoriesAsArray"
+      :initial-filters="initialFilters"
+      :show-language-select="showLanguageSelect"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
@@ -106,9 +108,18 @@ export default {
       default: ''
     },
 
+    initialFilters: {
+      type: Object,
+      default: ()=>{}
+    },
+
     language: {
       type: String,
       default: 'en',
+    },
+    showLanguageSelect: {
+      type: Boolean,
+      default: true,
     },
     primaryColor: {
       type: String,

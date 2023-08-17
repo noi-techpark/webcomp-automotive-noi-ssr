@@ -7,7 +7,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <div class="navigation-ct">
     <div class="navigation-bar" :class="{ 'navbar-filter-hidden': !isFiltersMenuVisible }">
-      <div class="lang-selector">
+      <div v-if="showLanguageSelect" class="lang-selector">
         <Select
           :value="$i18n.locale"
           :options="availableLanguages"
@@ -55,7 +55,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </div>
         <Button icon="filter" class="filter-bt" @click="toggleFiltersMenu" />
       </div>
-      <div class="results-ct">
+      <div class="results-ct" :class="{ 'result-view': resultsList.length === visibleResults.length }">
         <div v-if="resultsList.length !== visibleResults.length" class="result clickable" @click="showCategory(true)">
           <div class="name">
             <b>{{  $t('common.allCategories') + ' (' + filterCount.sumCompanies + ')' }}</b>
@@ -227,6 +227,16 @@ export default {
         )
       },
     },
+
+    initialFilters: {
+      type: Object,
+      default: null,
+    },
+
+    showLanguageSelect: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data() {
@@ -396,6 +406,10 @@ export default {
     mappedResults(newCompaniesList) {
       this.$emit('didFilterCompanies', newCompaniesList)
     },
+
+    filters(newFilters) {
+      this.$root.$emit('set-filters', newFilters)
+    }
   },
 
   mounted() {
@@ -417,6 +431,10 @@ export default {
       this.$refs.filtersmenu.style.setProperty('width', this.twConfig.theme.space.filtersmenu);
     } else {
       this.$refs.filtersmenu.style.setProperty('width', "calc(" + this.twConfig.theme.space.filtersmenu + " - " + this.twConfig.theme.spacing[10] + ")");
+    }
+
+    if (this.initialFilters) {
+      this.filters = this.initialFilters
     }
 
     if (this.landscapeMode(1024)) {
@@ -626,7 +644,23 @@ export default {
       @apply overflow-y-auto overflow-x-hidden;
 
       margin-top: 4px;
-      height: calc(100% - 7.5rem - 55px);
+      /*
+       *   1.25rem from section-title > margin-top
+       *   2   rem from section-title > height
+       *   1.25rem from search-bar-ct > margin-top
+       * + 3   rem from search-bar-ct > height
+       * -----------------------------------------
+       *   7.5 rem total
+       *
+       *   100px from logos-ct   > height
+       * +   4px from results-ct > margin-top
+       * ------------------------------------
+       *   104px total
+       */
+      height: calc(100% - 4.25rem - 104px);
+      &.result-view {
+        height: calc(100% - 4.25rem - 3.25rem - 104px);
+      }
 
       & .result {
         @apply flex flex-row mx-6 mb-4 cursor-pointer select-none;
@@ -703,6 +737,7 @@ export default {
       @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
 
       border-radius: 50%;
+      z-index: 9998;
 
       & .inner {
         @apply flex h-full w-full items-center justify-center;
@@ -770,8 +805,18 @@ export default {
       @apply w-full left-0 transform-none;
       
       bottom: 40cqh;
-    }
 
+      & .section-title {
+        margin-top: 0.25rem;
+      }
+
+      & .results-ct {
+        height: calc(100% - 4.25rem - 104px);
+        &.result-view {
+          height: calc(100% - 4.25rem - 2.25rem - 104px);
+        }
+      }
+    }
     & .filters-menu {
       @apply right-0;
 
