@@ -289,7 +289,11 @@ export default {
       this.companiesList = companiesList
     },
     toggleLoading(isLoading) {
-      this.loading = isLoading || !this.loading;
+      // explicitly require a boolean value,
+      if (isLoading === true || isLoading === false)
+        this.loading = isLoading
+      else 
+        this.loading = !this.loading
     },
     setGlobalCSSVariable(varname, value) {
       if(this.$refs.componentView)

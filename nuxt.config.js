@@ -82,8 +82,6 @@ const config = {
     'nuxt-i18n',
     '@/shared/vuelayers',
     'nuxt-custom-elements',
-    // ['nuxt-lazy-load', { directiveOnly: true }], // With directiveOnly, only images with v-lazy-load get lazy-loaded
-    'nuxt-lazy-load',
   ],
 
   customElements: {
@@ -209,6 +207,10 @@ const config = {
   telemetry: false,
 }
 
+if (targetConfig === 'server') {
+  // config.modules.push(['nuxt-lazy-load', { directiveOnly: true }])  // With directiveOnly, only images with v-lazy-load get lazy-loaded
+  config.modules.push('nuxt-lazy-load')
+}
 // set env var 'MATOMO = true' to enable matomo for websites
 // keep deactivated for webcomponents
 if (matomo) {
