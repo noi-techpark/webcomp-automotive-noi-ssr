@@ -15,10 +15,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           type="search"
           aspect="fill"
         />
+        <Button v-if="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
       </div>
     </div>
     <div class="company-list">
-      <aside>
+      <aside v-if="isInLandscapeMode" :class="{ 'aside-closed': !isAsideVisible }">
         <div class="map-col">
           <!--
           <div class="top-desc">
@@ -68,9 +69,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
+import resolveConfig from 'tailwindcss/resolveConfig'
 import utils from '~/mixins/utils.js'
 import filters from '~/mixins/filters.js'
 import WebComponent from '@/components/bundle/WebComponent'
+import FiltersMenu from '@/components/navigation/FiltersMenu'
+
+import tailwindConfig from '~/tailwind.config.js'
+const twConfig = resolveConfig(tailwindConfig)
 
 export default {
   components: {
@@ -83,6 +89,7 @@ export default {
     return {
       loading: true,
       areAdvancedFiltersVisible: true,
+      isInLandscapeMode: this.landscapeMode(),
       fetchedData: [],
       filters: {},
       filteredCompanies: [],
@@ -133,6 +140,10 @@ export default {
     this.setStandardGlobalCSSVariables(this.$refs.homepage, this.primaryColor);
 
     window.addEventListener('scroll', this.adjustHeaderHeight)
+    window.addEventListener('touchmove', this.adjustHeaderHeight)
+    window.addEventListener('resize', ()=>{
+      this.isInLandscapeMode = this.landscapeMode();
+    })
 
     document.onkeyup = function(e) {
       if (e.ctrlKey && e.key === 'k') { // Ctrl+K: focus searchbar
@@ -171,11 +182,19 @@ export default {
         {name: 'webcomponent', focusTrap: true, width: '90%', height:  this.isInLandscapeMode ? '90%' : '85%', transition: 'modal',},
       )
     },
-    mapModalBeforeOpen() {
-      this.$root.$on('set-filters', this.setFilters)
-    },
-    mapModalClosed() {
-      this.$root.$off('set-filters', this.setFilters)
+    showFilterModal() {
+      this.$modal.show(FiltersMenu, 
+        { initialFilters: this.filters, filterCount: this.filterCount },
+        { name: 'filtersmenu', 
+          focusTrap: true, 
+          width: '95%', 
+          height:  'auto', 
+          shiftY: 0.25,
+          styles: 'background-color: ' +  twConfig.theme.colors.secondary + ';' + 
+                  'border-radius: ' + twConfig.theme.borderRadius.lg + ';',
+          transition: 'modal',
+        },
+      )
     },
     adjustHeaderHeight() {
       const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
@@ -195,6 +214,17 @@ export default {
 
 <style>
 .homepage {
+  @apply overflow-y-auto;
+  /**
+   * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
+   * but some linters still warn about it.
+   *
+   * browser-compatibility: https://developer.mozilla.org/en-US/docs/Web/CSS/@container#browser_compatibility
+   * stylelint 14.12.0: https://github.com/stylelint/stylelint/releases/tag/14.12.0
+   */
+  container-type: size;
+  container-name: noi-automotive-component-view;
+
   & .search-bar-ct {
     @apply fixed my-4 rounded-lg;
 
@@ -213,12 +243,20 @@ export default {
     & .search-bar {
       @apply absolute mx-12 h-12;
 
-      width: calc(1300px * 0.3);
+      max-width: calc(1300px * 0.3);
+      width: auto;
       top: calc(50% - ((theme('spacing.12') + 4px) / 2));
 
       & input {
         @apply rounded-lg;
       }
+    }
+
+    & .filter-bt {
+      @apply inline-block;
+
+      border-radius: 18px;
+      position: relative;
     }
   }
 
@@ -234,6 +272,8 @@ export default {
       flex: 30%;
 
       & .map-col {
+        @apply mb-5;
+        
         & .top-desc {
           @apply flex items-center text-sm text-grey font-light;
 
@@ -274,11 +314,35 @@ export default {
     }
   }
 }
+
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
+  .search-bar-ct {
+    & .search-bar {
+      @apply mx-6;
+
+      & .text-input {
+        @apply inline-block pr-2;
+
+        width: calc(100% - 44px - 0.5rem);
+      }
+    }
+  }
+}
+
 .full-screen-loader {
   @apply fixed flex items-center justify-center top-0 right-0 bottom-0 left-0 bg-white bg-opacity-75 z-30 opacity-0 pointer-events-none;
 
   &.visible {
     @apply opacity-100 pointer-events-auto;
   }
+}
+
+.modal-enter-active,
+.modal-leave-active {
+    transition: all 0.5s;
+}
+.modal-enter,
+.modal-leave-active {
+    opacity: 0;
 }
 </style>
