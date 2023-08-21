@@ -500,14 +500,14 @@ export default {
 
     showFiltersMenu() {
       this.isFiltersMenuVisible = true
-      this.$emit('setGlobalCSSVariable', '--width-filtersmenu', this.twConfig.theme.space.filtersmenu)
+      this.$emit('setFilterMenuWidth', this.twConfig.theme.space.filtersmenu)
       // Refresh map size, because altering css-width stretches the canvas of the map. (refreshMap is defined in Map.vue in mounted)
       this.$root.$emit('refreshMap')
     },
 
     hideFiltersMenu() {
       this.isFiltersMenuVisible = false
-      this.$emit('setGlobalCSSVariable', '--width-filtersmenu', '0rem')
+      this.$emit('setFilterMenuWidth', '0rem')
       // Refresh map size, because altering css-width stretches the canvas of the map. (refreshMap is defined in Map.vue in mounted)
       this.$root.$emit('refreshMap')
     },

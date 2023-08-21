@@ -228,6 +228,15 @@ export default {
     
         return "#"+RR+GG+BB;
     },
+    setGlobalCSSVariable(rootElement, varname, value) {
+      if(rootElement)
+        rootElement.style.setProperty(varname, value)
+    },
+    setStandardGlobalCSSVariables(rootElement, primaryColor) {
+      this.setGlobalCSSVariable(rootElement, '--primary-color', primaryColor);
+      this.setGlobalCSSVariable(rootElement, '--primary-hover', this.hexAdjustBrightness(primaryColor, this.getTextColor(primaryColor) === 'white' ? -20 : 20));
+      this.setGlobalCSSVariable(rootElement, '--primary-color-text', this.getTextColor(primaryColor));
+    },
     truncate(str, length, useWordBoundary ){
       if (!str) { return ""; }
       if (str.length <= length) { return str; }

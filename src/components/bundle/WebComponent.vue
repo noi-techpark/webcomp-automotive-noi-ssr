@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       @didFetchCompanies="setCompaniesList"
       @didFilterCompanies="setNewFilteredCompanies"
       @toggleLoading="toggleLoading"
-      @setGlobalCSSVariable="setGlobalCSSVariable"
+      @setFilterMenuWidth="setFilterMenuWidth"
     />
     <MapView
       :filtered-companies="filteredCompanies"
@@ -213,9 +213,7 @@ export default {
     this.$refs.componentView.style.height = this.height;
 
     // Define CSS Variables
-    this.setGlobalCSSVariable('--primary-color', this.primaryColor);
-    this.setGlobalCSSVariable('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
-    this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
+    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.primaryColor);
     
     if (this.displayAsWebsite && this.$route?.params?.companyName) {
       this.requestedCompanyDisplay = this.$route.params.companyName
@@ -295,9 +293,8 @@ export default {
       else 
         this.loading = !this.loading
     },
-    setGlobalCSSVariable(varname, value) {
-      if(this.$refs.componentView)
-        this.$refs.componentView.style.setProperty(varname, value);
+    setFilterMenuWidth(value) {
+      this.setGlobalCSSVariable(this.$refs.componentView, '--width-filtersmenu', value)
     }
   },
 }

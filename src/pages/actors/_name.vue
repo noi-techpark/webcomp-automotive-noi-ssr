@@ -77,15 +77,7 @@ export default {
   },
   mounted() {
     // Define CSS Variables
-    this.setGlobalCSSVariable('--primary-color', this.primaryColor);
-    this.setGlobalCSSVariable('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
-    this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
-  },
-  methods: {
-    setGlobalCSSVariable(varname, value) {
-      if(this.$refs.actorProfile)
-        this.$refs.actorProfile.style.setProperty(varname, value)
-    },
+    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.primaryColor);
   },
 }
 </script>

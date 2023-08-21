@@ -202,9 +202,7 @@ export default {
     this.fetchResults()
 
     // Define CSS Variables
-    this.setGlobalCSSVariable('--primary-color', this.primaryColor);
-    this.setGlobalCSSVariable('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
-    this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
+    this.setStandardGlobalCSSVariables(this.$refs.homepage, this.primaryColor);
 
     window.addEventListener('scroll', this.adjustHeaderHeight)
 
@@ -236,10 +234,6 @@ export default {
     },
     resetFilters() {
       this.filters = {}
-    },
-    setGlobalCSSVariable(varname, value) {
-      if(this.$refs.homepage)
-        this.$refs.homepage.style.setProperty(varname, value)
     },
     showMapModal() {
       this.$modal.show(WebComponent, 
