@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div ref="homepage" class="homepage"  style="height: 100vh;">
+  <div ref="homepage" class="homepage">
     <HeaderNOI />
     <div ref="searchBar" class="search-bar-ct" role=search>
       <div class="search-bar">
@@ -19,14 +19,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
     </div>
     <div class="company-list">
-      <aside v-if="isInLandscapeMode" :class="{ 'aside-closed': !isAsideVisible }">
+      <aside v-if="isInLandscapeMode">
         <div class="map-col">
           <!--
           <div class="top-desc">
             TODO: add here optional top description 
           </div>
           -->
-          <div class="map-ct clickable" data-not-lazy @click="showMapModal()">
+          <div class="map-ct clickable" data-not-lazy @click="showMapModal">
             <client-only>
               <link
                 rel="stylesheet"
@@ -149,12 +149,13 @@ export default {
       if (e.ctrlKey && e.key === 'k') { // Ctrl+K: focus searchbar
         e.preventDefault();
         e.stopPropagation();
-        document.getElementById('searchbar').focus()
+        const searchbar = document.getElementById('searchbar')
+        if(searchbar)
+          searchbar.focus()
         return false
       } else if (e.key === 'Tab') { // tab: scroll element into view, so it's completely visible
         const activeElement = document.activeElement
         if(activeElement.parentElement.id === 'actorsList') {
-          console.log("activeElement: %o", document.activeElement)
           document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
         }
       }
@@ -214,7 +215,7 @@ export default {
 
 <style>
 .homepage {
-  @apply overflow-y-auto;
+  display: initial;
   /**
    * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
    * but some linters still warn about it.
@@ -222,7 +223,7 @@ export default {
    * browser-compatibility: https://developer.mozilla.org/en-US/docs/Web/CSS/@container#browser_compatibility
    * stylelint 14.12.0: https://github.com/stylelint/stylelint/releases/tag/14.12.0
    */
-  container-type: size;
+  container-type: inline-size;
   container-name: noi-automotive-component-view;
 
   & .search-bar-ct {
@@ -239,6 +240,9 @@ export default {
     background-image: url('https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg');
     background-position: center;
     background-size: cover;
+
+    container-type: inline-size;
+    container-name: search-bar-ct;
 
     & .search-bar {
       @apply absolute mx-12 h-12;
@@ -264,7 +268,7 @@ export default {
     @apply relative flex h-fit mx-auto;
 
     max-width: 1300px;
-    top: calc(100px + 25vh + 2 * theme('spacing.4'));
+    top: calc(300px + 2 * theme('spacing.4')); /* 100px header height, 200px search-bar-ct height, 2 * theme('spacing.4') 200px search-bar-ct margin */
 
     & aside {
       @apply pl-5;
@@ -315,7 +319,7 @@ export default {
   }
 }
 
-@container noi-automotive-component-view (max-width: theme('screens.md')) {
+@container search-bar-ct (max-width: theme('screens.md')) {
   .search-bar-ct {
     & .search-bar {
       @apply mx-6;
@@ -331,6 +335,8 @@ export default {
 
 .full-screen-loader {
   @apply fixed flex items-center justify-center top-0 right-0 bottom-0 left-0 bg-white bg-opacity-75 z-30 opacity-0 pointer-events-none;
+
+  height: 100vh;
 
   &.visible {
     @apply opacity-100 pointer-events-auto;
