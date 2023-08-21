@@ -39,82 +39,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </client-only>
           </div>
         </div>
-        <div ref="filtersmenu" class="filters-menu" role="menu" :aria-label="$t('common.filters')">
-          <h1 class="top-title">{{ $t('common.filters') }}</h1>
-          <div class="list">
-            <Select
-              v-model="filters.industrialSector"
-              :label="$t('filters.industrialSector')"
-              :aria-label="'filter: ' + $t('filters.industrialSector')"
-              aria-controls="actorsList"
-              :options="industrialSectors"
-              :filter-count="filterCount.industrialSectors"
-              aspect="fill"
-              :white-contrast="true"
-              class="select"
-              role="menuitem"
-              aria-haspopup="listbox"
-            />
-            <Select
-              v-model="filters.valueChainPosition"
-              :label="$t('filters.valueChainPosition')"
-              :aria-label="'filter: ' + $t('filters.valueChainPosition')"
-              aria-controls="actorsList"
-              :options="valueChainPositions"
-              :filter-count="filterCount.valueChainPositions"
-              aspect="fill"
-              :white-contrast="true"
-              class="select"
-              role="menuitem"
-              aria-haspopup="listbox"
-            />
-            <Select
-              v-model="filters.employees"
-              :label="$t('filters.numberOfEmployees')"
-              :aria-label="'filter: ' + $t('filters.numberOfEmployees')"
-              aria-controls="actorsList"
-              :options="employees"
-              :filter-count="filterCount.employeeNumber"
-              aspect="fill"
-              :v-contrast="true"
-              class="select"
-              role="menuitem"
-              aria-haspopup="listbox"
-            />
-            <Select
-              v-model="filters.turnover"
-              :label="$t('filters.turnover')"
-              :aria-label="'filter: ' + $t('filters.turnover')"
-              aria-controls="actorsList"
-              :options="turnovers"
-              :filter-count="filterCount.turnovers"
-              aspect="fill"
-              :white-contrast="true"
-              class="select"
-              role="menuitem"
-              aria-haspopup="listbox"
-            />
-            <Select
-              v-model="filters.certification"
-              :label="$t('filters.certification')"
-              :aria-label="'filter: ' + $t('filters.certification')"
-              aria-controls="actorsList"
-              :options="certifications"
-              :filter-count="filterCount.certifications"
-              aspect="fill"
-              :white-contrast="true"
-              class="select"
-              role="menuitem"
-              aria-haspopup="listbox"
-            />
-            <Button
-              :value="$t('filters.resetFilters')"
-              class="reset-filters-bt"
-              type="primary"
-              @click="resetFilters"
-            />
-          </div>
-        </div>
+        <FiltersMenu 
+          :initial-filters="filters"
+          :filter-count="filterCount"
+        />
       </aside>
       <main>
         <div id="actorsList" class="results-ct" aria-live="polite">
@@ -220,6 +148,8 @@ export default {
         }
       }
     };
+
+    this.$root.$on('set-filters', this.setFilters)
   },
   methods: {
     async fetchResults() {
@@ -322,43 +252,6 @@ export default {
             & .ol-viewport {
               @apply rounded-t-lg;
             }
-          }
-        }
-      }
-
-      & .filters-menu {
-        @apply relative bg-secondary drop-shadow-xl px-5 my-5 rounded-lg;
-
-        border: 3px solid var(--primary-color);
-        z-index: 1;
-
-        & .top-title {
-          @apply text-lg text-black uppercase my-5;
-        }
-
-        & .list {
-          @apply relative overflow-y-auto h-[480px] left-0 right-0 px-5 pb-5;
-
-          & .select {
-            @apply mb-4;
-
-            & label {
-              @apply w-fit py-1 px-3 rounded-lg;
-
-              font-size: 1.25rem;
-              background-color: var(--primary-color);
-              color: var(--primary-color-text);
-            }
-
-            & .selector {
-              @apply py-1;
-
-              border: 2px solid blue;
-            }
-          }
-
-          & .reset-filters-bt {
-            @apply absolute right-5;
           }
         }
       }

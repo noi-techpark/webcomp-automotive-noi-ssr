@@ -17,7 +17,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <InputLabel v-if="label" :text="label" :required="required" />
     <input
       :id="type === 'search' ? 'searchbar' : ''"
-      :ref="input"
+      ref="input"
       :role="type === 'search' ? 'searchbox' : ''"
       :aria-label="type === 'search' ? 'insert key words to search for companies' : ''"
       :aria-keyshortcuts="type === 'search' ? 'Control+K' : ''"
