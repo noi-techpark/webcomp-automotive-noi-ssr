@@ -84,7 +84,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               </div>
             </div>
           </div>
-          <ResultCard v-else :result="resultItem" :index="index" />
+          <ResultCard v-else :result="resultItem" :card-type="isInLandscapeMode ? 'desktop' : 'mobile'" :index="index" />
         </div>
         <div v-if="!resultsList.length" class="no-results-notice">
           {{ $t('common.noCompaniesFound') }}
@@ -247,6 +247,7 @@ export default {
       mainCategory: null,
       isFiltersMenuVisible: true,
       areAdvancedFiltersVisible: true,
+      isInLandscapeMode: this.landscapeMode(),
       fetchedData: null,
     }
   },
@@ -442,6 +443,9 @@ export default {
     } else {
       this.hideFiltersMenu()
     }
+    window.addEventListener('resize', ()=>{
+      this.isInLandscapeMode = this.landscapeMode();
+    })
   },
 
   methods: {

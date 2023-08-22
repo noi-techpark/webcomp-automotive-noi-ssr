@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :placeholder="$t('filters.searchPlaceholder')"
           type="search"
           aspect="fill"
+          @input="delaySearch"
         />
         <Button v-if="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
       </div>
@@ -46,20 +47,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         />
       </aside>
       <main>
-        <div id="actorsList" class="results-ct" aria-live="polite">
-          <NuxtLink
-            v-for="(resultItem, index) in visibleResults"
-            :key="new Date().getTime() + '-' + index"
-            :to="'/actors/' + encodeURIComponent(resultItem.name)"
-            target="_blank"
-            :aria-label="$t('company.profile') + resultItem.name"
-          >
-            <ResultCard :result="resultItem" :max-description-length="300" :index="index" />
-          </NuxtLink>
-          <div v-if="!visibleResults.length" class="no-results-notice">
-            {{ $t('common.noCompaniesFound') }}
-          </div>
-        </div>
+        <ResultList 
+          :result-list="visibleResults"
+          :max-description-length="175"
+          :card-type="isInLandscapeMode ? 'desktop' : 'mobile'"
+        />
       </main>
     </div>
   <div class="full-screen-loader" :class="{ visible: loading }">
@@ -77,6 +69,7 @@ import FiltersMenu from '@/components/navigation/FiltersMenu'
 
 import tailwindConfig from '~/tailwind.config.js'
 const twConfig = resolveConfig(tailwindConfig)
+let searchTypingTimer
 
 export default {
   components: {
@@ -94,6 +87,7 @@ export default {
       filters: {},
       filteredCompanies: [],
       searchValue: '',
+      searchValueDelayed: '',
       primaryColor: '#0000ff'
     }
   },
@@ -114,7 +108,7 @@ export default {
 
       if (this.fetchedData) {
         // call filterResults from mixin 'filters'
-        results = this.filterResults(this.fetchedData, this.filters, this.searchValue)
+        results = this.filterResults(this.fetchedData, this.filters, this.searchValueDelayed)
       }
       return results
     },
@@ -170,6 +164,13 @@ export default {
     },
     toggleAdvancedFiltersVisibility() {
       this.areAdvancedFiltersVisible = !this.areAdvancedFiltersVisible
+    },
+    delaySearch() {
+      clearTimeout(searchTypingTimer)
+      searchTypingTimer = setTimeout(this.doneTyping, 250);
+    },
+    doneTyping() {
+      this.searchValueDelayed = this.searchValue
     },
     setFilters(newFilters) {
       this.filters = newFilters
@@ -303,18 +304,6 @@ export default {
 
     & main {
       flex: 70%;
-
-      & .results-ct {
-      @apply h-full;
-
-        & .card {
-          @apply bg-secondary;
-        }
-
-        & .no-results-notice {
-          @apply mx-6 text-base text-grey my-6;
-        }
-      }
     }
   }
 }
