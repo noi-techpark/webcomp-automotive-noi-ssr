@@ -125,7 +125,6 @@ export default {
       // call countFilters from mixin 'filters'
       return this.countFilters(this.filteredResults)
     },
-    
   },
   mounted() {
     this.fetchResults()
@@ -246,19 +245,19 @@ export default {
     container-name: search-bar-ct;
 
     & .search-bar {
-      @apply absolute mx-12 h-12;
+      @apply absolute flex items-center justify-between mx-6 h-12;
 
       max-width: calc(1300px * 0.3);
-      width: auto;
+      width: calc(100% - 2 * theme('spacing.6'));
       top: calc(50% - ((theme('spacing.12') + 4px) / 2));
 
       & input {
-        @apply rounded-lg;
+        @apply flex-initial rounded-lg;
       }
     }
 
     & .filter-bt {
-      @apply inline-block;
+      @apply flex-none ml-4 inline-block;
 
       border-radius: 18px;
       position: relative;
@@ -277,7 +276,7 @@ export default {
       flex: 30%;
 
       & .map-col {
-        @apply mb-5;
+        @apply mb-6;
         
         & .top-desc {
           @apply flex items-center text-sm text-grey font-light;
@@ -308,19 +307,6 @@ export default {
   }
 }
 
-@container search-bar-ct (max-width: theme('screens.md')) {
-  .search-bar-ct {
-    & .search-bar {
-      @apply mx-6;
-
-      & .text-input {
-        @apply inline-block pr-2;
-
-        width: calc(100% - 44px - 0.5rem);
-      }
-    }
-  }
-}
 
 .full-screen-loader {
   @apply fixed flex items-center justify-center top-0 right-0 bottom-0 left-0 bg-white bg-opacity-75 z-30 opacity-0 pointer-events-none;
