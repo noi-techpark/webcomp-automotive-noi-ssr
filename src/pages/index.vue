@@ -84,7 +84,13 @@ export default {
       areAdvancedFiltersVisible: true,
       isInLandscapeMode: this.landscapeMode(),
       fetchedData: [],
-      filters: {},
+      filters: {
+        specializations: { // define specializations, so that vue is able to detect changes to it (more info: https://stackoverflow.com/a/55379279)
+          automotiveAndMobility: false,
+          manufacturing: false,
+          agriAutomation: false,
+        },
+      },
       filteredCompanies: [],
       searchValue: '',
       searchValueDelayed: '',
@@ -108,7 +114,7 @@ export default {
 
       if (this.fetchedData) {
         // call filterResults from mixin 'filters'
-        results = this.filterResults(this.fetchedData, this.filters, this.searchValueDelayed)
+        results = this.filterResults(this.fetchedData, this.filters, this.searchValueDelayed, this.filters.specializations, 'and')
       }
       return results
     },

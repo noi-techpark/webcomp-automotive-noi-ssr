@@ -5,9 +5,29 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div ref="filtersmenu" class="filters-menu" role="menu" :aria-label="$t('common.filters')">
+  <div ref="filtersmenu" class="filters-menu-website" role="menu" :aria-label="$t('common.filters')">
     <h1 class="top-title">{{ $t('common.filters') }}</h1>
     <div class="list">
+      <div class="category-filter">
+        <InputLabel :text="$t('filters.specialization')"/>
+        <multiselect 
+          v-model="specializations" 
+          :options="specializationOptions" 
+          label="name" 
+          track-by="value" 
+          :multiple="true" 
+          :close-on-select="false"
+          :preserve-search="true" 
+          :placeholder="$t('common.select') + '...'"
+          tag-placeholder=""
+          select-label=""
+          deselect-label=""
+          :preselect-first="false">
+            <template slot="option" slot-scope="props">
+              <span>{{ props.option.name + " (" + filterCount.categories[props.option.value] + ")" }}</span>
+            </template>
+        </multiselect>
+      </div>
       <Select
         v-model="filters.industrialSector"
         :label="$t('filters.industrialSector')"
@@ -84,10 +104,17 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
+import Multiselect from 'vue-multiselect'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
+
 import utils from '~/mixins/utils.js'
 import filters from '~/mixins/filters.js'
 
 export default {
+  components: {
+    Multiselect
+  },
+
   mixins: [utils, filters],
 
   inject: {
@@ -112,12 +139,27 @@ export default {
   data() {
     return {
       filters: {},
+      specializations: [],
     }
   },
 
   watch: {
     filters(newFilters) {
       this.$root.$emit('set-filters', newFilters)
+    },
+    specializations(newSpecializations) {
+
+      const newSpecializationBoolean = {
+        automotiveAndMobility: false,
+        manufacturing: false,
+        agriAutomation: false,
+      }
+
+      newSpecializations.forEach((specialization)=>{
+        newSpecializationBoolean[specialization.value] = true
+      })
+      this.filters.specializations = newSpecializationBoolean
+      // this.$root.$emit('set-filters', this.filters)
     }
   },
 
@@ -132,6 +174,7 @@ export default {
   methods: {
     resetFilters() {
       this.filters = {}
+      this.specializations = []
     },
   }
 }
@@ -140,7 +183,7 @@ export default {
 
 <style>
 
-.filters-menu {
+.filters-menu-website {
   @apply relative bg-secondary drop-shadow-xl px-5 rounded-lg;
 
   border: 3px solid var(--primary-color);
@@ -167,7 +210,19 @@ export default {
       & .selector {
         @apply py-1;
 
-        border: 2px solid blue;
+        border: 2px solid var(--primary-color);
+      }
+    }
+
+    & .category-filter {
+      @apply mb-4;
+
+      & label {
+        @apply w-fit py-1 px-3 rounded-lg;
+
+        font-size: 1.25rem;
+        background-color: var(--primary-color);
+        color: var(--primary-color-text);
       }
     }
 
@@ -175,5 +230,50 @@ export default {
       @apply self-end;
     }
   }
+}
+
+/* overwrite css for multiselect */
+.multiselect {
+  @apply rounded-lg bg-white drop-shadow-xl;
+
+  border: 2px solid var(--primary-color);
+}
+.multiselect__tag {
+  background: var(--primary-color);
+}
+.multiselect__tags {
+  min-height: 1.5rem;
+  padding-left: 1rem;
+  border: none;
+}
+
+.multiselect__content-wrapper {
+  border: 2px solid var(--primary-color);
+}
+
+.multiselect__option--highlight {
+  background: var(--primary-hover);
+}
+
+.multiselect__option--highlight:after {
+  background: var(--primary-hover);
+}
+
+.multiselect__option--selected.multiselect__option--highlight {
+  background: var(--primary-hover);
+}
+
+.multiselect__option--selected.multiselect__option--highlight:after {
+  background: var(--primary-hover);
+}
+
+.multiselect__tag-icon:hover {
+  background: var(--primary-hover);
+}
+
+.multiselect__placeholder {
+  @apply text-sm text-black text-base;
+
+  margin-left: 0;
 }
 </style>

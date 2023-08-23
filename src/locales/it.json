@@ -1,6 +1,6 @@
 {
   "common": {
-    "backToCategories": "Indietro alle aree di specializzazione",
+    "backToCategories": "Indietro",
     "allCategories": "Tutte le aree di specializzazione",
     "filters": "Filtri",
     "automotive": "Automotive",
@@ -42,6 +42,7 @@
     "turnover": "Fatturato",
     "numberOfEmployees": "Numero di dipendenti",
     "certification": "Certificazioni",
+    "specialization": "Area di specializzazione",
     "resetFilters": "Resetta filtri",
     "automotiveTechnology": "Tecnologia automobilistica",
     "machineryAndPlantConstruction": "Costruzione di macchine ed impianti",

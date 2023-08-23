@@ -1,6 +1,6 @@
 {
   "common": {
-    "backToCategories": "Back to specialization areas",
+    "backToCategories": "Back",
     "allCategories": "All specialization areas",
     "filters": "Filters",
     "automotive": "Automotive",
@@ -42,6 +42,7 @@
     "turnover": "Turnover",
     "numberOfEmployees": "N. of employees",
     "certification": "Certification",
+    "specialization": "Specialization area",
     "resetFilters": "Reset filters",
     "automotiveTechnology": "Automotive Technology",
     "machineryAndPlantConstruction": "Machinery and plant construction",

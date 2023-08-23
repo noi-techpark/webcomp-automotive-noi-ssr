@@ -364,6 +364,7 @@ export default {
           this.filters,
           this.searchValue,
           this.categoryFilter,
+          'or',
           this.mainCategory,
           this.defaultCategoryValidated,
           this.displayMultipleCategories
