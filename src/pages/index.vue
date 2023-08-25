@@ -20,7 +20,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
     </div>
     <div class="company-list">
-      <aside v-if="isInLandscapeMode">
+      <aside v-show="isInLandscapeMode">
         <div class="map-col">
           <!--
           <div class="top-desc">
