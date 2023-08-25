@@ -33,6 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div class="top-overview">
             <div class="col">
               <img
+                v-if="!mainVideoID"
                 class="image"
                 :src="data?.attributes?.mainImage &&
                     data?.attributes?.mainImage.data &&
@@ -44,10 +45,17 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                       : ''"
                 :alt="data?.attributes?.mainImageDescription"
               />
+                <iframe 
+                  v-else
+                  width="100%" 
+                  height="270"
+                  :src="YOUTUBE_URL_PREFIX + mainVideoID"
+                  >
+                </iframe>
             </div>
             <div class="col">
               <p class="top-desc">
-                {{ data?.attributes?.mainImageDescription }}
+                {{ !mainVideoID ? data?.attributes?.mainImageDescription : data?.attributes?.mainVideoDescription }}
               </p>
               <div v-if="data?.attributes?.auxiliaryImage?.data?.attributes?.formats" class="middle-desc">
                 <img
@@ -226,6 +234,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
+import getYouTubeID  from 'get-youtube-id'
 import utils from '~/mixins/utils.js'
 
 export default {
@@ -250,6 +259,13 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  data() {
+    return {
+      YOUTUBE_URL_PREFIX: 'https://www.youtube.com/embed/',
+      mainVideoID: '',
+    }
   },
 
   computed: {
@@ -277,6 +293,10 @@ export default {
 
       return certifications
     },
+  },
+
+  updated() {
+    this.mainVideoID = getYouTubeID(this.data?.attributes?.mainVideo)
   },
 
   methods: {
