@@ -346,8 +346,9 @@ export default {
         @apply relative bg-contain bg-no-repeat -mt-6 -left-8;
 
         background-position: top right;
-        width: 150px;
-        height: 70px;
+        height: 150px;
+        max-width: 200px;
+        object-fit: contain;
         mix-blend-mode: multiply;
       }
     }
