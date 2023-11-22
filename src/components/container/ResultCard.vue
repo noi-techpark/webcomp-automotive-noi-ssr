@@ -5,11 +5,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <article :class="landscapeMode() ? 'desktop' : 'mobile'" class="card clickable">
+  <article :class="cardType" class="card clickable">
     <!-- card design from https://tailwind-elements.com/docs/standard/components/cards/ -->
     <img
       class="card-image"
-      :src="result.image ? getApiEndpoint() + getAvailableImageFormat(result.image.formats) : ''"
+      :src="result.image ? getApiEndpoint() + getAvailableImageFormat(result.image.formats, false) : ''"
       alt=""
     />
     <div class="card-desc">
@@ -40,6 +40,13 @@ export default {
     maxDescriptionLength: {
       type: Number,
       default: 175,
+    },
+    cardType: { 
+      type: String,
+      default: 'desktop',
+      validator(value) {
+        return ['desktop', 'mobile'].includes(value)
+      },
     }
   },
 }

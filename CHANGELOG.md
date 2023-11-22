@@ -4,6 +4,62 @@ SPDX-FileCopyrightText: NOI Techpark <digital@noi.bz.it>
 SPDX-License-Identifier: CC0-1.0
 -->
 
+## [2.0.0](https://github.com/RaphaelSiller/webcomp-automotive-noi/compare/v1.1.2...v2.0.0) (2023-08-23)
+
+
+### Features
+
+* added ARIA props to companyView ([140996d](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/140996d2184f37e61660df0e24feaea6256eaded))
+* added ARIA props to homepage ([ff3bb32](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/ff3bb328ca572b450a458b43599d02d64108a4bb))
+* added filter for specialization/category ([33425ac](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/33425ac534ba4c5beb2c6ff15ab6194fad2cb680))
+* added google console token for @RaphaelSiller ([da78409](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/da78409aae8773669748feb8f05cf7d9e9276142))
+* added lazy-load to images in ResultCard ([e0eee0d](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/e0eee0db014beb475fa92c8dea39ccf3a617ce57))
+* added mobile version for ResultCard ([f013a66](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/f013a660ca47e037330908aeddb24890495d2d66))
+* added modal Window that displays Webcomponent ([e04ee5e](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/e04ee5edd4b89ebf1bf474a27ecf263fba46a5da))
+* added new page to view profile ([c222c0b](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/c222c0bbea6fae6d872b982083f1b7628e5efc10))
+* added notifications for pdf generation ([c9af49e](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/c9af49e4b17021608b987fd8fe44973db719f888))
+* added option to open all Categories, ([0aa67d9](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/0aa67d959ef7ee418bd50c27b8fa4c863b684582))
+* added optional primary color  for Selector ([255952b](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/255952b13fb62b2d92e9468dfe5c4d36e9e35438))
+* added param to set maxDescriptionLength ([5eedd27](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/5eedd277ef75004afbc43056f286ad62d6918fb3))
+* adjusted homepage for better mobile usability ([5925c38](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/5925c38e4141b5b61b57eef973dd20eb46a7a89a))
+* center Resultcard when tabbing through list ([840af1d](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/840af1d114973b596385a9cb4651c65d612613f1))
+* extended lazy-load to everything except map ([6969a58](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/6969a586a09bf1c6fa31e9249ce7abd0ed49c0b7))
+* implemented new Homepage ([88aa70b](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/88aa70b4e7e70285d332cb603ec07ad3061d2661))
+* implemented SSR ([4c11112](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/4c11112f976cf0be1692fd53b23b763be059577b))
+* integrated contactPerson into footer ([79e4ebd](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/79e4ebd409c23053c9bcc2ad78aa90b7d4c88b72))
+* moved filtersmenu into a modal window, when in portrait mode ([4f92871](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/4f92871f8521bb5da8f8c3e8406496549279fef4))
+* replaced GET-params with dynamic route ([49f5330](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/49f5330f7413bebcf03b7c620dd6bd3dbddef58e))
+* replaced result with resultCard ([dbb65c5](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/dbb65c5b060ee118dae6d9c1e04a626279b9a4ef))
+* show filterMenu, when width >= 1024 (on mount) ([a13f223](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/a13f223a30f612892ecf9ee86f9f453b3eadf0cf))
+
+
+### Bug Fixes
+
+* added failsafe in case no companyName is set ([539aec3](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/539aec35524914266a0877b387e7cadbeec7421a))
+* adjustments for mainImage ([f8fe20a](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/f8fe20a88d7c2a6034960db6a549cc062e2e55b7))
+* css for searchbar ([1aed1d6](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/1aed1d6455c94d592aaa9251da26c977cd2c7b04))
+* **css:** width of filtersmenu was different as a webcomponent ([3526cbc](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/3526cbcf38ccb33592f6ffbb28b56bdc0e613601))
+* error because document is undefined ([024e87a](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/024e87ab79a08ac69196da077c376be389ee1b9b))
+* improved search speed ([da333a1](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/da333a13621d0d7f185904e8989db12fbf7b529f))
+* map didn't show any markers ([fb4dc74](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/fb4dc74aacea185e663ea3c5f5c1d9da4491ee1f))
+* multiple CSS adjustments ([2e13eb1](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/2e13eb1e334a7ece2c7cec8c50ce1ecb94e4125e))
+* multiple CSS improvements ([785b0b6](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/785b0b60bdc450d78da546bd5fab8398443172a7))
+* Refresh map size when hiding/showing filter-menu, ([224f7ac](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/224f7ac1fd61b65f18bedf7b3445d91f01185b5c))
+* remove error message for babel compact ([3f9b532](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/3f9b532519620df72d156d3c6731f2755c690d05))
+* replaced env MATOMO variable with DISABLED_MATOMO to fix deploy issues ([447c1cc](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/447c1cce1fa164cf60b9846e7cfebeb3f0c27608))
+* replaced german label of 'filters.numberOfEmployees' ([6d2fc57](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/6d2fc57f7f0327a9f629756579640d9ca3400cf0))
+* replaced meta description of actor profiles ([29f60ff](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/29f60ff8f8cb7c81004010af058d540d7d416d3d))
+* restored CI script ([fa391a0](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/fa391a057a5c5c51ea1a463d4d970e11c5bd2356))
+* restored docker and deployment files ([35abe80](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/35abe80da0df652cb622f8ba9623e60654ab8902))
+* reuse is ok again ([43893e2](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/43893e2620647009788de343e940ecb10deba129))
+* reuse is ok again ([9ad3649](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/9ad3649fce5d8364e7983172de09db3c4745a6a5))
+* set CSS-Variables for actor-profile-page ([16a0c42](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/16a0c423cd4e18e7a9344f2c4d626dfe08380de4))
+* setting width of filtersmenu as webcomp ([3b718fa](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/3b718fa40205f357806e0758de8682cba5bc425e))
+* shortCut to select searchBar ([2cbbbe8](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/2cbbbe82ca84b4688b6e196fd6af10bb7bc90871))
+* twind (css) didn't work correctly using ssr ([be07293](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/be07293aed1a0de491bf4c737fe897adcd894336))
+* webcomp generation ([09a6a18](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/09a6a18c4801e580238565fb9695247ca670a341))
+* webcomp ResultCard shows image again ([fcb49c6](https://github.com/RaphaelSiller/webcomp-automotive-noi/commit/fcb49c6bea4ae52ea1b582e115c66219d9823e5a))
+
 ## [1.3.0](https://github.com/RaphaelSiller/webcomp-automotive-noi/compare/v1.1.2...v1.3.0) (2023-08-08)
 
 

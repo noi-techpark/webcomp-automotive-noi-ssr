@@ -33,6 +33,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div class="top-overview">
             <div class="col">
               <img
+                v-if="!mainVideoID"
                 class="image"
                 :src="data?.attributes?.mainImage &&
                     data?.attributes?.mainImage.data &&
@@ -44,10 +45,17 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                       : ''"
                 :alt="data?.attributes?.mainImageDescription"
               />
+                <iframe 
+                  v-else
+                  width="100%" 
+                  height="270"
+                  :src="YOUTUBE_URL_PREFIX + mainVideoID"
+                  >
+                </iframe>
             </div>
             <div class="col">
               <p class="top-desc">
-                {{ data?.attributes?.mainImageDescription }}
+                {{ !mainVideoID ? data?.attributes?.mainImageDescription : data?.attributes?.mainVideoDescription }}
               </p>
               <div v-if="data?.attributes?.auxiliaryImage?.data?.attributes?.formats" class="middle-desc">
                 <img
@@ -226,6 +234,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
+import getYouTubeID  from 'get-youtube-id'
 import utils from '~/mixins/utils.js'
 
 export default {
@@ -250,6 +259,13 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+
+  data() {
+    return {
+      YOUTUBE_URL_PREFIX: 'https://www.youtube.com/embed/',
+      mainVideoID: '',
+    }
   },
 
   computed: {
@@ -279,6 +295,10 @@ export default {
     },
   },
 
+  updated() {
+    this.mainVideoID = getYouTubeID(this.data?.attributes?.mainVideo)
+  },
+
   methods: {
     downloadPdf() {
       this.$refs.pdfExporter.generatePdf()
@@ -299,6 +319,7 @@ export default {
     @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
 
     border-radius: 50%;
+    z-index: 9998;
 
     & .inner {
       @apply flex h-full w-full items-center justify-center;
@@ -325,8 +346,9 @@ export default {
         @apply relative bg-contain bg-no-repeat -mt-6 -left-8;
 
         background-position: top right;
-        width: 150px;
-        height: 70px;
+        height: 150px;
+        max-width: 200px;
+        object-fit: contain;
         mix-blend-mode: multiply;
       }
     }

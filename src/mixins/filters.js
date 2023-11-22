@@ -222,6 +222,23 @@ export default {
         },
       ]
     },
+
+    specializationOptions() {
+      return [
+        {
+          value: 'automotiveAndMobility',
+          name: this.$t('common.automotiveAndMobility'),
+        },
+        {
+          value: 'manufacturing',
+          name: this.$t('common.manufacturing'),
+        },
+        {
+          value: 'agriAutomation',
+          name: this.$t('common.agriAutomation'),
+        },
+      ]
+    },
   },
 
   data() {
@@ -261,7 +278,24 @@ export default {
       }
     },
 
-    filterResults(results = [], filters, searchValue, categoryFilter, mainCategory, defaultCategoryValidated, displayMultipleCategories) {
+    filterResults(results = [], filters, searchValue, categoryFilter, mode='and', mainCategory, defaultCategoryValidated, displayMultipleCategories) {
+      // Filter 
+      const categoryFilterFunction = (catFilter, catAttr,)=>{
+        if(mode === 'and') {
+          return (
+            (!catFilter.automotiveAndMobility || (catFilter.automotiveAndMobility && catAttr.automotiveAndMobility)) &&
+            (!catFilter.manufacturing         || (catFilter.manufacturing         && catAttr.manufacturing        )) &&
+            (!catFilter.agriAutomation        || (catFilter.agriAutomation        && catAttr.agriAutomation       ))
+          )
+        } else if (mode === 'or') {
+          return(
+            (catFilter.automotiveAndMobility  && catAttr.automotiveAndMobility) ||
+            (catFilter.manufacturing          && catAttr.manufacturing) ||
+            (catFilter.agriAutomation         && catAttr.agriAutomation)
+          )
+        }
+      }
+
       if (results.length > 0) {
         if (searchValue) {
           const cleanSearchVal = searchValue.toLowerCase()
@@ -289,18 +323,20 @@ export default {
               .includes(cleanSearchVal)
           )
         }
-        // filter according to webcomponent-parameter visibleCategories
-        if (categoryFilter) {
+
+        /*
+         * filter according to webcomponent-parameter visibleCategories
+         * skip filtering, when:
+         * -mode is 'and' and all filters are false
+         * -mode is 'or' and all filters are true
+         */
+        if (categoryFilter && !(categoryFilter.automotiveAndMobility === categoryFilter.manufacturing === categoryFilter.agriAutomation === (mode === 'or'))) {
           results = results.filter((r) => {
-            return (
-              r.attributes.specialization &&
-              ((categoryFilter.automotiveAndMobility &&
-                r.attributes.specialization.automotiveAndMobility) ||
-                (categoryFilter.manufacturing &&
-                  r.attributes.specialization.manufacturing) ||
-                (categoryFilter.agriAutomation &&
-                  r.attributes.specialization.agriAutomation))
-            )
+            if(r?.attributes?.specialization) {
+              return categoryFilterFunction(categoryFilter, r.attributes.specialization)
+            } else {
+              return false
+            }
           })
         }
 

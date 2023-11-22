@@ -13,13 +13,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :default-category="defaultCategory"
       :limit-to-default-category="limitToDefaultCategory"
       :visible-categories="visibleCategoriesAsArray"
+      :initial-filters="initialFilters"
+      :show-language-select="showLanguageSelect"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
       @didFetchCompanies="setCompaniesList"
       @didFilterCompanies="setNewFilteredCompanies"
       @toggleLoading="toggleLoading"
-      @setGlobalCSSVariable="setGlobalCSSVariable"
+      @setFilterMenuWidth="setFilterMenuWidth"
     />
     <MapView
       :filtered-companies="filteredCompanies"
@@ -106,9 +108,18 @@ export default {
       default: ''
     },
 
+    initialFilters: {
+      type: Object,
+      default: ()=>{}
+    },
+
     language: {
       type: String,
       default: 'en',
+    },
+    showLanguageSelect: {
+      type: Boolean,
+      default: true,
     },
     primaryColor: {
       type: String,
@@ -202,9 +213,7 @@ export default {
     this.$refs.componentView.style.height = this.height;
 
     // Define CSS Variables
-    this.setGlobalCSSVariable('--primary-color', this.primaryColor);
-    this.setGlobalCSSVariable('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
-    this.setGlobalCSSVariable('--primary-color-text', this.getTextColor(this.primaryColor));
+    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.primaryColor);
     
     if (this.displayAsWebsite && this.$route?.params?.companyName) {
       this.requestedCompanyDisplay = this.$route.params.companyName
@@ -278,11 +287,14 @@ export default {
       this.companiesList = companiesList
     },
     toggleLoading(isLoading) {
-      this.loading = isLoading || !this.loading;
+      // explicitly require a boolean value,
+      if (isLoading === true || isLoading === false)
+        this.loading = isLoading
+      else 
+        this.loading = !this.loading
     },
-    setGlobalCSSVariable(varname, value) {
-      if(this.$refs.componentView)
-        this.$refs.componentView.style.setProperty(varname, value);
+    setFilterMenuWidth(value) {
+      this.setGlobalCSSVariable(this.$refs.componentView, '--width-filtersmenu', value)
     }
   },
 }

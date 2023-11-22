@@ -68,17 +68,31 @@ export default {
         : ''
     },
 
-    getAvailableImageFormat(formats) {
-      if (formats?.large) {
-        return formats.large.url
-      }
+    getAvailableImageFormat(formats, startFromLargest = true) {
+      if(startFromLargest) {
+        if (formats?.large) {
+          return formats.large.url
+        }
 
-      if (formats?.medium) {
-        return formats.medium.url
-      }
+        if (formats?.medium) {
+          return formats.medium.url
+        }
 
-      if (formats?.small) {
-        return formats.small.url
+        if (formats?.small) {
+          return formats.small.url
+        }
+      } else {
+        if (formats?.small) {
+          return formats.small.url
+        }
+
+        if (formats?.medium) {
+          return formats.medium.url
+        }
+
+        if (formats?.large) {
+          return formats.large.url
+        }
       }
 
       return formats?.thumbnail?.url
@@ -213,6 +227,15 @@ export default {
         const BB = ((B.toString(16).length===1)?"0"+B.toString(16):B.toString(16));
     
         return "#"+RR+GG+BB;
+    },
+    setGlobalCSSVariable(rootElement, varname, value) {
+      if(rootElement)
+        rootElement.style.setProperty(varname, value)
+    },
+    setStandardGlobalCSSVariables(rootElement, primaryColor) {
+      this.setGlobalCSSVariable(rootElement, '--primary-color', primaryColor);
+      this.setGlobalCSSVariable(rootElement, '--primary-hover', this.hexAdjustBrightness(primaryColor, this.getTextColor(primaryColor) === 'white' ? -20 : 20));
+      this.setGlobalCSSVariable(rootElement, '--primary-color-text', this.getTextColor(primaryColor));
     },
     truncate(str, length, useWordBoundary ){
       if (!str) { return ""; }

@@ -55,7 +55,9 @@ const config = {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '@/plugins/vue-notification.server.js', ssr: true },
     { src: '@/plugins/vue-notification.client.js', ssr: false },
+    '@/plugins/vue-js-modal.js',
     '@/plugins/notify',
     { src: '@/plugins/vue-html2pdf.client.js', ssr: false },
     { src: '@/plugins/vuelayers.client.js', ssr: false },
@@ -80,8 +82,6 @@ const config = {
     'nuxt-i18n',
     '@/shared/vuelayers',
     'nuxt-custom-elements',
-    // ['nuxt-lazy-load', { directiveOnly: true }], // With directiveOnly, only images with v-lazy-load get lazy-loaded
-    'nuxt-lazy-load',
   ],
 
   customElements: {
@@ -207,6 +207,10 @@ const config = {
   telemetry: false,
 }
 
+if (targetConfig === 'server') {
+  // config.modules.push(['nuxt-lazy-load', { directiveOnly: true }])  // With directiveOnly, only images with v-lazy-load get lazy-loaded
+  config.modules.push('nuxt-lazy-load')
+}
 // set env var 'MATOMO = true' to enable matomo for websites
 // keep deactivated for webcomponents
 if (matomo) {

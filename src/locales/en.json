@@ -1,6 +1,6 @@
 {
   "common": {
-    "backToCategories": "Back to specialization areas",
+    "backToCategories": "Back",
     "allCategories": "All specialization areas",
     "filters": "Filters",
     "automotive": "Automotive",
@@ -28,6 +28,8 @@
     "ecosystemAutomotive": "Ecosystem Automotive",
     "contactPerson": "Contact person",
     "downloadPdf": "Download pdf",
+    "startPdfGeneration": "Generate PDF ...",
+    "endPdfGeneration": "PDF was generated",
     "privacyPolicy": "Privacy & Cookie Policy",
     "languageSelector": "Language selector"
   },
@@ -40,6 +42,7 @@
     "turnover": "Turnover",
     "numberOfEmployees": "N. of employees",
     "certification": "Certification",
+    "specialization": "Specialization area",
     "resetFilters": "Reset filters",
     "automotiveTechnology": "Automotive Technology",
     "machineryAndPlantConstruction": "Machinery and plant construction",
@@ -61,7 +64,7 @@
   },
   "company": {
     "contactReferencePerson": "Contact reference person",
-    "profile": "Company profile",
+    "profile": "Company profile ",
     "footerDescription": "More company information",
     "footerDescription2": "Contact info, metrics and other informations",
     "legalName": "Legal name",
