@@ -14,9 +14,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: REUSE Compliance Check
         uses: fsfe/reuse-action@v1
-      - uses: noi-techpark/github-actions/npm-build@v2
+      - uses: noi-techpark/github-actions/yarn-build@v2
         with:
-          build-command: npm run generate
+          build-command: yarn generate
           node-version: ${{env.NODE_VERSION}}
       - uses: noi-techpark/github-actions/webcomp-test@v2
         with:
@@ -38,9 +38,9 @@ jobs:
           X_API_ENDPOINT: https://bk.opendatahub.com
           X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
 
-      - uses: noi-techpark/github-actions/npm-build@v2
+      - uses: noi-techpark/github-actions/yarn-build@v2
         with:
-          build-command: npm run generate
+          build-command: yarn generate
           node-version: ${{env.NODE_VERSION}}
 
       - uses: noi-techpark/github-actions/webcomp-push@v2
