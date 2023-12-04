@@ -9,8 +9,7 @@ env:
 
 jobs:
   test:
-    # runs-on: ${{ vars.RUNNER_UBUNTU }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
       - name: REUSE Compliance Check
@@ -24,7 +23,7 @@ jobs:
           origin-test-enabled: false
 
   deploy-test:
-    runs-on: ${{ vars.RUNNER_UBUNTU }}
+    runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
     needs: test
     concurrency: deploy-test
