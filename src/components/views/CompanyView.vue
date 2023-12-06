@@ -57,7 +57,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <p class="top-desc">
                 {{ data.attributes.mainImageDescription }}
               </p>
-              <div v-if="data.attributes?.auxiliaryImage?.data?.attributes?.formats" class="middle-desc">
+              <div
+                v-if="
+                  data.attributes?.auxiliaryImage?.data?.attributes?.formats
+                "
+                class="middle-desc"
+              >
                 <div
                   class="second-image"
                   :style="{
@@ -111,7 +116,17 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   >{{ data.attributes.contactPerson.email }}</a
                 >
               </p>
-              <p v-if="data.attributes.companyContact.phoneNumber" class="text">
+              <p v-if="data.attributes.contactPerson.phoneNumber" class="text">
+                <a
+                  :href="'tel:' + data.attributes.contactPerson.phoneNumber"
+                  class="link"
+                  >{{ data.attributes.contactPerson.phoneNumber }}</a
+                >
+              </p>
+              <p
+                v-else-if="data.attributes.companyContact.phoneNumber"
+                class="text"
+              >
                 <a
                   :href="'tel:' + data.attributes.companyContact.phoneNumber"
                   class="link"
@@ -219,7 +234,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <!-- Added style="visbility:hidden", because for some reason. The <vue-html2pdf></vue-html2pdf> was visible. Download Still works-->
     <PdfExporter
       ref="pdfExporter"
-      style="visibility: hidden;" 
+      style="visibility: hidden"
       :export-name="data.attributes.name"
       :companies="[data]"
       :automatic-download="false"
