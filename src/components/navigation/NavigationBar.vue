@@ -233,6 +233,11 @@ export default {
       default: null,
     },
 
+    initialSearchValue: {
+      type: String,
+      default: ''
+    },
+
     showLanguageSelect: {
       type: Boolean,
       default: true,
@@ -415,7 +420,11 @@ export default {
   },
 
   mounted() {
-    this.fetchResults()
+    this.fetchResults();
+    if(this.initialSearchValue) {
+      this.searchValue = this.initialSearchValue;
+    }
+
     if (
       this.displayMultipleCategories &&
       this.defaultCategoryValidated !== ''
