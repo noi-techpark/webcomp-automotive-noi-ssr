@@ -51,6 +51,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             :placeholder="$t('filters.searchPlaceholder')"
             type="search"
             aspect="fill"
+            @input="delaySearch"
           />
         </div>
         <Button icon="filter" class="filter-bt" @click="toggleFiltersMenu" />
@@ -179,6 +180,7 @@ const allCategories = [
   'manufacturing',
   'agriAutomation',
 ]
+let searchTypingTimer;
 
 export default {
   mixins: [utils, filters],
@@ -249,6 +251,7 @@ export default {
       CATEGORY_PREFIX: 'CATEGORY-', // if you change it here, you also have to change it in ~/mixins/filters.js
       filters: {},
       searchValue: '',
+      searchValueDelayed: '',
       mainCategory: null,
       isFiltersMenuVisible: true,
       areAdvancedFiltersVisible: true,
@@ -367,7 +370,7 @@ export default {
         results = this.filterResults(
           this.fetchedData,
           this.filters,
-          this.searchValue,
+          this.searchValueDelayed,
           this.categoryFilter,
           'or',
           this.mainCategory,
@@ -402,7 +405,7 @@ export default {
   },
 
   watch: {
-    searchValue(newValue) {
+    searchValueDelayed(newValue) {
       if (newValue && !this.mainCategory) {
         this.showCategory(true)
       } else if (this.mainCategory === true && !newValue) {
@@ -424,6 +427,7 @@ export default {
     this.fetchResults();
     if(this.initialSearchValue) {
       this.searchValue = this.initialSearchValue;
+      this.searchValueDelayed = this.initialSearchValue;
     }
 
     if (
@@ -490,6 +494,7 @@ export default {
     backToCategories() {
       this.mainCategory = null
       this.searchValue = ''
+      this.searchValueDelayed = ''
       this.didReachHome()
     },
 
@@ -511,6 +516,14 @@ export default {
         this.hideFiltersMenu();
       else
         this.showFiltersMenu();
+    },
+
+    delaySearch() {
+      clearTimeout(searchTypingTimer)
+      searchTypingTimer = setTimeout(this.doneTyping, 250);
+    },
+    doneTyping() {
+      this.searchValueDelayed = this.searchValue
     },
 
     showFiltersMenu() {
