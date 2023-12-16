@@ -408,6 +408,7 @@ export default {
       } else if (this.mainCategory === true && !newValue) {
         this.backToCategories()
       }
+      this.$root.$emit('set-search-value', newValue);
     },
 
     mappedResults(newCompaniesList) {

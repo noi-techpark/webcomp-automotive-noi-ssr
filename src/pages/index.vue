@@ -161,6 +161,7 @@ export default {
     };
 
     this.$root.$on('set-filters', this.setFilters)
+    this.$root.$on('set-search-value', this.setSearchValue)
   },
   methods: {
     async fetchResults() {
@@ -182,6 +183,10 @@ export default {
     },
     resetFilters() {
       this.filters = {}
+    },
+    setSearchValue(newValue) {
+      this.searchValue = newValue;
+      this.searchValueDelayed = newValue;
     },
     showMapModal() {
       this.$modal.show(WebComponent, 
