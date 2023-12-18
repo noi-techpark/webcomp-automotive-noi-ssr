@@ -256,7 +256,7 @@ export default {
     container-name: search-bar-ct;
 
     & .search-bar {
-      @apply absolute flex items-center justify-between mx-6 h-12;
+      @apply absolute flex items-center justify-center mx-6 h-12;
 
       max-width: calc(1300px * 0.3);
       width: calc(100% - 2 * theme('spacing.6'));
