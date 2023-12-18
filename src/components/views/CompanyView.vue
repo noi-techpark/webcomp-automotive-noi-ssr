@@ -9,79 +9,85 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <ViewBackground :visible="visible" />
     <SlidingContainer class="container" :visible="visible">
       <div class="company-view">
-        <div class="close" @click="hideCompany">
+        <div v-if="!displayAsWebsite" class="close" @click="hideCompany">
           <div class="inner">
             <Icon name="cross" />
           </div>
         </div>
-        <div class="data-view">
-          <div class="header">
-            <h1>{{ data.attributes.name }}</h1>
-            <div
+        <main class="data-view">
+          <div class="header-profile">
+            <h1>{{ data?.attributes?.name }}</h1>
+            <img
               class="logo"
-              :style="{
-                backgroundImage:
-                  data.attributes.logo &&
-                  data.attributes.logo.data &&
-                  data.attributes.logo.data.attributes.formats
-                    ? 'url(' +
-                      getApiEndpoint() +
-                      getAvailableImageFormat(
-                        data.attributes.logo.data.attributes.formats
-                      ) +
-                      ')'
-                    : undefined,
-              }"
-            ></div>
+              :src="
+                data?.attributes?.logo &&
+                data?.attributes?.logo.data &&
+                data?.attributes?.logo.data?.attributes?.formats
+                  ? getApiEndpoint() +
+                    getAvailableImageFormat(
+                      data?.attributes?.logo.data?.attributes?.formats
+                    )
+                  : ''
+              "
+              :alt="'Logo ' + data?.attributes?.name"
+            />
           </div>
           <div class="top-overview">
             <div class="col">
-              <div
+              <img
+                v-if="!mainVideoID"
                 class="image"
-                :style="{
-                  backgroundImage:
-                    data.attributes.mainImage &&
-                    data.attributes.mainImage.data &&
-                    data.attributes.mainImage.data.attributes.formats
-                      ? 'url(' +
-                        getApiEndpoint() +
-                        getAvailableImageFormat(
-                          data.attributes.mainImage.data.attributes.formats
-                        ) +
-                        ')'
-                      : undefined,
-                }"
-              ></div>
+                :src="
+                  data?.attributes?.mainImage &&
+                  data?.attributes?.mainImage.data &&
+                  data?.attributes?.mainImage.data?.attributes?.formats
+                    ? getApiEndpoint() +
+                      getAvailableImageFormat(
+                        data?.attributes?.mainImage.data?.attributes?.formats
+                      )
+                    : ''
+                "
+                :alt="data?.attributes?.mainImageDescription"
+              />
+              <iframe
+                v-else
+                width="100%"
+                height="270"
+                :src="YOUTUBE_URL_PREFIX + mainVideoID"
+              >
+              </iframe>
             </div>
             <div class="col">
               <p class="top-desc">
-                {{ data.attributes.mainImageDescription }}
+                {{
+                  !mainVideoID
+                    ? data?.attributes?.mainImageDescription
+                    : data?.attributes?.mainVideoDescription
+                }}
               </p>
               <div
                 v-if="
-                  data.attributes?.auxiliaryImage?.data?.attributes?.formats
+                  data?.attributes?.auxiliaryImage?.data?.attributes?.formats
                 "
                 class="middle-desc"
               >
-                <div
+                <img
                   class="second-image"
-                  :style="{
-                    backgroundImage:
-                      data.attributes.auxiliaryImage &&
-                      data.attributes.auxiliaryImage.data &&
-                      data.attributes.auxiliaryImage.data.attributes.formats
-                        ? 'url(' +
-                          getApiEndpoint() +
-                          getAvailableImageFormat(
-                            data.attributes.auxiliaryImage.data.attributes
-                              .formats
-                          ) +
-                          ')'
-                        : undefined,
-                  }"
-                ></div>
+                  :src="
+                    data?.attributes?.auxiliaryImage &&
+                    data?.attributes?.auxiliaryImage.data &&
+                    data?.attributes?.auxiliaryImage.data?.attributes?.formats
+                      ? getApiEndpoint() +
+                        getAvailableImageFormat(
+                          data?.attributes?.auxiliaryImage.data?.attributes
+                            .formats
+                        )
+                      : ''
+                  "
+                  :alt="data?.attributes?.auxiliaryImageDescription"
+                />
                 <p class="second-desc">
-                  {{ data.attributes.auxiliaryImageDescription }}
+                  {{ data?.attributes?.auxiliaryImageDescription }}
                 </p>
               </div>
             </div>
@@ -90,148 +96,177 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <div class="col">
               <h2>{{ $t('common.company') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.companyDescription) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.companyDescription) }}</p>
 
               <h2>{{ $t('common.productsAndServices') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.productsAndServices) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.productsAndServices) }}</p>
 
               <h2>{{ $t('common.references') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data.attributes.references) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.references) }}</p>
             </div>
+            <!--
             <div
               v-if="
-                data.attributes.contactPerson &&
-                data.attributes.contactPerson.personName
+                data?.attributes?.contactPerson &&
+                data?.attributes?.contactPerson.personName
               "
               class="col"
             >
               <h2 class="pt-5">{{ $t('common.contactPerson') }}</h2>
-              <p class="text">{{ data.attributes.contactPerson.personName }}</p>
-              <p v-if="data.attributes.contactPerson.email" class="text">
+              <p class="text">{{ data?.attributes?.contactPerson.personName }}</p>
+              <p v-if="data?.attributes?.contactPerson.email" class="text">
                 <a
-                  :href="'mailto:' + data.attributes.contactPerson.email"
+                  :href="'mailto:' + data?.attributes?.contactPerson.email"
                   class="link"
-                  >{{ data.attributes.contactPerson.email }}</a
+                  >{{ data?.attributes?.contactPerson.email }}</a
                 >
               </p>
-              <p v-if="data.attributes.contactPerson.phoneNumber" class="text">
+              <p v-if="data?.attributes?.companyContact.phoneNumber" class="text">
                 <a
-                  :href="'tel:' + data.attributes.contactPerson.phoneNumber"
+                  :href="'tel:' + data?.attributes?.companyContact.phoneNumber"
                   class="link"
-                  >{{ data.attributes.contactPerson.phoneNumber }}</a
-                >
-              </p>
-              <p
-                v-else-if="data.attributes.companyContact.phoneNumber"
-                class="text"
-              >
-                <a
-                  :href="'tel:' + data.attributes.companyContact.phoneNumber"
-                  class="link"
-                  >{{ data.attributes.companyContact.phoneNumber }}</a
+                  >{{ data?.attributes?.companyContact.phoneNumber }}</a
                 >
               </p>
             </div>
+            -->
           </div>
-          <div class="download-bt" @click="downloadPdf">
+          <button class="download-bt" @click="downloadPdf">
             {{ $t('common.downloadPdf') }} ↓
-          </div>
-        </div>
-        <div class="footer">
+          </button>
+        </main>
+        <footer class="footer" :aria-label="$t('company.footerDescription')">
           <div class="column">
-            <p class="uppercase">
-              {{ data.attributes.legalName }}
+            <p class="uppercase" :aria-label="$t('company.legalName')">
+              {{ data?.attributes?.legalName }}
             </p>
-            <p v-if="data.attributes.companyAddressStreet">
-              {{ data.attributes.companyAddressStreet.name }}
+            <p
+              v-if="data?.attributes?.companyAddressStreet"
+              :aria-label="$t('company.companyAddressStreet')"
+            >
+              {{ data?.attributes?.companyAddressStreet.name }}
             </p>
             <p
               v-if="
-                data.attributes.companyLocation &&
-                data.attributes.companyAddressStreet
+                data?.attributes?.companyLocation &&
+                data?.attributes?.companyAddressStreet
               "
+              :aria-label="$t('company.companyLocation')"
             >
-              {{ data.attributes.companyLocation.cap }}
-              {{ data.attributes.companyAddressStreet.city }}
+              {{ data?.attributes?.companyLocation.cap }}
+              {{ data?.attributes?.companyAddressStreet.city }}
             </p>
-            <p v-if="data.attributes.companyContact">
-              <a :href="'tel:' + data.attributes.companyContact.phoneNumber">{{
-                data.attributes.companyContact.phoneNumber
-              }}</a>
-            </p>
-            <p v-if="data.attributes.companyContact">
-              <a :href="'mailto:' + data.attributes.companyContact.email">{{
-                data.attributes.companyContact.email
-              }}</a>
-            </p>
-            <p v-if="data.attributes.companyContact">
+            <p
+              v-if="data?.attributes?.companyContact"
+              :aria-label="$t('company.phoneNumber')"
+            >
               <a
-                :href="
-                  appendPrefixToUrl(data.attributes.companyContact.website)
-                "
-                target="_blank"
-                >{{ data.attributes.companyContact.website }}</a
-              >
-            </p>
-          </div>
-          <div class="column second">
-            <p v-if="data.attributes.companyContact">
-              {{ $t('common.contact') }}:
-              <a :href="'mailto:' + data.attributes.contactPerson.email">{{
-                data.attributes.contactPerson.personName
-              }}</a>
-              <span v-if="data.attributes.contactPerson.role"
-                >({{ data.attributes.contactPerson.role }})</span
+                :href="'tel:' + data?.attributes?.companyContact.phoneNumber"
+                >{{ data?.attributes?.companyContact.phoneNumber }}</a
               >
             </p>
             <p
-              v-if="data.attributes.metrics && data.attributes.metrics.turnover"
+              v-if="data?.attributes?.companyContact"
+              :aria-label="$t('company.email')"
+            >
+              <a :href="'mailto:' + data?.attributes?.companyContact.email">{{
+                data?.attributes?.companyContact.email
+              }}</a>
+            </p>
+            <p
+              v-if="data?.attributes?.companyContact"
+              :aria-label="$t('company.website') + data?.attributes?.name"
+            >
+              <a
+                :href="
+                  appendPrefixToUrl(data?.attributes?.companyContact.website)
+                "
+                target="_blank"
+                >{{ data?.attributes?.companyContact.website }}</a
+              >
+            </p>
+          </div>
+          <div
+            class="column second"
+            :aria-label="$t('company.footerDescription2')"
+          >
+            <p
+              v-if="data?.attributes?.companyContact"
+              :aria-label="$t('common.contact')"
+            >
+              {{ $t('common.contact') }}:
+              <a :href="'mailto:' + data?.attributes?.contactPerson.email">{{
+                data?.attributes?.contactPerson.personName
+              }}</a>
+              <span v-if="data?.attributes?.contactPerson.role"
+                >({{ data?.attributes?.contactPerson.role }})</span
+              >
+            </p>
+            <p
+              v-if="data?.attributes?.contactPerson?.phoneNumber"
+              class="text"
+              :aria-label="$t('company.phoneNumberContactPerson')"
+            >
+              <a
+                :href="'tel:' + data?.attributes?.contactPerson.phoneNumber"
+                class="link"
+                >{{ data?.attributes?.contactPerson.phoneNumber }}</a
+              >
+            </p>
+            <p
+              v-if="
+                data?.attributes?.metrics && data?.attributes?.metrics.turnover
+              "
             >
               {{ $t('filters.turnover') }}:
               {{
-                formatWithThousandSeparator(data.attributes.metrics.turnover)
+                formatWithThousandSeparator(data?.attributes?.metrics.turnover)
               }}
               €
             </p>
             <p
               v-if="
-                data.attributes.metric && data.attributes.metrics.employeeNumber
+                data?.attributes?.metric &&
+                data?.attributes?.metrics.employeeNumber
               "
             >
               {{ $t('common.employees') }}:
-              {{ data.attributes.metrics.employeeNumber }}
+              {{ data?.attributes?.metrics.employeeNumber }}
             </p>
             <p
               v-if="
-                data.attributes.metrics && data.attributes.metrics.exportRatio
+                data?.attributes?.metrics &&
+                data?.attributes?.metrics.exportRatio
               "
             >
               {{ $t('common.exportRatio') }}:
-              {{ data.attributes.metrics.exportRatio }}%
+              {{ data?.attributes?.metrics.exportRatio }}%
             </p>
             <p
               v-if="
-                data.attributes.metrics && data.attributes.metrics.rAndDRatio
+                data?.attributes?.metrics &&
+                data?.attributes?.metrics.rAndDRatio
               "
             >
               {{ $t('common.researchAndDevelopmentRatio') }}:
-              {{ data.attributes.metrics.rAndDRatio }}%
+              {{ data?.attributes?.metrics.rAndDRatio }}%
             </p>
             <p
               v-if="
-                data.attributes.certifications && enabledCertifications.length
+                data?.attributes?.certifications && enabledCertifications.length
               "
             >
               {{ $t('common.certifications') }}:
               {{ enabledCertifications.join(', ') }}
             </p>
           </div>
-        </div>
+        </footer>
       </div>
     </SlidingContainer>
     <!-- Added style="visbility:hidden", because for some reason. The <vue-html2pdf></vue-html2pdf> was visible. Download Still works-->
+    <<<<<<< HEAD
     <PdfExporter
       ref="pdfExporter"
       style="visibility: hidden"
@@ -239,13 +274,29 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :companies="[data]"
       :automatic-download="false"
     />
+    =======
+    <client-only>
+      <PdfExporter
+        ref="pdfExporter"
+        style="visibility: hidden"
+        :export-name="data?.attributes?.name"
+        :companies="[data]"
+        :automatic-download="false"
+      />
+    </client-only>
+    >>>>>>> 3e009c018246469b581353abd6d43f5aab2b5476
   </RightColumn>
 </template>
 
 <script>
+import getYouTubeID from 'get-youtube-id'
 import utils from '~/mixins/utils.js'
 
 export default {
+  components: {
+    PdfExporter: () => import('@/components-lazy/tools/PdfExporter'),
+  },
+
   mixins: [utils],
 
   props: {
@@ -259,6 +310,17 @@ export default {
       type: Boolean,
       required: true,
     },
+    displayAsWebsite: {
+      type: Boolean,
+      default: false,
+    },
+  },
+
+  data() {
+    return {
+      YOUTUBE_URL_PREFIX: 'https://www.youtube.com/embed/',
+      mainVideoID: '',
+    }
   },
 
   computed: {
@@ -274,11 +336,11 @@ export default {
         Other: this.$t('filters.other'),
       }
 
-      if (this.data.attributes.certifications) {
+      if (this.data?.attributes?.certifications) {
         for (const [certificationId, certificationName] of Object.entries(
           CERTIFICATES_NAMES
         )) {
-          if (this.data.attributes.certifications[certificationId] === true) {
+          if (this.data?.attributes?.certifications[certificationId] === true) {
             certifications.push(certificationName)
           }
         }
@@ -286,6 +348,10 @@ export default {
 
       return certifications
     },
+  },
+
+  updated() {
+    this.mainVideoID = getYouTubeID(this.data?.attributes?.mainVideo)
   },
 
   methods: {
@@ -308,6 +374,7 @@ export default {
     @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
 
     border-radius: 50%;
+    z-index: 9998;
 
     & .inner {
       @apply flex h-full w-full items-center justify-center;
@@ -323,7 +390,7 @@ export default {
   & .data-view {
     @apply px-8 py-8;
 
-    & .header {
+    & .header-profile {
       @apply flex flex-row;
 
       & h1 {
@@ -334,8 +401,9 @@ export default {
         @apply relative bg-contain bg-no-repeat -mt-6 -left-8;
 
         background-position: top right;
-        width: 150px;
-        height: 70px;
+        height: 150px;
+        max-width: 200px;
+        object-fit: contain;
         mix-blend-mode: multiply;
       }
     }
@@ -366,10 +434,9 @@ export default {
           height: 140px;
 
           & .second-image {
-            @apply h-full w-1/2 bg-white bg-cover bg-center;
+            @apply h-full w-1/2 bg-white bg-cover bg-center mix-blend-multiply;
 
             min-width: 200px;
-            mix-blend-mode: multiply;
           }
 
           & .second-desc {
@@ -408,7 +475,8 @@ export default {
     & .download-bt {
       @apply text-base my-8 cursor-pointer;
 
-      &:hover {
+      &:hover,
+      &:focus {
         @apply underline;
       }
     }
@@ -442,7 +510,7 @@ export default {
 @container noi-automotive-component-view (max-width: theme('screens.md')) {
   .company-view {
     & .data-view {
-      & .header {
+      & .header-profile {
         & h1 {
           @apply mt-12;
         }

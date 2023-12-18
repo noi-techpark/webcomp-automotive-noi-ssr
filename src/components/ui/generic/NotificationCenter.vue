@@ -32,6 +32,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     @apply text-center;
   }
 
+  &.info {
+    background: #44a4fc;
+  }
+
   &.warn {
     background: #ffb648;
   }

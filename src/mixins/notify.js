@@ -12,6 +12,47 @@ export default {
       this.notifySuccess(this.$t('common.settingsSaved'))
     },
 
+    /**
+     * possible types are: info, warn, error, success
+     */
+    notify(message, type) {
+      switch(type) {
+        case 'info':
+          this.notifyInfo(message)
+          break
+        case 'warn':
+          this.notifyWarn(message)
+          break
+        case 'warning':
+          this.notifyWarn(message)
+          break
+        case 'error':
+          this.notifyError(message)
+          break
+        case 'success':
+          this.notifySuccess(message)
+          break
+      }
+    },
+
+    notifyInfo(message) {
+      this.$notify({
+        group: 'main',
+        text: message,
+        duration: 5000,
+        type: 'info',
+      })
+    },
+
+    notifyWarn(message) {
+      this.$notify({
+        group: 'main',
+        text: message,
+        duration: 5000,
+        type: 'warn',
+      })
+    },
+
     notifyError(message) {
       this.$notify({
         group: 'main',

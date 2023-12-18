@@ -1,7 +1,7 @@
 {
   "common": {
-    "backToCategories": "Zurück zu Kategorien",
-    "allCategories": "Alle Kategorien",
+    "backToCategories": "Zurück",
+    "allCategories": "Alle Spezialisierungsfelder",
     "filters": "Filter",
     "automotive": "Automotive",
     "energy": "Energie",
@@ -27,7 +27,11 @@
     "agriAutomation": "Agri-Automation",
     "ecosystemAutomotive": "Ecosystem Automotive",
     "contactPerson": "Kontaktperson",
-    "downloadPdf": "PDF herunterladen"
+    "downloadPdf": "PDF herunterladen",
+    "startPdfGeneration": "Generiere PDF ...",
+    "endPdfGeneration": "PDF wurde generiert",
+    "privacyPolicy": "Privacy & Cookie Policy",
+    "languageSelector": "Sprachauswahl"
   },
   "filters": {
     "searchPlaceholder": "Unternehmen, keyword...",
@@ -36,8 +40,9 @@
     "hideAdvanced": "Zuklappen",
     "showAdvanced": "Ausklappen",
     "turnover": "Umsatz",
-    "numberOfEmployees": "Mitarbeiter N.",
+    "numberOfEmployees": "Mitarbeiteranzahl",
     "certification": "Zertifizierung",
+    "specialization": "Spezialisierungsfeld",
     "resetFilters": "Filter zurücksetzen",
     "automotiveTechnology": "Automobiltechnik",
     "machineryAndPlantConstruction": "Maschinen und Anlagebau",
@@ -58,7 +63,17 @@
     "notDefined": "Nicht definiert"
   },
   "company": {
-    "contactReferencePerson": "Kontakt Kontaktperson"
+    "contactReferencePerson": "Kontakt Kontaktperson",
+    "profile": "Unternehmensprofil ",
+    "footerDescription": "Weitere Unternehmensinformation",
+    "footerDescription2": "Kontaktinformationen, Metriken und andere Informationen",
+    "legalName": "rechtlicher Name",
+    "companyAddressStreet": "Addresse (Straße)",
+    "companyLocation": "PLZ und Stadt",
+    "phoneNumber": "Telefonnummer",
+    "phoneNumberContactPerson": "Telefonnummer der Kontaktperson",
+    "email": "Email",
+    "website": "Webseite von "
   },
   "home": {
     "meta": {

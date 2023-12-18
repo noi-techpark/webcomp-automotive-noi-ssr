@@ -5,7 +5,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <label> {{ text }} <sup v-if="required" class="text-red">*</sup> </label>
+  <label :for="text"> {{ text }} <sup v-if="required" class="text-red">*</sup> </label>
 </template>
 
 <script>

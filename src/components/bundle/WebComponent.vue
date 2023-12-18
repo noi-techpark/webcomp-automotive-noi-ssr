@@ -13,12 +13,15 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :default-category="defaultCategory"
       :limit-to-default-category="limitToDefaultCategory"
       :visible-categories="visibleCategoriesAsArray"
+      :initial-filters="initialFilters"
+      :show-language-select="showLanguageSelect"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
       @didReachHome="showHome"
       @didFetchCompanies="setCompaniesList"
       @didFilterCompanies="setNewFilteredCompanies"
       @toggleLoading="toggleLoading"
+      @setFilterMenuWidth="setFilterMenuWidth"
     />
     <MapView
       :filtered-companies="filteredCompanies"
@@ -45,14 +48,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
-import { setup } from "@twind/core/core";
-import autoprefix from "@twind/preset-autoprefix";
-import ext from "@twind/preset-ext";
-import tailwind from "@twind/preset-tailwind";
+import { setup } from "@twind/core/core"
+import autoprefix from "@twind/preset-autoprefix"
+import ext from "@twind/preset-ext"
+import tailwind from "@twind/preset-tailwind"
+import resolveConfig from 'tailwindcss/resolveConfig'
 
 import vueI18n from '@/plugins/vueI18n'
 import 'tailwindcss/tailwind.css'
 import utils from '~/mixins/utils.js'
+
+import tailwindConfig from '~/tailwind.config.js'
+const twConfig = resolveConfig(tailwindConfig)
 
 // Setup twind
 setup({
@@ -67,6 +74,7 @@ export default {
     return {
       // Provide primary-color for Map.vue
       'primary-color': this.primaryColor,
+      'tailwind-config': twConfig,
     }
   },
 
@@ -100,9 +108,18 @@ export default {
       default: ''
     },
 
+    initialFilters: {
+      type: Object,
+      default: ()=>{}
+    },
+
     language: {
       type: String,
       default: 'en',
+    },
+    showLanguageSelect: {
+      type: Boolean,
+      default: true,
     },
     primaryColor: {
       type: String,
@@ -195,12 +212,11 @@ export default {
     this.$refs.componentView.style.width = this.width;
     this.$refs.componentView.style.height = this.height;
 
-    this.$refs.componentView.style.setProperty('--primary-color', this.primaryColor);
-    this.$refs.componentView.style.setProperty('--primary-hover', this.hexAdjustBrightness(this.primaryColor, this.getTextColor(this.primaryColor) === 'white' ? -20 : 20));
-    this.$refs.componentView.style.setProperty('--primary-color-text', this.getTextColor(this.primaryColor));
+    // Define CSS Variables
+    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.primaryColor);
     
-    if (this.$route?.query?.company) {
-      this.requestedCompanyDisplay = this.$route.query.company
+    if (this.displayAsWebsite && this.$route?.params?.companyName) {
+      this.requestedCompanyDisplay = this.$route.params.companyName
     }
     this.loading = false
   },
@@ -229,12 +245,8 @@ export default {
 
     showCompany(companyData) {
       this.visibleCompanyData = companyData
-      if (this.$router) {
-        this.$router.replace({
-          name: this.$router.name,
-          query: { company: companyData.id },
-        })
-      }
+      this.historyPush('/companies/' + companyData.attributes.name)
+      this.$emit('changeTitle', companyData.attributes.name)
     },
 
     hideCompany() {
@@ -243,11 +255,14 @@ export default {
     },
 
     resetUrl() {
-      if (this.$router) {
-        this.$router.replace({
-          name: this.$router.name,
-          query: { company: undefined },
-        })
+      this.historyPush('/companies/')
+      this.$emit('changeTitle', '')
+    },
+
+    historyPush(path) {
+      if(this.displayAsWebsite) {
+        const encodedPath = encodeURI(path)
+        history.pushState('', '', encodedPath)
       }
     },
 
@@ -272,7 +287,14 @@ export default {
       this.companiesList = companiesList
     },
     toggleLoading(isLoading) {
-      this.loading = isLoading || !this.loading;
+      // explicitly require a boolean value,
+      if (isLoading === true || isLoading === false)
+        this.loading = isLoading
+      else 
+        this.loading = !this.loading
+    },
+    setFilterMenuWidth(value) {
+      this.setGlobalCSSVariable(this.$refs.componentView, '--width-filtersmenu', value)
     }
   },
 }
@@ -283,7 +305,7 @@ export default {
 @import url('~assets/css/main.css');
 
 .component-view {
-  @apply relative overflow-hidden;
+  @apply relative overflow-hidden w-full h-full;
   
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
   

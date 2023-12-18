@@ -7,9 +7,13 @@ import i18nOptions from './src/plugins/i18n.options'
 const matomo =
   !process.env.DISABLED_MATOMO || process.env.DISABLED_MATOMO === 'false'
 
+const targetConfig = !process.env.TARGET_CONFIG ? 'server' : process.env.TARGET_CONFIG;
+
+console.log(targetConfig);
+
 const config = {
-  ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
-  target: 'static',
+  ssr: targetConfig === 'server', // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  target: targetConfig,
 
   srcDir: 'src/',
 
@@ -24,6 +28,7 @@ const config = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
+      { name: 'google-site-verification', content: 'xFg36VV3r7ycMqVCrgMcxwwHrOiZKU7j9zzjlZH9PNY' }, // Google Console verification token for Raphael Siller
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -50,8 +55,13 @@ const config = {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '@/plugins/vue-notification', ssr: false },
+    { src: '@/plugins/vue-notification.server.js', ssr: true },
+    { src: '@/plugins/vue-notification.client.js', ssr: false },
+    '@/plugins/vue-js-modal.js',
     '@/plugins/notify',
+    { src: '@/plugins/vue-html2pdf.client.js', ssr: false },
+    { src: '@/plugins/vuelayers.client.js', ssr: false },
+    { src: '@/plugins/ol.client.js', ssr: false },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -68,7 +78,11 @@ const config = {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: ['nuxt-i18n', '@/shared/vuelayers', 'nuxt-custom-elements'],
+  modules: [
+    'nuxt-i18n',
+    '@/shared/vuelayers',
+    'nuxt-custom-elements',
+  ],
 
   customElements: {
     entries: [
@@ -86,6 +100,12 @@ const config = {
                 customLinks: '[]',
               },
             }, */
+          },{
+            name: 'CompanieMapping',
+            path: '@/components-lazy/ui/generic/Map',
+          },{
+            name: 'PdfExport',
+            path: '@/components-lazy/tools/PdfExporter',
           },
         ],
       },
@@ -96,6 +116,20 @@ const config = {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    transpile: ['ol', 'vuelayers', 'twind'],
+    extractCSS: targetConfig === 'server',
+    tailwindcss: {
+      viewer: false, // disabled because it causes `Error: Cannot find module 'tailwindcss/resolveConfig'`, fixed in https://github.com/nuxt-community/tailwindcss-module/pull/303
+    },
+    babel: {
+      compact: process.env.NODE_ENV === 'production',
+      presets: [
+        ['@nuxt/babel-preset-app', {
+          useBuiltIns: 'entry',
+        }]
+      ],
+    },
+
     extend: (config) => {
       const svgRule = config.module.rules.find((rule) => rule.test.test('.svg'))
 
@@ -173,6 +207,10 @@ const config = {
   telemetry: false,
 }
 
+if (targetConfig === 'server') {
+  // config.modules.push(['nuxt-lazy-load', { directiveOnly: true }])  // With directiveOnly, only images with v-lazy-load get lazy-loaded
+  config.modules.push('nuxt-lazy-load')
+}
 // set env var 'MATOMO = true' to enable matomo for websites
 // keep deactivated for webcomponents
 if (matomo) {

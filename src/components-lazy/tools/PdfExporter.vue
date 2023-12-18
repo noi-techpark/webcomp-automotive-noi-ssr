@@ -40,7 +40,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           }"
         >
           <div class="data-view">
-            <div class="header">
+            <div class="header-profile">
               <strong>NOI</strong> | {{ $t('common.ecosystemAutomotive') }}
             </div>
             <div class="top-overview">
@@ -230,15 +230,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
-import VueHtml2pdf from 'vue-html2pdf'
+// import VueHtml2pdf from 'vue-html2pdf'
 import utils from '~/mixins/utils.js'
+import notify from '~/mixins/notify.js'
 
 export default {
-  components: {
-    VueHtml2pdf,
-  },
-
-  mixins: [utils],
+  mixins: [utils, notify],
 
   props: {
     companies: {
@@ -301,6 +298,7 @@ export default {
 
   methods: {
     generatePdf() {
+      this.notifyInfo(this.$t('common.startPdfGeneration'))
       this.$refs.mainExportPdf.generatePdf()
     },
 
@@ -309,6 +307,7 @@ export default {
     },
 
     hasGeneratedPdf() {
+      this.notifySuccess(this.$t('common.endPdfGeneration'))
       this.$emit('hasGeneratedPdf')
       if (this.automaticDownload) {
         if (
@@ -360,7 +359,7 @@ export default {
   & .data-view {
     @apply py-8;
 
-    & .header {
+    & .header-profile {
       @apply relative text-right pt-6 pb-4 left-5;
 
       font-size: 0.7rem;
@@ -444,7 +443,7 @@ export default {
     & .contact-bt {
       @apply text-base my-8;
 
-      &:hover {
+      &:hover, &:focus {
         @apply underline;
       }
     }
