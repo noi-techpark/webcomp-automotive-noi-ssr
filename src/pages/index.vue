@@ -161,6 +161,7 @@ export default {
     };
 
     this.$root.$on('set-filters', this.setFilters)
+    this.$root.$on('set-search-value', this.setSearchValue)
   },
   methods: {
     async fetchResults() {
@@ -183,9 +184,13 @@ export default {
     resetFilters() {
       this.filters = {}
     },
+    setSearchValue(newValue) {
+      this.searchValue = newValue;
+      this.searchValueDelayed = newValue;
+    },
     showMapModal() {
       this.$modal.show(WebComponent, 
-        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters},
+        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters, initialSearchValue: this.searchValueDelayed},
         {name: 'webcomponent', focusTrap: true, width: '90%', height:  this.isInLandscapeMode ? '90%' : '85%', transition: 'modal',},
       )
     },
