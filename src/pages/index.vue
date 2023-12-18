@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           aspect="fill"
           @input="delaySearch"
         />
-        <Button v-if="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
+        <Button v-show="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
       </div>
     </div>
     <div class="company-list">
