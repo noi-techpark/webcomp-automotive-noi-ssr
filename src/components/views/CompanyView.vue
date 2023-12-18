@@ -266,7 +266,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
     </SlidingContainer>
     <!-- Added style="visbility:hidden", because for some reason. The <vue-html2pdf></vue-html2pdf> was visible. Download Still works-->
-    <<<<<<< HEAD
     <PdfExporter
       ref="pdfExporter"
       style="visibility: hidden"
@@ -274,7 +273,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :companies="[data]"
       :automatic-download="false"
     />
-    =======
     <client-only>
       <PdfExporter
         ref="pdfExporter"
@@ -284,7 +282,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         :automatic-download="false"
       />
     </client-only>
-    >>>>>>> 3e009c018246469b581353abd6d43f5aab2b5476
   </RightColumn>
 </template>
 
