@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.1.1](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.1.0...v2.1.1) (2023-12-18)
+
+
+### Bug Fixes
+
+* added @babel/plugin-proposal-private-property-in-object due to deploy issue ([bc4cc2e](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/bc4cc2e8db099d6afddab5b898d59fb95f932df6))
+
 ## [2.1.0](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v1.2.1...v2.1.0) (2023-12-18)
 
 
