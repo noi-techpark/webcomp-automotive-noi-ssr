@@ -18,10 +18,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         @input="changeLanguage"
       />
     </div>
+    <nuxt-link v-show="showBackToHomepage" class="back-to-hompepage-button" :to="'/' + $i18n.locale">
+      <Button icon="back-arrow" :value="$t('common.backToHomepage')" type="primary"></Button>
+    </nuxt-link>
     <div class="logos-ct">
       <nuxt-link class="logo clickable" to="/" aria-label="NOI Logo">
         <Icon name="logo" alt="NOI Logo"/>
-        <Icon name="logo-automotive" alt="NOI Automotive Automation Logo"/>
+        <Icon class="noi-automotive" name="logo-automotive" alt="NOI Automotive Automation Logo"/>
       </nuxt-link>
     </div>
     <hr />
@@ -47,6 +50,9 @@ export default {
         },
       ]
     },
+    showBackToHomepage() {
+      return !['/', '/en', '/de', '/it'].includes(this.$route.path);
+    }
   },
   methods: {
     changeLanguage(lang) {
@@ -67,6 +73,11 @@ export default {
   & .lang-selector {
     @apply absolute top-6 right-4 w-14;
   }
+
+  & .back-to-hompepage-button {
+    @apply absolute top-6 right-20;
+  }
+
   & .logos-ct {
     height: 100px;
 
@@ -81,6 +92,12 @@ export default {
 
   & hr {
     border-top: 1px solid black;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .noi-automotive {
+    display: none;
   }
 }
 </style>
