@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </aside>
       <main>
         <ResultList 
-          :result-list="visibleResults"
+          :result-list="visibleResultsDelayed"
           :max-description-length="175"
           :card-type="isInLandscapeMode ? 'desktop' : 'mobile'"
         />
@@ -91,6 +91,7 @@ export default {
           agriAutomation: false,
         },
       },
+      visibleResultsDelayed: [],
       filteredCompanies: [],
       searchValue: '',
       searchValueDelayed: '',
@@ -167,6 +168,7 @@ export default {
     async fetchResults() {
       this.fetchedData = await this.fetchAllCompanies()
       this.loading = false
+      this.visibleResultsDelayed = this.mappedResults
     },
     toggleAdvancedFiltersVisibility() {
       this.areAdvancedFiltersVisible = !this.areAdvancedFiltersVisible
@@ -180,9 +182,15 @@ export default {
     },
     setFilters(newFilters) {
       this.filters = newFilters
+      this.activeFilters = newFilters
+      this.visibleResultsDelayed = this.mappedResults
     },
     resetFilters() {
-      this.filters = {}
+      this.setFilters({ specializations: {
+        automotiveAndMobility: false,
+        manufacturing: false,
+        agriAutomation: false,
+      }});
     },
     setSearchValue(newValue) {
       this.searchValue = newValue;

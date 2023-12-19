@@ -101,9 +101,17 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         aria-haspopup="listbox"
       />
       <Button
+        :value="$t('filters.applyFilters')"
+        class="apply-filters-bt"
+        type="primary"
+        icon="filter"
+        @click="applyFilters"
+      />
+      <Button
         :value="$t('filters.resetFilters')"
         class="reset-filters-bt"
-        type="primary"
+        type="secondary"
+        icon="cross"
         @click="resetFilters"
       />
     </div>
@@ -154,25 +162,24 @@ export default {
     }
   },
 
-  watch: {
-    filters(newFilters) {
-      this.$root.$emit('set-filters', newFilters)
-    },
-    specializations(newSpecializations) {
-
-      const newSpecializationBoolean = {
-        automotiveAndMobility: false,
-        manufacturing: false,
-        agriAutomation: false,
-      }
-
-      newSpecializations.forEach((specialization)=>{
-        newSpecializationBoolean[specialization.value] = true
-      })
-      this.filters.specializations = newSpecializationBoolean
-      // this.$root.$emit('set-filters', this.filters)
-    }
-  },
+  // follwing code would apply filters on every change.
+  // watch: {
+  //   filters(newFilters) {
+  //     this.$root.$emit('set-filters', newFilters)
+  //   },
+  //   specializations(newSpecializations) {
+  //     const newSpecializationBoolean = {
+  //       automotiveAndMobility: false,
+  //       manufacturing: false,
+  //       agriAutomation: false,
+  //     }
+  //     newSpecializations.forEach((specialization)=>{
+  //       newSpecializationBoolean[specialization.value] = true
+  //     })
+  //     this.filters.specializations = newSpecializationBoolean
+  //     // this.$root.$emit('set-filters', this.filters)
+  //   }
+  // },
 
   mounted() {
     this.setStandardGlobalCSSVariables(this.$refs.filtersmenu, this.primaryColor);
@@ -184,9 +191,28 @@ export default {
 
   methods: {
     resetFilters() {
-      this.filters = {}
+      this.filters = { specializations: {
+        automotiveAndMobility: false,
+        manufacturing: false,
+        agriAutomation: false,
+      }}
       this.specializations = []
+      this.$root.$emit('set-filters', this.filters);
     },
+    applyFilters() {
+      const newSpecializationBoolean = {
+        automotiveAndMobility: false,
+        manufacturing: false,
+        agriAutomation: false,
+      }
+
+      this.specializations.forEach((specialization)=>{
+        newSpecializationBoolean[specialization.value] = true
+      })
+      this.filters.specializations = newSpecializationBoolean
+
+      this.$root.$emit('set-filters', this.filters);
+    }
   }
 }
 
@@ -258,8 +284,14 @@ export default {
       }
     }
 
+    & .apply-filters-bt {
+      @apply self-end mb-2;
+    }
+
     & .reset-filters-bt {
       @apply self-end;
+
+      border: 2px solid var(--primary-color);
     }
   }
 }
