@@ -6,7 +6,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div ref="filtersmenu" class="filters-menu-website" role="menu" :aria-label="$t('common.filters')">
+    <div class="titlebar">
     <h1 class="top-title">{{ $t('common.filters') }}</h1>
+      <div v-if="isModal" class="close" @click="$emit('close')">
+        <div class="inner">
+          <Icon name="cross" class="ico" />
+        </div>
+      </div>
+    </div>
     <div class="list">
       <div class="category-filter">
         <InputLabel :text="$t('filters.specialization')"/>
@@ -133,6 +140,10 @@ export default {
     filterCount: {
       type: Object,
       default: ()=>{}
+    },
+    isModal: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -189,8 +200,29 @@ export default {
   border: 3px solid var(--primary-color);
   z-index: 1;
 
-  & .top-title {
-    @apply text-lg text-black uppercase my-5;
+  & .titlebar {
+    @apply flex justify-between px-5;
+
+    & .top-title {
+      @apply text-lg text-black uppercase my-5;
+    }
+
+   & .close {
+      @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
+
+      border-radius: 50%;
+      z-index: 9998;
+
+      & .inner {
+        @apply flex h-full w-full items-center justify-center;
+
+        & .ico {
+          @apply w-3 h-3;
+
+          fill: theme(colors.grey) !important;
+        }
+      }
+    }
   }
 
   & .list {

@@ -196,7 +196,7 @@ export default {
     },
     showFilterModal() {
       this.$modal.show(FiltersMenu, 
-        { initialFilters: this.filters, filterCount: this.filterCount },
+        { initialFilters: this.filters, filterCount: this.filterCount, isModal: true },
         { name: 'filtersmenu', 
           focusTrap: true, 
           width: '95%', 
