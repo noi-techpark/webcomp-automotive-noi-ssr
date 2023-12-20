@@ -212,6 +212,7 @@ export default {
       this.filters.specializations = newSpecializationBoolean
 
       this.$root.$emit('set-filters', this.filters);
+      this.$emit('close');
     }
   }
 }
