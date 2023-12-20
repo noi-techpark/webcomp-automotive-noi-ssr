@@ -25,6 +25,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <nuxt-link class="logo clickable" to="/" aria-label="NOI Logo">
         <Icon name="logo" alt="NOI Logo"/>
         <Icon class="noi-automotive" name="logo-automotive" alt="NOI Automotive Automation Logo"/>
+        <h1 class="noi-navigator">Navigator</h1>
       </nuxt-link>
     </div>
     <hr />
@@ -87,6 +88,12 @@ export default {
       & svg {
         @apply h-full;
       }
+      & .noi-navigator {
+        display: inline;
+        margin-left: 0.5rem;
+        font-size: 40px;
+        vertical-align: middle;
+      }
     }
   }
 
@@ -95,9 +102,17 @@ export default {
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media screen and (max-width: 600px) {
   .noi-automotive {
     display: none;
+  }
+  .noi-navigator {
+    display: none;
+  }
+}
+@media screen and (max-width: 780px) {
+  .noi-navigator {
+    display: none !important;
   }
 }
 </style>
