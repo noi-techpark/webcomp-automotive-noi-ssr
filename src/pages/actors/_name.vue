@@ -38,7 +38,7 @@ export default {
     let fetchedData;
     if (!isNaN(Number(companyName))) {
       fetchedData = await this.fetchCompanyById(Number(companyName));
-      this.companyData = fetchedData?.data[0].attributes.data_en;
+      this.companyData = fetchedData?.data[0].attributes['data_' + this.$i18n.locale];
     } else {
       fetchedData = await this.fetchCompanyByName(companyName);
       this.companyData = fetchedData?.data[0];
@@ -59,7 +59,7 @@ export default {
   computed: {
     tabTitle() {
       return (
-        (this.companyData.attributes.name ? this.companyData.attributes.name + ' - ' : '') +
+        (this.companyData?.attributes?.name ? this.companyData.attributes.name + ' - ' : '') +
         this.TITLE_END
       )
     },
