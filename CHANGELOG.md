@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.2.0](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.1.1...v2.2.0) (2023-12-22)
+
+
+### Features
+
+* added "Navigator" to logo ([7232afe](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/7232afedd473534164b2af2d3841403afe67cac2))
+* added button to return to homepage ([f6e66cf](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/f6e66cf5ae4e56bc858c5af625eacebee8e252aa))
+* added close button to filter modal ([a111dce](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/a111dceffc474aa0c641a8417cab76aec6fadf24))
+* filters don't automatically refresh ResultList anymore ([eb37ebb](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/eb37ebb786810461daeec09cea6846d3e1edf6c8))
+* Opening MapModal now also syncs SearchValue ([2e1f02e](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/2e1f02ef67c29b79ce73381561d0b0c8c19653ec))
+
+
+### Bug Fixes
+
+* adjustec company profile for mobile view ([df2a2cb](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/df2a2cbf0ff8d46cfa8d27ece21381d409252d32))
+* close filterModal after applying filters ([2a84450](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/2a844503f93171ea14bf141948421569eed7aaad))
+* css-improvements ([b8cc374](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/b8cc374399252b5c4be6cc185a8f79736103ecb8))
+* delayed search while user is typing ([1f9e1fc](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/1f9e1fc0af340c82e6416e6515a3c62193e720a3))
+* hide Navigator logo ([182d690](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/182d690b3cd44c10562cc97f3f17d16aaade3f65))
+* links to other websites work again ([8743e30](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/8743e30d4702d1547a499c21158200eeb84558c1))
+* possible fix for FlashBeings deploy process ([b48f9de](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/b48f9de487d5a70246c346c2d00ca6889726a2c4))
+* profiles with a dot in their name are accessible again ([441e412](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/441e4129f159c4282fb9cd4d9fa3dadbf4bca74c))
+* sometimes after reloading, the filter-bt would be visible in landscape mode ([438623e](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/438623ef660e7d420d8a9da4c10e694d6f673cf0))
+* sync now also works into the other direction ([a16bfb3](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/a16bfb3ec5b5bf1cfff85e3a9b60ea95846f746c))
+* webkit-based browsers didn't correctly handle fit-content ([a2f1313](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/a2f13134c340fded484d92e8fde1b80fa23cc5f9))
+
 ### [2.1.1](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.1.0...v2.1.1) (2023-12-18)
 
 
