@@ -8,8 +8,10 @@ const matomo =
   !process.env.DISABLED_MATOMO || process.env.DISABLED_MATOMO === 'false'
 
 const targetConfig = !process.env.TARGET_CONFIG
-  ? 'server'
+  ? 'static'
   : process.env.TARGET_CONFIG
+
+console.log(targetConfig)
 
 const config = {
   ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
@@ -189,6 +191,10 @@ const config = {
             plugins: [
               '@babel/plugin-proposal-nullish-coalescing-operator',
               '@babel/plugin-proposal-optional-chaining',
+              [
+                '@babel/plugin-proposal-private-property-in-object',
+                { loose: true },
+              ],
             ],
           },
         }

@@ -16,7 +16,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           aspect="fill"
           @input="delaySearch"
         />
-        <Button v-if="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
+        <Button v-show="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
       </div>
     </div>
     <div class="company-list">
@@ -48,7 +48,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </aside>
       <main>
         <ResultList 
-          :result-list="visibleResults"
+          :result-list="visibleResultsDelayed"
           :max-description-length="175"
           :card-type="isInLandscapeMode ? 'desktop' : 'mobile'"
         />
@@ -91,6 +91,7 @@ export default {
           agriAutomation: false,
         },
       },
+      visibleResultsDelayed: [],
       filteredCompanies: [],
       searchValue: '',
       searchValueDelayed: '',
@@ -161,11 +162,13 @@ export default {
     };
 
     this.$root.$on('set-filters', this.setFilters)
+    this.$root.$on('set-search-value', this.setSearchValue)
   },
   methods: {
     async fetchResults() {
       this.fetchedData = await this.fetchAllCompanies()
       this.loading = false
+      this.visibleResultsDelayed = this.mappedResults
     },
     toggleAdvancedFiltersVisibility() {
       this.areAdvancedFiltersVisible = !this.areAdvancedFiltersVisible
@@ -179,19 +182,29 @@ export default {
     },
     setFilters(newFilters) {
       this.filters = newFilters
+      this.activeFilters = newFilters
+      this.visibleResultsDelayed = this.mappedResults
     },
     resetFilters() {
-      this.filters = {}
+      this.setFilters({ specializations: {
+        automotiveAndMobility: false,
+        manufacturing: false,
+        agriAutomation: false,
+      }});
+    },
+    setSearchValue(newValue) {
+      this.searchValue = newValue;
+      this.searchValueDelayed = newValue;
     },
     showMapModal() {
       this.$modal.show(WebComponent, 
-        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters},
+        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters, initialSearchValue: this.searchValueDelayed},
         {name: 'webcomponent', focusTrap: true, width: '90%', height:  this.isInLandscapeMode ? '90%' : '85%', transition: 'modal',},
       )
     },
     showFilterModal() {
       this.$modal.show(FiltersMenu, 
-        { initialFilters: this.filters, filterCount: this.filterCount },
+        { initialFilters: this.filters, filterCount: this.filterCount, isModal: true },
         { name: 'filtersmenu', 
           focusTrap: true, 
           width: '95%', 
@@ -251,7 +264,7 @@ export default {
     container-name: search-bar-ct;
 
     & .search-bar {
-      @apply absolute flex items-center justify-between mx-6 h-12;
+      @apply absolute flex items-center justify-center mx-6 h-12;
 
       max-width: calc(1300px * 0.3);
       width: calc(100% - 2 * theme('spacing.6'));

@@ -367,6 +367,16 @@ export default {
 .company-view {
   @apply h-full overflow-y-auto;
 
+  /**
+   * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
+   * but some linters still warn about it.
+   *
+   * browser-compatibility: https://developer.mozilla.org/en-US/docs/Web/CSS/@container#browser_compatibility
+   * stylelint 14.12.0: https://github.com/stylelint/stylelint/releases/tag/14.12.0
+   */
+  container-type: inline-size;
+  container-name: noi-automotive-company-view;
+
   & .close {
     @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
 
@@ -406,16 +416,19 @@ export default {
     }
 
     & .top-overview {
-      @apply flex flex-row my-6 space-x-6;
+      @apply flex my-6 space-x-6;
 
       & .col {
         width: 50%;
 
         & .image {
-          @apply bg-white bg-cover bg-center;
+          @apply bg-transparent bg-cover bg-center;
 
-          height: 270px;
+          max-height: 270px;
           mix-blend-mode: multiply;
+          object-fit: contain;
+          object-position: top;
+
         }
 
         & .top-desc {
@@ -480,7 +493,7 @@ export default {
   }
 
   & .footer {
-    @apply flex flex-row items-center py-8 px-8;
+    @apply flex items-center py-8 px-8;
 
     background-color: #ededed;
 
@@ -504,35 +517,32 @@ export default {
   }
 }
 
-@container noi-automotive-component-view (max-width: theme('screens.md')) {
-  .company-view {
-    & .data-view {
-      & .header-profile {
-        & h1 {
-          @apply mt-12;
-        }
-      }
 
-      & .top-overview {
-        @apply flex-col space-x-0;
-
-        & .col {
-          @apply w-auto;
-
-          & .top-desc {
-            @apply h-auto mb-8;
-          }
-        }
-      }
+@container noi-automotive-company-view (max-width: 600px) {
+  .header-profile {
+    & .logo {
+      height: 100px !important;
     }
+  }
+  .top-overview {
+    @apply flex-col space-x-0;
 
-    & .footer {
-      @apply flex-col items-start;
+    & .col {
+      @apply !w-full;
 
-      & .column {
-        &.second {
-          @apply mt-4;
-        }
+      & .image {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      & .top-desc {
+        @apply h-auto mb-2;
+        height: auto !important;  
+        font-size: 1rem !important;
+      }
+
+      & .middle-desc {
+        display: none !important;
       }
     }
   }

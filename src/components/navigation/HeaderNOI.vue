@@ -18,10 +18,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         @input="changeLanguage"
       />
     </div>
+    <nuxt-link v-show="showBackToHomepage" class="back-to-hompepage-button" :to="'/' + $i18n.locale">
+      <Button icon="back-arrow" :value="$t('common.backToHomepage')" type="primary"></Button>
+    </nuxt-link>
     <div class="logos-ct">
       <nuxt-link class="logo clickable" to="/" aria-label="NOI Logo">
         <Icon name="logo" alt="NOI Logo"/>
-        <Icon name="logo-automotive" alt="NOI Automotive Automation Logo"/>
+        <Icon class="noi-automotive" name="logo-automotive" alt="NOI Automotive Automation Logo"/>
+        <!-- <h1 class="noi-navigator">Navigator</h1> -->
       </nuxt-link>
     </div>
     <hr />
@@ -47,6 +51,9 @@ export default {
         },
       ]
     },
+    showBackToHomepage() {
+      return !['/', '/en', '/de', '/it'].includes(this.$route.path);
+    }
   },
   methods: {
     changeLanguage(lang) {
@@ -67,6 +74,11 @@ export default {
   & .lang-selector {
     @apply absolute top-6 right-4 w-14;
   }
+
+  & .back-to-hompepage-button {
+    @apply absolute top-6 right-20;
+  }
+
   & .logos-ct {
     height: 100px;
 
@@ -76,11 +88,31 @@ export default {
       & svg {
         @apply h-full;
       }
+      & .noi-navigator {
+        display: inline;
+        margin-left: 0.5rem;
+        font-size: 40px;
+        vertical-align: middle;
+      }
     }
   }
 
   & hr {
     border-top: 1px solid black;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .noi-automotive {
+    display: none;
+  }
+  .noi-navigator {
+    display: none;
+  }
+}
+@media screen and (max-width: 780px) {
+  .noi-navigator {
+    display: none !important;
   }
 }
 </style>

@@ -14,6 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :limit-to-default-category="limitToDefaultCategory"
       :visible-categories="visibleCategoriesAsArray"
       :initial-filters="initialFilters"
+      :initial-search-value="initialSearchValue"
       :show-language-select="showLanguageSelect"
       @onCompanyClick="showCompany"
       @didLeaveHome="hideHome"
@@ -111,6 +112,11 @@ export default {
     initialFilters: {
       type: Object,
       default: ()=>{}
+    },
+
+    initialSearchValue: {
+      type: String,
+      default: ''
     },
 
     language: {

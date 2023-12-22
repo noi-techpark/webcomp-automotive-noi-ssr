@@ -6,7 +6,7 @@ const AVAILABLE_LANGUAGES = ['en', 'de', 'it'];
 
 export default {
     locales: AVAILABLE_LANGUAGES,
-    strategy: 'prefix_except_default',
+    strategy: 'prefix_and_default',
     defaultLocale: 'en',
     vueI18n: {
       fallbackLocale: 'en',

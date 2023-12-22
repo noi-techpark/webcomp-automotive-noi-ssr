@@ -6,7 +6,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div ref="filtersmenu" class="filters-menu-website" role="menu" :aria-label="$t('common.filters')">
+    <div class="titlebar">
     <h1 class="top-title">{{ $t('common.filters') }}</h1>
+      <div v-if="isModal" class="close" @click="$emit('close')">
+        <div class="inner">
+          <Icon name="cross" class="ico" />
+        </div>
+      </div>
+    </div>
     <div class="list">
       <div class="category-filter">
         <InputLabel :text="$t('filters.specialization')"/>
@@ -94,9 +101,17 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         aria-haspopup="listbox"
       />
       <Button
+        :value="$t('filters.applyFilters')"
+        class="apply-filters-bt"
+        type="primary"
+        icon="filter"
+        @click="applyFilters"
+      />
+      <Button
         :value="$t('filters.resetFilters')"
         class="reset-filters-bt"
-        type="primary"
+        type="secondary"
+        icon="cross"
         @click="resetFilters"
       />
     </div>
@@ -133,6 +148,10 @@ export default {
     filterCount: {
       type: Object,
       default: ()=>{}
+    },
+    isModal: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -143,25 +162,24 @@ export default {
     }
   },
 
-  watch: {
-    filters(newFilters) {
-      this.$root.$emit('set-filters', newFilters)
-    },
-    specializations(newSpecializations) {
-
-      const newSpecializationBoolean = {
-        automotiveAndMobility: false,
-        manufacturing: false,
-        agriAutomation: false,
-      }
-
-      newSpecializations.forEach((specialization)=>{
-        newSpecializationBoolean[specialization.value] = true
-      })
-      this.filters.specializations = newSpecializationBoolean
-      // this.$root.$emit('set-filters', this.filters)
-    }
-  },
+  // follwing code would apply filters on every change.
+  // watch: {
+  //   filters(newFilters) {
+  //     this.$root.$emit('set-filters', newFilters)
+  //   },
+  //   specializations(newSpecializations) {
+  //     const newSpecializationBoolean = {
+  //       automotiveAndMobility: false,
+  //       manufacturing: false,
+  //       agriAutomation: false,
+  //     }
+  //     newSpecializations.forEach((specialization)=>{
+  //       newSpecializationBoolean[specialization.value] = true
+  //     })
+  //     this.filters.specializations = newSpecializationBoolean
+  //     // this.$root.$emit('set-filters', this.filters)
+  //   }
+  // },
 
   mounted() {
     this.setStandardGlobalCSSVariables(this.$refs.filtersmenu, this.primaryColor);
@@ -173,9 +191,29 @@ export default {
 
   methods: {
     resetFilters() {
-      this.filters = {}
+      this.filters = { specializations: {
+        automotiveAndMobility: false,
+        manufacturing: false,
+        agriAutomation: false,
+      }}
       this.specializations = []
+      this.$root.$emit('set-filters', this.filters);
     },
+    applyFilters() {
+      const newSpecializationBoolean = {
+        automotiveAndMobility: false,
+        manufacturing: false,
+        agriAutomation: false,
+      }
+
+      this.specializations.forEach((specialization)=>{
+        newSpecializationBoolean[specialization.value] = true
+      })
+      this.filters.specializations = newSpecializationBoolean
+
+      this.$root.$emit('set-filters', this.filters);
+      this.$emit('close');
+    }
   }
 }
 
@@ -189,8 +227,29 @@ export default {
   border: 3px solid var(--primary-color);
   z-index: 1;
 
-  & .top-title {
-    @apply text-lg text-black uppercase my-5;
+  & .titlebar {
+    @apply flex justify-between px-5;
+
+    & .top-title {
+      @apply text-lg text-black uppercase my-5;
+    }
+
+   & .close {
+      @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
+
+      border-radius: 50%;
+      z-index: 9998;
+
+      & .inner {
+        @apply flex h-full w-full items-center justify-center;
+
+        & .ico {
+          @apply w-3 h-3;
+
+          fill: theme(colors.grey) !important;
+        }
+      }
+    }
   }
 
   & .list {
@@ -226,8 +285,14 @@ export default {
       }
     }
 
+    & .apply-filters-bt {
+      @apply self-end mb-2;
+    }
+
     & .reset-filters-bt {
       @apply self-end;
+
+      border: 2px solid var(--primary-color);
     }
   }
 }

@@ -25,34 +25,23 @@ import utils from '~/mixins/utils.js'
 export default {
   mixins: [utils],
 
-  async asyncData({ params, i18n }) {
-    let fetchedCompany;
-    if(params.name) {
-      /* eslint-disable  */
-      const response = await fetch(
-        'https://bk.opendatahub.com' +
-          '/api/companies' +
-          '?locale=' +
-          i18n.locale +
-          '&populate=*' +
-          '&' +
-          encodeURIComponent('filters[name][$eq]') +
-          '=' +
-          encodeURIComponent(params.name.toUpperCase())
-      ).catch(() => {
-        alert('Sorry, an error has occurred while fetching the company.')
-      })
-      /* eslint-enable */
-      fetchedCompany = await response.json()
-    }
-
-    return { companyData: fetchedCompany?.data[0] }
-  },
-
   data() {
     return {
       TITLE_END: 'NOI Automotive Automation',
-      primaryColor: '#0000ff'
+      primaryColor: '#0000ff',
+      companyData: null
+    }
+  },
+
+  async fetch() {
+    const companyName = this.$route.params.name;
+    let fetchedData;
+    if (!isNaN(Number(companyName))) {
+      fetchedData = await this.fetchCompanyById(Number(companyName));
+      this.companyData = fetchedData?.data[0].attributes['data_' + this.$i18n.locale];
+    } else {
+      fetchedData = await this.fetchCompanyByName(companyName);
+      this.companyData = fetchedData?.data[0];
     }
   },
   head() {
@@ -70,7 +59,7 @@ export default {
   computed: {
     tabTitle() {
       return (
-        (this.$route.params.name ? this.$route.params.name + ' - ' : '') +
+        (this.companyData?.attributes?.name ? this.companyData.attributes.name + ' - ' : '') +
         this.TITLE_END
       )
     },

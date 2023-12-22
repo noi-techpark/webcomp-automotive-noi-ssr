@@ -1,6 +1,7 @@
 {
   "common": {
     "backToCategories": "Back",
+    "backToHomepage": "To homepage",
     "allCategories": "All specialization areas",
     "filters": "Filters",
     "automotive": "Automotive",
@@ -44,6 +45,7 @@
     "certification": "Certification",
     "specialization": "Specialization area",
     "resetFilters": "Reset filters",
+    "applyFilters": "Apply filters",
     "automotiveTechnology": "Automotive Technology",
     "machineryAndPlantConstruction": "Machinery and plant construction",
     "electronicsElectricalEngineering": "Electronics / Electrical engineering",
