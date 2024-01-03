@@ -58,7 +58,9 @@ export default {
     @apply flex flex-row mx-6 mb-4 cursor-pointer select-none rounded-lg bg-secondary shadow;
 
     & .card-image {
-      @apply h-auto w-48 min-w-[8rem] min-w-[12rem] rounded-lg object-top object-scale-down;
+      @apply h-auto w-48 rounded-lg object-top object-scale-down;
+
+      min-width: 8rem;
     }
 
     & .card-desc {

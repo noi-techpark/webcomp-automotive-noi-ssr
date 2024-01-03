@@ -79,7 +79,7 @@ export default {
     top: 100px !important;
   }
   & .container {
-    @apply !h-fit;
+    height: auto !important;
 
     & .company-view {
       overflow-y: inherit;

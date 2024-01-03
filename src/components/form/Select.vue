@@ -131,7 +131,8 @@ export default {
     padding-bottom: 0.6rem;
 
     & select {
-      @apply bg-transparent text-inherit text-base appearance-none border-0 p-0;
+      @apply bg-transparent text-base appearance-none border-0 p-0;
+      color: inherit;
 
       &:focus {
         background-color: color-mix(in srgb, var(--primary-color) 25%, theme('colors.secondary'))
