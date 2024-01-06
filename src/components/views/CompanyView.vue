@@ -528,7 +528,7 @@ export default {
     @apply flex-col space-x-0;
 
     & .col {
-      @apply !w-full;
+      width: 100% !important;
 
       & .image {
         margin-left: auto;
@@ -536,7 +536,7 @@ export default {
       }
 
       & .top-desc {
-        @apply h-auto mb-2;
+        @apply mb-2;
         height: auto !important;  
         font-size: 1rem !important;
       }

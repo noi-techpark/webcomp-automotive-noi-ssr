@@ -284,7 +284,8 @@ export default {
   }
 
   & .company-list {
-    @apply relative flex h-fit mx-auto;
+    @apply relative flex mx-auto;
+    height: auto;
 
     max-width: 1300px;
     top: calc(300px + 2 * theme('spacing.4')); /* 100px header height, 200px search-bar-ct height, 2 * theme('spacing.4') 200px search-bar-ct margin */

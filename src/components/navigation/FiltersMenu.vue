@@ -253,7 +253,8 @@ export default {
   }
 
   & .list {
-    @apply relative flex flex-col h-max left-0 right-0 px-5 pb-5;
+    @apply relative flex flex-col left-0 right-0 px-5 pb-5;
+    height: max-content;
 
     & .select {
       @apply mb-4;
