@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.1](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.2.0...v2.2.1) (2024-01-06)
+
+
+### Bug Fixes
+
+* possible fix for FlashBeings deploy process 2 ([94460cd](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/94460cdc0c8c39ce3c8bc81a80f4bec818aed320))
+
 ## [2.2.0](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.1.1...v2.2.0) (2023-12-22)
 
 
