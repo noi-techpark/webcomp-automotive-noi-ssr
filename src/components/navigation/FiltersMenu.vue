@@ -260,8 +260,9 @@ export default {
       @apply mb-4;
 
       & label {
-        @apply w-fit py-1 px-3 rounded-lg;
+        @apply py-1 px-3 rounded-lg;
 
+        width: fit-content;
         font-size: 1.25rem;
         background-color: var(--primary-color);
         color: var(--primary-color-text);
@@ -278,8 +279,9 @@ export default {
       @apply mb-4;
 
       & label {
-        @apply w-fit py-1 px-3 rounded-lg;
+        @apply py-1 px-3 rounded-lg;
 
+        width: fit-content;
         font-size: 1.25rem;
         background-color: var(--primary-color);
         color: var(--primary-color-text);
