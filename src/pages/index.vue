@@ -179,6 +179,7 @@ export default {
     },
     doneTyping() {
       this.searchValueDelayed = this.searchValue
+      this.visibleResultsDelayed = this.mappedResults
     },
     setFilters(newFilters) {
       this.filters = newFilters
