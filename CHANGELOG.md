@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.2.3](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.2.2...v2.2.3) (2024-01-18)
+
+
+### Bug Fixes
+
+* searchValue didn't automatically refresh Resultlist ([e3c5da8](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/e3c5da8d4c67e03031f2f235b028a9a0551c5f4f))
+
 ### [2.2.2](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.2.1...v2.2.2) (2024-01-08)
 
 
