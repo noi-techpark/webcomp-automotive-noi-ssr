@@ -22,7 +22,7 @@
     }
   ],
   "image": "wcs-logo.png",
-  "searchTags": ["automotive", "automation", "map"],
+  "searchTags": ["dashboard", "map"],
   "dist": {
     "basePath": "dist/nuxt-custom-elements/noi-automotive",
     "files": [
