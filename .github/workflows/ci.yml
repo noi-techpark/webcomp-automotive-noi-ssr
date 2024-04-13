@@ -20,7 +20,7 @@ jobs:
           username: ${{secrets.MAIL_USER}}
           password: ${{secrets.MAIL_PASSWORD}}
           subject: ▶️ ${{ github.ref_name }} - ${{github.repository}} - Started
-          to: automation@flashbeing.com, simonetesta@flashbeing.com
+          to: automation@codeworks.build, simonetesta@codeworks.build
           from: Codeworks Automation
           body: |
             Pipeline of
@@ -107,7 +107,7 @@ jobs:
           username: ${{secrets.MAIL_USER}}
           password: ${{secrets.MAIL_PASSWORD}}
           subject: 💥 ${{ github.ref_name }} - ${{github.repository}} - failed
-          to: automation@flashbeing.com, simonetesta@flashbeing.com
+          to: automation@codeworks.build, simonetesta@codeworks.build
           from: Codeworks Automation
           body: |
             Build & Test job of
@@ -126,7 +126,7 @@ jobs:
           username: ${{secrets.MAIL_USER}}
           password: ${{secrets.MAIL_PASSWORD}}
           subject: 💥 ${{ github.ref_name }} - ${{github.repository}} - failed
-          to: automation@flashbeing.com, simonetesta@flashbeing.com
+          to: automation@codeworks.build, simonetesta@codeworks.build
           from: Codeworks Automation
           body: |
             Deploy job of
