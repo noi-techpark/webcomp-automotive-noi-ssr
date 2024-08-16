@@ -309,15 +309,15 @@ export default {
               ' ' +
               r.attributes.references +
               ' ' +
-              r.attributes.companyContact.email +
+              (r.attributes.companyContact ? r.attributes.companyContact.email : '') +
               ' ' +
-              r.attributes.contactPerson.email +
+              (r.attributes.contactPerson ? r.attributes.contactPerson.email : '') +
               ' ' +
-              r.attributes.contactPerson.personName +
+              (r.attributes.contactPerson ? r.attributes.contactPerson.personName : '') +
               ' ' +
-              r.attributes.companyAddressStreet.name +
+              (r.attributes.companyAddressStreet ? r.attributes.companyAddressStreet.name : '') +
               ' ' +
-              r.attributes.companyAddressStreet.city
+              (r.attributes.companyAddressStreet ? r.attributes.companyAddressStreet.city : '')
             )
               .toLowerCase()
               .includes(cleanSearchVal)
