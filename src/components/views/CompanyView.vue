@@ -128,7 +128,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               {{ data?.attributes?.legalName }}
             </p>
             <p v-if="data?.attributes?.companyAddressStreet" :aria-label="$t('company.companyAddressStreet')">
-              {{ data?.attributes?.companyAddressStreet.name }}
+              {{ data?.attributes?.companyAddressStreet?.name }}
             </p>
             <p
               v-if="
@@ -137,76 +137,76 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               "
               :aria-label="$t('company.companyLocation')"
             >
-              {{ data?.attributes?.companyLocation.cap }}
-              {{ data?.attributes?.companyAddressStreet.city }}
+              {{ data?.attributes?.companyLocation?.cap }}
+              {{ data?.attributes?.companyAddressStreet?.city }}
             </p>
             <p v-if="data?.attributes?.companyContact" :aria-label="$t('company.phoneNumber')">
-              <a :href="'tel:' + data?.attributes?.companyContact.phoneNumber">{{
-                data?.attributes?.companyContact.phoneNumber
+              <a :href="'tel:' + data?.attributes?.companyContact?.phoneNumber">{{
+                data?.attributes?.companyContact?.phoneNumber
               }}</a>
             </p>
             <p v-if="data?.attributes?.companyContact" :aria-label="$t('company.email')">
-              <a :href="'mailto:' + data?.attributes?.companyContact.email">{{
-                data?.attributes?.companyContact.email
+              <a :href="'mailto:' + data?.attributes?.companyContact?.email">{{
+                data?.attributes?.companyContact?.email
               }}</a>
             </p>
             <p v-if="data?.attributes?.companyContact" :aria-label="$t('company.website') + data?.attributes?.name">
               <a
                 :href="
-                  appendPrefixToUrl(data?.attributes?.companyContact.website)
+                  appendPrefixToUrl(data?.attributes?.companyContact?.website)
                 "
                 target="_blank"
-                >{{ data?.attributes?.companyContact.website }}</a
+                >{{ data?.attributes?.companyContact?.website }}</a
               >
             </p>
           </div>
           <div class="column second" :aria-label="$t('company.footerDescription2')">
             <p v-if="data?.attributes?.companyContact" :aria-label="$t('common.contact')">
               {{ $t('common.contact') }}:
-              <a :href="'mailto:' + data?.attributes?.contactPerson.email">{{
-                data?.attributes?.contactPerson.personName
+              <a :href="'mailto:' + data?.attributes?.contactPerson?.email">{{
+                data?.attributes?.contactPerson?.personName
               }}</a>
-              <span v-if="data?.attributes?.contactPerson.role"
-                >({{ data?.attributes?.contactPerson.role }})</span
+              <span v-if="data?.attributes?.contactPerson?.role"
+                >({{ data?.attributes?.contactPerson?.role }})</span
               >
             </p>
             <p v-if="data?.attributes?.contactPerson?.phoneNumber" class="text" :aria-label="$t('company.phoneNumberContactPerson')">
-              <a :href="'tel:' + data?.attributes?.contactPerson.phoneNumber" class="link">{{ 
-                data?.attributes?.contactPerson.phoneNumber 
+              <a :href="'tel:' + data?.attributes?.contactPerson?.phoneNumber" class="link">{{
+                data?.attributes?.contactPerson?.phoneNumber
               }}</a>
             </p>
             <p
-              v-if="data?.attributes?.metrics && data?.attributes?.metrics.turnover"
+              v-if="data?.attributes?.metrics && data?.attributes?.metrics?.turnover"
             >
               {{ $t('filters.turnover') }}:
               {{
-                formatWithThousandSeparator(data?.attributes?.metrics.turnover)
+                formatWithThousandSeparator(data?.attributes?.metrics?.turnover)
               }}
               €
             </p>
             <p
               v-if="
-                data?.attributes?.metric && data?.attributes?.metrics.employeeNumber
+                data?.attributes?.metric && data?.attributes?.metrics?.employeeNumber
               "
             >
               {{ $t('common.employees') }}:
-              {{ data?.attributes?.metrics.employeeNumber }}
+              {{ data?.attributes?.metrics?.employeeNumber }}
             </p>
             <p
               v-if="
-                data?.attributes?.metrics && data?.attributes?.metrics.exportRatio
+                data?.attributes?.metrics && data?.attributes?.metrics?.exportRatio
               "
             >
               {{ $t('common.exportRatio') }}:
-              {{ data?.attributes?.metrics.exportRatio }}%
+              {{ data?.attributes?.metrics?.exportRatio }}%
             </p>
             <p
               v-if="
-                data?.attributes?.metrics && data?.attributes?.metrics.rAndDRatio
+                data?.attributes?.metrics && data?.attributes?.metrics?.rAndDRatio
               "
             >
               {{ $t('common.researchAndDevelopmentRatio') }}:
-              {{ data?.attributes?.metrics.rAndDRatio }}%
+              {{ data?.attributes?.metrics?.rAndDRatio }}%
             </p>
             <p
               v-if="
