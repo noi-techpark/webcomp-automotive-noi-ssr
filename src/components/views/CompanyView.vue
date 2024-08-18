@@ -360,7 +360,7 @@ export default {
         width: 50%;
 
         & .image {
-          @apply bg-white bg-cover bg-center;
+          @apply bg-white bg-cover bg-center object-contain;
 
           height: 270px;
           mix-blend-mode: multiply;
@@ -379,7 +379,7 @@ export default {
           height: 140px;
 
           & .second-image {
-            @apply h-full w-1/2 bg-white bg-cover bg-center mix-blend-multiply;
+            @apply h-full w-1/2 bg-white bg-cover bg-center object-contain mix-blend-multiply;
 
             min-width: 200px;
           }
