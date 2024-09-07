@@ -147,7 +147,7 @@ export default {
     this.fetchResults()
 
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.homepage, this.primaryColor);
+    this.setStandardGlobalCSSVariables(this.$refs.homepage, this.$config.primaryColor ||  this.primaryColor);
 
     window.addEventListener('scroll', this.adjustHeaderHeight)
     window.addEventListener('touchmove', this.adjustHeaderHeight)

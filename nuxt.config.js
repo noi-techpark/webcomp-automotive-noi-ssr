@@ -197,6 +197,7 @@ const config = {
     apiCompaniesPath: process.env.API_COMPANIES_PATH,
     headerLogoUrl: process.env.HEADER_LOGO_URL,
     searchbarBackground: process.env.SEARCHBAR_BACKGROUND,
+    primaryColor: process.env.PRIMARY_COLOR,
   },
 
   router: {

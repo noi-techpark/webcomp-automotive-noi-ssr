@@ -77,7 +77,7 @@ export default {
   },
   mounted() {
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.primaryColor);
+    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.$config.primaryColor || this.primaryColor);
   },
 }
 </script>

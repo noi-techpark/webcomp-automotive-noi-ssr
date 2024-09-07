@@ -123,7 +123,9 @@ export default {
     },
     primaryColor: {
       type: String,
-      default: "#0000ff",
+      default() {
+        return this.$config.primaryColor || "#0000ff"
+      },
       Validator(value) {
         return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
       }
@@ -213,8 +215,8 @@ export default {
     this.$refs.componentView.style.height = this.height;
 
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.primaryColor);
-    
+    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.$config.primaryColor || this.primaryColor);
+
     if (this.displayAsWebsite && this.$route?.params?.companyName) {
       this.requestedCompanyDisplay = this.$route.params.companyName
     }

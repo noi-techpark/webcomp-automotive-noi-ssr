@@ -164,7 +164,7 @@ export default {
   },
 
   mounted() {
-    this.setStandardGlobalCSSVariables(this.$refs.filtersmenu, this.primaryColor);
+    this.setStandardGlobalCSSVariables(this.$refs.filtersmenu, this.$config.primaryColor || this.primaryColor);
 
     if (this.initialFilters) {
       this.filters = this.initialFilters
