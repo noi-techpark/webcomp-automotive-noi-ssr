@@ -224,20 +224,26 @@ export default {
     },
 
     specializationOptions() {
-      return [
-        {
+      const ret = []
+      if (this.isSpecializationAreaVisible('automotive & mobility')) {
+        ret.push({
           value: 'automotiveAndMobility',
           name: this.$t('common.automotiveAndMobility'),
-        },
-        {
+        })
+      }
+      if (this.isSpecializationAreaVisible('manufacturing')) {
+        ret.push({
           value: 'manufacturing',
           name: this.$t('common.manufacturing'),
-        },
-        {
+        })
+      }
+      if (this.isSpecializationAreaVisible('agri-automation')) {
+        ret.push({
           value: 'agriAutomation',
           name: this.$t('common.agriAutomation'),
-        },
-      ]
+        })
+      }
+      return ret
     },
   },
 
@@ -653,6 +659,16 @@ export default {
           return !(hiddenFilters.includes('turnover') && hiddenFilters.includes('employees') && hiddenFilters.includes('certifications'))
         }
         return !hiddenFilters.includes(filtername)
+      } else {
+        return true;
+      }
+    },
+    isSpecializationAreaVisible(areaName) {
+      if(this.$config.visibleSpecializationAreas) {
+        const visibleSpecializationAreas = this.$config.visibleSpecializationAreas.split(",").map(filter => filter.trim().toLowerCase())
+        console.log("visibleSpecializationAreas: %o", visibleSpecializationAreas)
+        console.log("areaname: %o", areaName.toLowerCase())
+        return visibleSpecializationAreas.includes(areaName.toLowerCase())
       } else {
         return true;
       }

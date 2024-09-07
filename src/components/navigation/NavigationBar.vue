@@ -72,7 +72,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @click="showResult(resultItem)"
         >
           <div v-if="resultItem.isMainCategory" class="mainCategory">
-            <div class="result clickable">
+            <div v-if="isSpecializationAreaVisible(resultItem.name)" class="result clickable">
               <div class="name">
                 {{
                   resultItem.name + ' (' + filterCount.categories[resultItem.id.replace(CATEGORY_PREFIX, '')] + ')' || ''

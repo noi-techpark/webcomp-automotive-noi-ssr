@@ -199,6 +199,7 @@ const config = {
     searchbarBackground: process.env.SEARCHBAR_BACKGROUND,
     primaryColor: process.env.PRIMARY_COLOR,
     hiddenFilters: process.env.HIDDEN_FILTERS,
+    visibleSpecializationAreas: process.env.VISIBLE_SPECIALIZATION_AREAS,
   },
 
   router: {
