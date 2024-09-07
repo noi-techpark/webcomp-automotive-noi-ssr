@@ -18,11 +18,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         />
       </div>
       <div class="logos-ct">
-        <div class="logo clickable" @click="backToCategories">
-          <Icon name="logo" />
+        <div v-if="!$config.headerLogoUrl">
+          <Icon name="logo" alt="NOI Logo" />
+          <Icon name="logo-automotive" alt="NOI Automotive Automation Logo" />
         </div>
-        <div class="logo clickable" @click="backToCategories">
-          <Icon name="logo-automotive" />
+        <div v-else>
+          <img :src="$config.headerLogoUrl" alt="LOGO" />
         </div>
       </div>
       <hr />

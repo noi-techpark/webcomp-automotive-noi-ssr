@@ -20,8 +20,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </div>
     <div class="logos-ct">
       <nuxt-link class="logo clickable" to="/" aria-label="NOI Logo">
-        <Icon name="logo" alt="NOI Logo"/>
-        <Icon name="logo-automotive" alt="NOI Automotive Automation Logo"/>
+        <div v-if="!$config.headerLogoUrl">
+          <Icon name="logo" alt="NOI Logo" />
+          <Icon name="logo-automotive" alt="NOI Automotive Automation Logo" />
+        </div>
+        <div v-else>
+          <img :src="$config.headerLogoUrl" alt="LOGO" />
+        </div>
       </nuxt-link>
     </div>
     <hr />
