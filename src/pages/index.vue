@@ -7,7 +7,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <div ref="homepage" class="homepage">
     <HeaderNOI />
-    <div ref="searchBar" class="search-bar-ct" role=search>
+    <div
+      ref="searchBar"
+      class="search-bar-ct"
+      role="search"
+      :style="{
+        backgroundImage:
+          'url(' +
+          ($config.searchbarBackground ||
+            'https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg') +
+          ')',
+      }"
+    >
       <div class="search-bar">
         <TextInput
           v-model="searchValue"
@@ -242,8 +253,7 @@ export default {
     left: 50%;
     transform: translate(-50%, 0);
     z-index: 2;
-    
-    background-image: url('https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg');
+
     background-position: center;
     background-size: cover;
 
