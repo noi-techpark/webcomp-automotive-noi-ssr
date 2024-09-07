@@ -101,6 +101,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <div class="top-title">{{ $t('common.filters') }}</div>
       <div class="list">
         <Select
+          v-if="isFilterVisible('industrialSector')"
           v-model="filters.industrialSector"
           :label="$t('filters.industrialSector')"
           :options="industrialSectors"
@@ -110,6 +111,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           class="select"
         />
         <Select
+          v-if="isFilterVisible('valueChainPosition')"
           v-model="filters.valueChainPosition"
           :label="$t('filters.valueChainPosition')"
           :options="valueChainPositions"
@@ -119,6 +121,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           class="select"
         />
         <div
+          v-if="isFilterVisible('advanced')"
           class="advanced-filters-bt"
           @click="toggleAdvancedFiltersVisibility"
         >
@@ -133,6 +136,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :class="{ visible: areAdvancedFiltersVisible }"
         >
           <Select
+            v-if="isFilterVisible('turnover')"
             v-model="filters.turnover"
             :label="$t('filters.turnover')"
             :options="turnovers"
@@ -142,6 +146,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             class="select"
           />
           <Select
+            v-if="isFilterVisible('employees')"
             v-model="filters.employees"
             :label="$t('filters.numberOfEmployees')"
             :options="employees"
@@ -151,6 +156,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             class="select"
           />
           <Select
+            v-if="isFilterVisible('certifications')"
             v-model="filters.certification"
             :label="$t('filters.certification')"
             :options="certifications"

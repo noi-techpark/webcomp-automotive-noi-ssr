@@ -29,7 +29,7 @@ export default {
         ),
       ]
     },
-    
+
     industrialSectors() {
       return [
         {
@@ -279,7 +279,7 @@ export default {
     },
 
     filterResults(results = [], filters, searchValue, categoryFilter, mode='and', mainCategory, defaultCategoryValidated, displayMultipleCategories) {
-      // Filter 
+      // Filter
       const categoryFilterFunction = (catFilter, catAttr,)=>{
         if(mode === 'and') {
           return (
@@ -646,5 +646,16 @@ export default {
 
       return count
     },
+    isFilterVisible(filtername) {
+      if(this.$config.hiddenFilters) {
+        const hiddenFilters = this.$config.hiddenFilters.split(",").map(filter => filter.trim())
+        if(filtername === 'advanced') {
+          return !(hiddenFilters.includes('turnover') && hiddenFilters.includes('employees') && hiddenFilters.includes('certifications'))
+        }
+        return !hiddenFilters.includes(filtername)
+      } else {
+        return true;
+      }
+    }
   }
 }

@@ -8,7 +8,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
   <div ref="filtersmenu" class="filters-menu-website" role="menu" :aria-label="$t('common.filters')">
     <h1 class="top-title">{{ $t('common.filters') }}</h1>
     <div class="list">
-      <div class="category-filter">
+      <div v-if="isFilterVisible('specializationArea')" class="category-filter">
         <InputLabel :text="$t('filters.specialization')"/>
         <multiselect 
           v-model="specializations" 
@@ -29,6 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </multiselect>
       </div>
       <Select
+        v-if="isFilterVisible('industrialSector')"
         v-model="filters.industrialSector"
         :label="$t('filters.industrialSector')"
         :aria-label="'filter: ' + $t('filters.industrialSector')"
@@ -42,6 +43,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         aria-haspopup="listbox"
       />
       <Select
+        v-if="isFilterVisible('valueChainPosition')"
         v-model="filters.valueChainPosition"
         :label="$t('filters.valueChainPosition')"
         :aria-label="'filter: ' + $t('filters.valueChainPosition')"
@@ -55,6 +57,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         aria-haspopup="listbox"
       />
       <Select
+        v-if="isFilterVisible('employees')"
         v-model="filters.employees"
         :label="$t('filters.numberOfEmployees')"
         :aria-label="'filter: ' + $t('filters.numberOfEmployees')"
@@ -68,6 +71,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         aria-haspopup="listbox"
       />
       <Select
+        v-if="isFilterVisible('turnover')"
         v-model="filters.turnover"
         :label="$t('filters.turnover')"
         :aria-label="'filter: ' + $t('filters.turnover')"
@@ -81,6 +85,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         aria-haspopup="listbox"
       />
       <Select
+        v-if="isFilterVisible('certifications')"
         v-model="filters.certification"
         :label="$t('filters.certification')"
         :aria-label="'filter: ' + $t('filters.certification')"

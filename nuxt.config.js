@@ -198,6 +198,7 @@ const config = {
     headerLogoUrl: process.env.HEADER_LOGO_URL,
     searchbarBackground: process.env.SEARCHBAR_BACKGROUND,
     primaryColor: process.env.PRIMARY_COLOR,
+    hiddenFilters: process.env.HIDDEN_FILTERS,
   },
 
   router: {
