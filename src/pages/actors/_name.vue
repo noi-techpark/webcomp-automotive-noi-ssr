@@ -30,23 +30,31 @@ export default {
     if(params.name) {
       /* eslint-disable  */
       const response = await fetch(
-        'https://bk.opendatahub.com' +
-          '/api/companies' +
+        utils.getApiEndpoint() +
+          utils.getApiPublishedCompaniesPath() +
           '?locale=' +
           i18n.locale +
           '&populate=*' +
+          '&fields[0]=data_' + i18n.locale +
           '&' +
+          /* NOTE: since name is stored as json, there's no way to filter it. Thus we need to use companyId again
           encodeURIComponent('filters[name][$eq]') +
           '=' +
-          encodeURIComponent(params.name.toUpperCase())
+          encodeURIComponent(params.name.toUpperCase())*/
+          encodeURIComponent('filters[companyId][$eq]') +
+          '=' +
+          encodeURIComponent(params.name)
       ).catch(() => {
         alert('Sorry, an error has occurred while fetching the company.')
       })
       /* eslint-enable */
       fetchedCompany = await response.json()
+      if(fetchedCompany.attributes) {
+        fetchedCompany = fetchedCompany.attributes
+      }
     }
 
-    return { companyData: fetchedCompany?.data[0] }
+    return { companyData: fetchedCompany?.data[0]["data_" + i18n.locale] }
   },
 
   data() {
@@ -62,7 +70,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.truncate(this.removeUnnecessaryNewlines(this.companyData?.attributes?.productsAndServices), 160, true),
+          content: this.truncate(this.removeUnnecessaryNewlines(this.companyData?.productsAndServices || this.companyData?.attributes?.productsAndServices), 160, true),
         },
       ],
     }

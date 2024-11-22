@@ -172,7 +172,7 @@ export default {
     visibleCategoriesAsArray() {
       if(this.visibleCategories.split(',')[0] === '')
         return undefined;
-      else { 
+      else {
         return this.visibleCategories.split(',').map(category => category.trim());
       }
     }
@@ -247,8 +247,8 @@ export default {
 
     showCompany(companyData) {
       this.visibleCompanyData = companyData
-      this.historyPush('/companies/' + companyData.attributes.name)
-      this.$emit('changeTitle', companyData.attributes.name)
+      this.historyPush('/companies/' + companyData.attributes?.name || companyData.name)
+      this.$emit('changeTitle', companyData.attributesu?.name || companyData.name)
     },
 
     hideCompany() {
@@ -292,7 +292,7 @@ export default {
       // explicitly require a boolean value,
       if (isLoading === true || isLoading === false)
         this.loading = isLoading
-      else 
+      else
         this.loading = !this.loading
     },
     setFilterMenuWidth(value) {
@@ -308,9 +308,9 @@ export default {
 
 .component-view {
   @apply relative overflow-hidden w-full h-full;
-  
+
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-  
+
   /**
    * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
    * but some linters still warn about it.

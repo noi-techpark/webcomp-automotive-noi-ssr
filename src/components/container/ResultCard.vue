@@ -41,7 +41,7 @@ export default {
       type: Number,
       default: 175,
     },
-    cardType: { 
+    cardType: {
       type: String,
       default: 'desktop',
       validator(value) {

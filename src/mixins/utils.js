@@ -11,7 +11,7 @@ export default {
     getApiPublishedCompaniesPath() {
       return (
         this.$config?.apiCompaniesPath ||
-        '/api/published-companies/?fields[0]=data_'
+        '/api/published-' + this.$config.network + '-companies'
       )
     },
 
@@ -59,7 +59,7 @@ export default {
     },
 
     mapCompaniesResult(response, lang) {
-      return response.data.map((company) => company.attributes['data_' + lang])
+      return response.data.map((company) => company['data_' + lang])
     },
 
     formatWithThousandSeparator(number) {
@@ -123,8 +123,9 @@ export default {
         const response = await fetch(
           this.getApiEndpoint() +
             this.getApiPublishedCompaniesPath() +
-            this.$i18n.locale +
-            '&pagination[start]=' +
+            // '?locale=' +
+            // i18n.locale +
+            '?pagination[start]=' +
             currentLoop * FETCH_LIMIT +
             '&pagination[limit]=' +
             FETCH_LIMIT
@@ -135,6 +136,11 @@ export default {
 
         const fetchedCompanies = await response.json()
 
+        fetchedCompanies.data = fetchedCompanies.data.map(company => {
+          company.data_en.id = company.data_de.id
+          company.data_it.id = company.data_de.id
+          return company
+        })
         const companiesList = this.mapCompaniesResult(
           fetchedCompanies,
           this.$i18n.locale
@@ -209,23 +215,23 @@ export default {
         let R = parseInt(hexColor.substring(1,3),16);
         let G = parseInt(hexColor.substring(3,5),16);
         let B = parseInt(hexColor.substring(5,7),16);
-    
+
         R = parseInt(R * (100 + percent) / 100);
         G = parseInt(G * (100 + percent) / 100);
         B = parseInt(B * (100 + percent) / 100);
-    
-        R = (R<255)?R:255;  
-        G = (G<255)?G:255;  
-        B = (B<255)?B:255;  
-    
+
+        R = (R<255)?R:255;
+        G = (G<255)?G:255;
+        B = (B<255)?B:255;
+
         R = Math.round(R)
         G = Math.round(G)
         B = Math.round(B)
-    
+
         const RR = ((R.toString(16).length===1)?"0"+R.toString(16):R.toString(16));
         const GG = ((G.toString(16).length===1)?"0"+G.toString(16):G.toString(16));
         const BB = ((B.toString(16).length===1)?"0"+B.toString(16):B.toString(16));
-    
+
         return "#"+RR+GG+BB;
     },
     setGlobalCSSVariable(rootElement, varname, value) {
@@ -241,8 +247,8 @@ export default {
       if (!str) { return ""; }
       if (str.length <= length) { return str; }
       const subString = str.slice(0, length-1); // the original check
-      return (useWordBoundary 
-        ? subString.slice(0, subString.lastIndexOf(" ")) 
+      return (useWordBoundary
+        ? subString.slice(0, subString.lastIndexOf(" "))
         : subString) + "…";
     },
     /*
@@ -250,15 +256,15 @@ export default {
      */
     landscapeMode(minWidth = 768) {
       /*
-       * NOTE: To change the value for the css container queries, you'll need to configure tailwind.config.js. 
+       * NOTE: To change the value for the css container queries, you'll need to configure tailwind.config.js.
        * For more info, read this: https://v2.tailwindcss.com/docs/breakpoints
        */
       const rootElement1 = this.$root.$el
-      let rootElement2 
+      let rootElement2
       if (typeof window !== 'undefined')
         rootElement2 = document.getElementsByClassName('component-view')[0]
       const width = rootElement1?.clientWidth || rootElement2?.clientWidth
-      
+
       if (width)
         return width >= minWidth
       else
