@@ -30,8 +30,8 @@ export default {
     if(params.name) {
       /* eslint-disable  */
       const response = await fetch(
-        utils.getApiEndpoint() +
-          utils.getApiPublishedCompaniesPath() +
+        this.getConfigProperty('apiEndpoint') +
+          this.getConfigProperty('apiCompaniesPath') +
           '?locale=' +
           i18n.locale +
           '&populate=*' +
@@ -59,8 +59,8 @@ export default {
 
   data() {
     return {
+      companyName: '',
       TITLE_END: 'NOI Automotive Automation',
-      primaryColor: '#0000ff'
     }
   },
   head() {
@@ -78,14 +78,14 @@ export default {
   computed: {
     tabTitle() {
       return (
-        (this.$route.params.name ? this.$route.params.name + ' - ' : '') +
-        this.TITLE_END
+        this.companyName + this.TITLE_END
       )
     },
   },
   mounted() {
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.$config.primaryColor || this.primaryColor);
+    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.getConfigProperty('primaryColor'));
+    this.companyName = this.companyData.name
   },
 }
 </script>

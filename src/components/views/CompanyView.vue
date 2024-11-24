@@ -21,7 +21,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               class="logo"
               :src="data?.logo &&
                   data?.logo?.formats
-                    ? getApiEndpoint() +
+                    ? getConfigProperty('apiEndpoint') +
                       getAvailableImageFormat(
                         data?.logo?.formats
                       )
@@ -36,7 +36,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 class="image"
                 :src="data?.mainImage &&
                     data?.mainImage?.formats
-                      ? getApiEndpoint() +
+                      ? getConfigProperty('apiEndpoint') +
                         getAvailableImageFormat(
                           data?.mainImage?.formats
                         )
@@ -61,7 +61,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   :src="data?.auxiliaryImage &&
                       data?.auxiliaryImage &&
                       data?.auxiliaryImage?.formats
-                        ? getApiEndpoint() +
+                        ? getConfigProperty('apiEndpoint') +
                           getAvailableImageFormat(
                             data?.auxiliaryImage.formats
                           )

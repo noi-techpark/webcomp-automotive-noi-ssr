@@ -2,7 +2,10 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import utils from "./utils"
+
 export default {
+  mixins: [utils],
   computed: {
     mainCategories() {
       return [
@@ -661,8 +664,8 @@ export default {
       return count
     },
     isFilterVisible(filtername) {
-      if(this.$config.hiddenFilters) {
-        const hiddenFilters = this.$config.hiddenFilters.split(",").map(filter => filter.trim())
+      if(this.getConfigProperty('hiddenFilters')) {
+        const hiddenFilters = this.getConfigProperty('hiddenFilters').split(",").map(filter => filter.trim())
         if(filtername === 'advanced') {
           return !(hiddenFilters.includes('turnover') && hiddenFilters.includes('employees') && hiddenFilters.includes('certifications'))
         }
@@ -672,10 +675,10 @@ export default {
       }
     },
     isSpecializationAreaVisible(areaName) {
-      if(this.$config.visibleSpecializationAreas) {
-        const visibleSpecializationAreas = this.$config.visibleSpecializationAreas.split(",").map(filter => filter.trim().toLowerCase())
-        console.log("visibleSpecializationAreas: %o", visibleSpecializationAreas)
-        console.log("areaname: %o", areaName.toLowerCase())
+      if(this.getConfigProperty('visibleSpecializationAreas')) {
+        const visibleSpecializationAreas = this.getConfigProperty('visibleSpecializationAreas').split(",").map(filter => filter.trim().toLowerCase())
+        // console.log("visibleSpecializationAreas: %o", visibleSpecializationAreas)
+        // console.log("areaname: %o", areaName.toLowerCase())
         return visibleSpecializationAreas.includes(areaName.toLowerCase())
       } else {
         return true;

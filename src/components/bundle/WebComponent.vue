@@ -68,12 +68,10 @@ setup({
 
 export default {
   i18n: vueI18n,
-  mixins: [ utils ],
+  mixins: [ utils, ],
 
   provide() {
     return {
-      // Provide primary-color for Map.vue
-      'primary-color': this.primaryColor,
       'tailwind-config': twConfig,
     }
   },
@@ -124,7 +122,7 @@ export default {
     primaryColor: {
       type: String,
       default() {
-        return this.$config.primaryColor || "#0000ff"
+        return this.getConfigProperty('primaryColor')
       },
       Validator(value) {
         return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
@@ -195,6 +193,10 @@ export default {
   },
 
   created() {
+    // set univesal config
+    this.setConfigProperty('primaryColor', this.primaryColor)
+
+
     if (this.language) {
       if (this.$i18n.locale !== this.language) {
         if (typeof this.$i18n.setLocale !== 'undefined') {
@@ -215,7 +217,7 @@ export default {
     this.$refs.componentView.style.height = this.height;
 
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.$config.primaryColor || this.primaryColor);
+    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.getConfigProperty('primaryColor'));
 
     if (this.displayAsWebsite && this.$route?.params?.companyName) {
       this.requestedCompanyDisplay = this.$route.params.companyName

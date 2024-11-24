@@ -14,8 +14,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :style="{
         backgroundImage:
           'url(' +
-          ($config.searchbarBackground ||
-            'https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg') +
+          getConfigProperty('searchbarBackground') +
           ')',
       }"
     >
@@ -35,7 +34,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         <div class="map-col">
           <!--
           <div class="top-desc">
-            TODO: add here optional top description 
+            TODO: add here optional top description
           </div>
           -->
           <div class="map-ct clickable" data-not-lazy @click="showMapModal">
@@ -52,13 +51,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </client-only>
           </div>
         </div>
-        <FiltersMenu 
+        <FiltersMenu
           :initial-filters="filters"
           :filter-count="filterCount"
         />
       </aside>
       <main>
-        <ResultList 
+        <ResultList
           :result-list="visibleResults"
           :max-description-length="175"
           :card-type="isInLandscapeMode ? 'desktop' : 'mobile'"
@@ -105,7 +104,6 @@ export default {
       filteredCompanies: [],
       searchValue: '',
       searchValueDelayed: '',
-      primaryColor: '#0000ff'
     }
   },
   head() {
@@ -143,11 +141,21 @@ export default {
       return this.countFilters(this.filteredResults)
     },
   },
+  created() {
+    this.setConfigProperty('apiEndpoint', this.$config.apiEndpoint)
+    this.setConfigProperty('apiCompaniesPath', this.$config.apiCompaniesPath)
+    this.setConfigProperty('network', this.$config.network)
+    this.setConfigProperty('headerLogoUrl', this.$config.headerLogoUrl)
+    this.setConfigProperty('searchbarBackground', this.$config.searchbarBackground)
+    this.setConfigProperty('primaryColor', this.$config.primaryColor)
+    this.setConfigProperty('hiddenFilters', this.$config.hiddenFilters)
+    this.setConfigProperty('visibleSpecializationAreas', this.$config.visibleSpecializationAreas)
+  },
   mounted() {
     this.fetchResults()
 
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.homepage, this.$config.primaryColor ||  this.primaryColor);
+    this.setStandardGlobalCSSVariables(this.$refs.homepage, this.getConfigProperty('primaryColor'));
 
     window.addEventListener('scroll', this.adjustHeaderHeight)
     window.addEventListener('touchmove', this.adjustHeaderHeight)
@@ -195,20 +203,20 @@ export default {
       this.filters = {}
     },
     showMapModal() {
-      this.$modal.show(WebComponent, 
+      this.$modal.show(WebComponent,
         {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters},
         {name: 'webcomponent', focusTrap: true, width: '90%', height:  this.isInLandscapeMode ? '90%' : '85%', transition: 'modal',},
       )
     },
     showFilterModal() {
-      this.$modal.show(FiltersMenu, 
+      this.$modal.show(FiltersMenu,
         { initialFilters: this.filters, filterCount: this.filterCount },
-        { name: 'filtersmenu', 
-          focusTrap: true, 
-          width: '95%', 
-          height:  'auto', 
+        { name: 'filtersmenu',
+          focusTrap: true,
+          width: '95%',
+          height:  'auto',
           shiftY: 0.25,
-          styles: 'background-color: ' +  twConfig.theme.colors.secondary + ';' + 
+          styles: 'background-color: ' +  twConfig.theme.colors.secondary + ';' +
                   'border-radius: ' + twConfig.theme.borderRadius.lg + ';',
           transition: 'modal',
         },
@@ -219,7 +227,7 @@ export default {
       const newHeight = ((200 - scrollTop > 75) ? (200 - scrollTop) : 75)
       if(this.$refs.searchBar) {
         const animation = this.$refs.searchBar.animate({height: newHeight + 'px'}, 500)
-        const searchBarStyle = this.$refs.searchBar.style 
+        const searchBarStyle = this.$refs.searchBar.style
         animation.onfinish = function () {
           animation.cancel()
           searchBarStyle.height = newHeight + 'px'
@@ -293,7 +301,7 @@ export default {
 
       & .map-col {
         @apply mb-6;
-        
+
         & .top-desc {
           @apply flex items-center text-sm text-grey font-light;
 

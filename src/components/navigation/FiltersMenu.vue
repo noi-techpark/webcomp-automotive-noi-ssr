@@ -10,14 +10,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <div class="list">
       <div v-if="isFilterVisible('specializationArea')" class="category-filter">
         <InputLabel :text="$t('filters.specialization')"/>
-        <multiselect 
-          v-model="specializations" 
-          :options="specializationOptions" 
-          label="name" 
-          track-by="value" 
-          :multiple="true" 
+        <multiselect
+          v-model="specializations"
+          :options="specializationOptions"
+          label="name"
+          track-by="value"
+          :multiple="true"
           :close-on-select="false"
-          :preserve-search="true" 
+          :preserve-search="true"
           :placeholder="$t('common.select') + '...'"
           tag-placeholder=""
           select-label=""
@@ -169,7 +169,7 @@ export default {
   },
 
   mounted() {
-    this.setStandardGlobalCSSVariables(this.$refs.filtersmenu, this.$config.primaryColor || this.primaryColor);
+    this.setStandardGlobalCSSVariables(this.$refs.filtersmenu, this.getConfigProperty('primaryColor'));
 
     if (this.initialFilters) {
       this.filters = this.initialFilters

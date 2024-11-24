@@ -2,21 +2,34 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+const universalConfig = {
+          apiEndpoint: 'https://bk.opendatahub.com',
+          apiCompaniesPath: '/api/published-noi-companies',
+          network: 'noi',
+          headerLogoUrl: '',
+          searchbarBackground: 'https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg',
+          primaryColor: '#0000ff',
+          hiddenFilters: undefined,
+          visibleSpecializationAreas: undefined,
+        }
+
+
 export default {
   methods: {
-    getApiEndpoint() {
-      return this.$config?.apiEndpoint || 'https://bk.opendatahub.com'
+    setConfigProperty(key, value) {
+      // console.log("universalConfig: %o", this.universalConfig)
+      console.log("setting %o = %o", key, value)
+      if(value !== undefined) {
+        universalConfig[key] = value
+        if(key === 'network' && universalConfig.apiCompaniesPath === '/api/published-noi-companies') {
+          universalConfig.apiCompaniesPath = '/api/published-' + value + '-companies'
+        }
+      }
     },
-
-    getApiPublishedCompaniesPath() {
-      return (
-        this.$config?.apiCompaniesPath ||
-        '/api/published-' + this.$config.network + '-companies'
-      )
-    },
-
-    getApiCompaniesPath() {
-      return '/api/companies'
+    getConfigProperty(key) {
+      console.log("getting %o = %o", key, (universalConfig ? universalConfig[key] : ''))
+      console.log("universalConfig: %o", universalConfig)
+      return universalConfig[key]
     },
 
     copyToClipboard(text) {
@@ -121,8 +134,8 @@ export default {
 
       while (fetchedAllCompanies === false || currentLoop >= SAFE_LOOP_LIMIT) {
         const response = await fetch(
-          this.getApiEndpoint() +
-            this.getApiPublishedCompaniesPath() +
+          this.getConfigProperty('apiEndpoint') +
+            this.getConfigProperty('apiCompaniesPath') +
             // '?locale=' +
             // i18n.locale +
             '?pagination[start]=' +
@@ -159,8 +172,8 @@ export default {
 
     async fetchCompanyById(companyId) {
       const response = await fetch(
-        this.getApiEndpoint() +
-          this.getApiPublishedCompaniesPath() +
+        this.getConfigProperty('apiEndpoint') +
+          this.getConfigProperty('apiCompaniesPath') +
           this.$i18n.locale +
           '&' + encodeURIComponent('filters[companyId][$eq]') + "=" + encodeURIComponent(companyId)
       ).catch(() => {
@@ -173,8 +186,8 @@ export default {
 
     async fetchCompanyByName(companyName) {
       const response = await fetch(
-        this.getApiEndpoint() +
-          this.getApiCompaniesPath() +
+        this.getConfigProperty('apiEndpoint') +
+          this.getConfigProperty('apiCompaniesPath') +
           "?locale=" + this.$i18n.locale +
           '&' + encodeURIComponent('filters[name][$eq]') + "=" + encodeURIComponent(companyName)
       ).catch(() => {

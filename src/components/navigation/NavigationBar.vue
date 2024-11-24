@@ -18,12 +18,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         />
       </div>
       <div class="logos-ct">
-        <div v-if="!$config.headerLogoUrl">
+        <div v-if="!getConfigProperty('headerLogoUrl').headerLogoUrl">
           <Icon name="logo" alt="NOI Logo" />
           <Icon name="logo-automotive" alt="NOI Automotive Automation Logo" />
         </div>
         <div v-else>
-          <img :src="$config.headerLogoUrl" alt="LOGO" />
+          <img :src="getConfigProperty('headerLogoUrl')" alt="LOGO" />
         </div>
       </div>
       <hr />
@@ -815,7 +815,7 @@ export default {
   .navigation-ct {
     & .navigation-bar {
       @apply w-full left-0 transform-none;
-      
+
       bottom: 40cqh;
 
       & .section-title {
