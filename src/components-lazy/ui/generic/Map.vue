@@ -80,9 +80,9 @@ export default {
 
   computed: {
     companiesWithValidLocationCoordinates() {
-      return this.visibleCompanies.filter((company) =>
+      return this.visibleCompanies?.filter((company) =>
         this.hasCompanyValidCoordinates(company)
-      )
+      ) || []
     },
     points() {
       return this.getCoordinatesOfCompanies(this.companiesWithValidLocationCoordinates) || []
