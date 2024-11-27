@@ -122,7 +122,7 @@ export default {
     primaryColor: {
       type: String,
       default() {
-        return this.getConfigProperty('primaryColor')
+        return '#0000ff'
       },
       Validator(value) {
         return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
@@ -139,7 +139,35 @@ export default {
     showHomeView: {
       type: Boolean,
       default: true,
-    }
+    },
+    apiEndpoint: {
+      type: String,
+      default: ''
+    },
+    apiCompaniesPath: {
+      type: String,
+      default: ''
+    },
+    network: {
+      type: String,
+      default: ''
+    },
+    headerLogoUrl: {
+      type: String,
+      default: ''
+    },
+    searchbarBackground: {
+      type: String,
+      default: ''
+    },
+    hiddenFilters: {
+      type: String,
+      default: ''
+    },
+    visibleSpecializationAreas: {
+      type: String,
+      default: ''
+    },
 
   },
 
@@ -195,6 +223,27 @@ export default {
   created() {
     // set univesal config
     this.setConfigProperty('primaryColor', this.primaryColor)
+    if (this.apiEndpoint !== '') {
+      this.setConfigProperty('apiEndpoint', this.apiEndpoint)
+    }
+    if (this.apiCompaniesPath !== '') {
+      this.setConfigProperty('apiCompaniesPath', this.apiCompaniesPath)
+    }
+    if (this.network !== '') {
+      this.setConfigProperty('network', this.network)
+    }
+    if (this.headerLogoUrl !== '') {
+      this.setConfigProperty('headerLogoUrl', this.headerLogoUrl)
+    }
+    if (this.searchbarBackground !== '') {
+      this.setConfigProperty('searchbarBackground', this.searchbarBackground)
+    }
+    if (this.hiddenFilters !== '') {
+      this.setConfigProperty('hiddenFilters', this.hiddenFilters)
+    }
+    if (this.visibleSpecializationAreas !== '') {
+      this.setConfigProperty('visibleSpecializationAreas', this.visibleSpecializationAreas)
+    }
 
 
     if (this.language) {
