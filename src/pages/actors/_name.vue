@@ -25,25 +25,32 @@ import utils from '~/mixins/utils.js'
 export default {
   mixins: [utils],
 
-  async asyncData({ params, i18n }) {
+  async asyncData({ params, i18n, $config: { apiEndpoint, apiCompaniesPath, network }}) {
     let fetchedCompany;
     if(params.name) {
+      let apiUrl = ''
+      if (apiEndpoint) {
+        apiUrl += apiEndpoint
+      } else {
+        apiUrl += utils.methods.getConfigProperty('apiEndpoint')
+      }
+      if (apiCompaniesPath) {
+        apiUrl += apiCompaniesPath
+      } else if (network) {
+        apiUrl += '/api/' + network + '-companies'
+      } else {
+        apiUrl += utils.methods.getConfigProperty('apiCompaniesPath')
+      }
       /* eslint-disable  */
       const response = await fetch(
-        this.getConfigProperty('apiEndpoint') +
-          this.getConfigProperty('apiCompaniesPath') +
+          apiUrl +
           '?locale=' +
           i18n.locale +
           '&populate=*' +
-          '&fields[0]=data_' + i18n.locale +
           '&' +
-          /* NOTE: since name is stored as json, there's no way to filter it. Thus we need to use companyId again
           encodeURIComponent('filters[name][$eq]') +
           '=' +
-          encodeURIComponent(params.name.toUpperCase())*/
-          encodeURIComponent('filters[companyId][$eq]') +
-          '=' +
-          encodeURIComponent(params.name)
+          encodeURIComponent(params.name.toUpperCase())
       ).catch(() => {
         alert('Sorry, an error has occurred while fetching the company.')
       })
@@ -54,7 +61,7 @@ export default {
       }
     }
 
-    return { companyData: fetchedCompany?.data[0]["data_" + i18n.locale] }
+    return { companyData: utils.methods.mapCompaniesResult(fetchedCompany, i18n.locale)[0] }
   },
 
   data() {

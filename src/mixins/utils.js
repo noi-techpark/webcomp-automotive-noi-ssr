@@ -138,6 +138,7 @@ export default {
             this.getConfigProperty('apiCompaniesPath') +
             '?locale=' +
             this.$i18n.locale +
+            '&populate=*' +
             '&pagination[start]=' +
             currentLoop * FETCH_LIMIT +
             '&pagination[limit]=' +
@@ -170,6 +171,7 @@ export default {
           this.getConfigProperty('apiCompaniesPath') +
           '?locale=' +
           this.$i18n.locale +
+          '&populate=*' +
           '&' + encodeURIComponent('filters[companyId][$eq]') + "=" + encodeURIComponent(companyId)
       ).catch(() => {
         alert('Sorry, an error has occurred while fetching the company.')
