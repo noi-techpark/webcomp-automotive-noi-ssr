@@ -121,7 +121,7 @@ export default {
     filteredResults() {
       let results = []
 
-      if (this.fetchedData) {
+      if (this.fetchedData.length > 0) {
         // call filterResults from mixin 'filters'
         results = this.filterResults(this.fetchedData, this.filters, this.searchValueDelayed, this.filters.specializations, 'and')
       }

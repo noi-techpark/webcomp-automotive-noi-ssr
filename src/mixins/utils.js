@@ -4,7 +4,7 @@
 
 const universalConfig = {
           apiEndpoint: 'https://bk.opendatahub.com',
-          apiCompaniesPath: '/api/published-noi-companies',
+          apiCompaniesPath: '/api/noi-companies',
           network: 'noi',
           headerLogoUrl: '',
           searchbarBackground: 'https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg',
@@ -21,8 +21,8 @@ export default {
       console.log("setting %o = %o", key, value)
       if(value !== undefined) {
         universalConfig[key] = value
-        if(key === 'network' && universalConfig.apiCompaniesPath === '/api/published-noi-companies') {
-          universalConfig.apiCompaniesPath = '/api/published-' + value + '-companies'
+        if(key === 'network' && universalConfig.apiCompaniesPath === '/api/noi-companies') {
+          universalConfig.apiCompaniesPath = '/api/' + value + '-companies'
         }
       }
     },
@@ -72,7 +72,7 @@ export default {
     },
 
     mapCompaniesResult(response, lang) {
-      return response.data.map((company) => company['data_' + lang])
+      return response.data.map((company) => company['data_' + lang] ? company['data_' + lang] : company)
     },
 
     formatWithThousandSeparator(number) {
@@ -136,9 +136,9 @@ export default {
         const response = await fetch(
           this.getConfigProperty('apiEndpoint') +
             this.getConfigProperty('apiCompaniesPath') +
-            // '?locale=' +
-            // i18n.locale +
-            '?pagination[start]=' +
+            '?locale=' +
+            this.$i18n.locale +
+            '&pagination[start]=' +
             currentLoop * FETCH_LIMIT +
             '&pagination[limit]=' +
             FETCH_LIMIT
@@ -148,12 +148,6 @@ export default {
         })
 
         const fetchedCompanies = await response.json()
-
-        fetchedCompanies.data = fetchedCompanies.data.map(company => {
-          company.data_en.id = company.data_de.id
-          company.data_it.id = company.data_de.id
-          return company
-        })
         const companiesList = this.mapCompaniesResult(
           fetchedCompanies,
           this.$i18n.locale
@@ -174,6 +168,7 @@ export default {
       const response = await fetch(
         this.getConfigProperty('apiEndpoint') +
           this.getConfigProperty('apiCompaniesPath') +
+          '?locale=' +
           this.$i18n.locale +
           '&' + encodeURIComponent('filters[companyId][$eq]') + "=" + encodeURIComponent(companyId)
       ).catch(() => {
