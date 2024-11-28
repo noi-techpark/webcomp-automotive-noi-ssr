@@ -677,8 +677,6 @@ export default {
     isSpecializationAreaVisible(areaName) {
       if(this.getConfigProperty('visibleSpecializationAreas')) {
         const visibleSpecializationAreas = this.getConfigProperty('visibleSpecializationAreas').split(",").map(filter => filter.trim().toLowerCase())
-        // console.log("visibleSpecializationAreas: %o", visibleSpecializationAreas)
-        // console.log("areaname: %o", areaName.toLowerCase())
         return visibleSpecializationAreas.includes(areaName.toLowerCase())
       } else {
         return true;

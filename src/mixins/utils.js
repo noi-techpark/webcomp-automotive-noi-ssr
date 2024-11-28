@@ -17,8 +17,6 @@ const universalConfig = {
 export default {
   methods: {
     setConfigProperty(key, value) {
-      // console.log("universalConfig: %o", this.universalConfig)
-      console.log("setting %o = %o", key, value)
       if(value !== undefined) {
         universalConfig[key] = value
         if(key === 'network' && universalConfig.apiCompaniesPath === '/api/noi-companies') {
@@ -27,8 +25,6 @@ export default {
       }
     },
     getConfigProperty(key) {
-      console.log("getting %o = %o", key, (universalConfig ? universalConfig[key] : ''))
-      console.log("universalConfig: %o", universalConfig)
       return universalConfig[key]
     },
 
