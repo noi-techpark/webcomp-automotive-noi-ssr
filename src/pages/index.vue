@@ -24,6 +24,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :placeholder="$t('filters.searchPlaceholder')"
           type="search"
           aspect="fill"
+          external-background
           @input="delaySearch"
         />
         <Button v-if="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
@@ -261,6 +262,9 @@ export default {
     left: 50%;
     transform: translate(-50%, 0);
     z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     background-position: center;
     background-size: cover;
@@ -269,11 +273,10 @@ export default {
     container-name: search-bar-ct;
 
     & .search-bar {
-      @apply absolute flex items-center justify-between mx-6 h-12;
+      @apply h-12;
 
-      max-width: calc(1300px * 0.3);
+      max-width: calc(1300px * 0.4 - 3rem);
       width: calc(100% - 2 * theme('spacing.6'));
-      top: calc(50% - ((theme('spacing.12') + 4px) / 2));
 
       & input {
         @apply flex-initial rounded-lg;
