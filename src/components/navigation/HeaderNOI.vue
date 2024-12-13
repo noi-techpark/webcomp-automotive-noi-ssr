@@ -13,8 +13,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         :options="availableLanguages"
         aspect="fill"
         :white-contrast="false"
-        primary
-        centered-text
         @input="changeLanguage"
       />
     </div>
@@ -34,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 </template>
 
 <script>
-import utils from '~/mixins/utils';
+import utils from '~/mixins/utils'
 
 export default {
   mixins: [utils],
@@ -43,15 +41,15 @@ export default {
       return [
         {
           value: 'it',
-          name: 'IT',
+          name: 'Italiano',
         },
         {
           value: 'de',
-          name: 'DE',
+          name: 'Deutsch',
         },
         {
           value: 'en',
-          name: 'EN',
+          name: 'English',
         },
       ]
     },
@@ -73,7 +71,9 @@ export default {
   @apply fixed top-0 w-full bg-secondary z-20;
 
   & .lang-selector {
-    @apply absolute top-6 right-4 w-14;
+    @apply absolute top-6 right-4 w-52 rounded-lg;
+
+    border: 2px solid var(--primary-color);
   }
   & .logos-ct {
     height: 100px;

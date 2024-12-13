@@ -51,7 +51,7 @@ export default {
       type: String,
       default: '',
     },
-    
+
     ariaControls: {
       type: String,
       default: '',
@@ -131,7 +131,14 @@ export default {
     padding-bottom: 0.6rem;
 
     & select {
-      @apply bg-transparent text-inherit text-base appearance-none border-0 p-0;
+      @apply text-inherit text-base appearance-none border-0 p-0;
+
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'><path d='m 3.562255,158.69404 3.6,-5.2 c 6.4,-9.1 18.9,-11.4 28.1,-5 l 214.699995,149.7 214.7,-149.6 c 9.1,-6.4 21.7,-4.1 28.1,5 l 3.6,5.2 c 6.4,9.1 4.1,21.7 -5,28.1 l -241.4,168.2 -241.399995,-168.3 c -9.10000002,-6.4 -11.3,-18.9 -5,-28.1 z' /></svg>");
+      background-color: transparent;
+      background-position: 98% center;
+      background-size: 18px auto;
+      background-repeat: no-repeat;
+
 
       &:focus {
         background-color: color-mix(in srgb, var(--primary-color) 25%, theme('colors.secondary'))
@@ -176,7 +183,7 @@ export default {
     }
 
     &:hover, &:focus {
-      background-color: var(--primary-hover); 
+      background-color: var(--primary-hover);
     }
   }
 
