@@ -102,10 +102,11 @@ export default {
   & .right-column {
     @apply w-full;
 
+    height: calc(100vh - 100px);
+
     top: 100px !important;
   }
   & .container {
-    @apply !h-fit;
 
     & .company-view {
       overflow-y: inherit;

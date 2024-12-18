@@ -119,6 +119,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             {{ $t('common.downloadPdf') }} ↓
           </button>
         </main>
+        <div class="footer-ct">
         <footer class="footer" :aria-label="$t('company.footerDescription')">
           <div class="column">
             <p class="uppercase" :aria-label="$t('company.legalName')">
@@ -215,6 +216,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </p>
           </div>
         </footer>
+        </div>
       </div>
     </SlidingContainer>
     <!-- Added style="visbility:hidden", because for some reason. The <vue-html2pdf></vue-html2pdf> was visible. Download Still works-->
@@ -423,25 +425,34 @@ export default {
     }
   }
 
-  & .footer {
-    @apply flex flex-row items-center py-8 px-8;
-
+  & .footer-ct {
+    position: absolute;
+    width: 100vw;
+    bottom: 0;
+    left: calc(-0.5 * (100vw - 1200px));
     background-color: #ededed;
 
-    & .column {
-      @apply pr-10;
+    & .footer {
+      @apply flex flex-row items-center py-8;
 
-      & p {
-        @apply text-base text-black mb-1;
+      padding-left: calc(0.5 * (100vw - 1200px) + 2rem);
+      padding-right: calc(0.5 * (100vw - 1200px) + 2rem);
 
-        & a {
-          @apply underline;
-        }
-      }
+      & .column {
+        @apply pr-10;
 
-      &.second {
         & p {
-          @apply text-sm text-grey;
+          @apply text-base text-black mb-1;
+
+          & a {
+            @apply underline;
+          }
+        }
+
+        &.second {
+          & p {
+            @apply text-sm text-grey;
+          }
         }
       }
     }
