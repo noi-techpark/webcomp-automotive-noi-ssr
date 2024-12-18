@@ -105,6 +105,10 @@ export default {
 
     height: calc(100vh - 100px);
 
+    container-type: inline-size;
+    container-name: noi-automotive-component-view;
+
+
     top: 100px !important;
   }
   & .container {
@@ -115,6 +119,13 @@ export default {
   }
   & .no-results-notice {
     @apply mx-6 text-base text-grey my-6;
+  }
+}
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
+  & .right-column {
+    & .container {
+      height: fit-content;
+    }
   }
 }
 </style>

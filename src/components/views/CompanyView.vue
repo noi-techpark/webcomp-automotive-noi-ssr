@@ -462,6 +462,8 @@ export default {
 @container noi-automotive-component-view (max-width: theme('screens.md')) {
   .company-view {
     & .data-view {
+      padding-bottom: 400px;
+
       & .header-profile {
         & h1 {
           @apply mt-12;
@@ -481,12 +483,35 @@ export default {
       }
     }
 
-    & .footer {
-      @apply flex-col items-start;
+    & .footer-ct {
+      position: absolute;
+      width: 100vw;
+      bottom: 0;
+      left: min(0px, calc(-0.5 * (100vw - 1200px)));
+      background-color: #ededed;
 
-      & .column {
-        &.second {
-          @apply mt-4;
+      & .footer {
+        @apply flex flex-row items-center py-8;
+
+        padding-left: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
+        padding-right: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
+
+        & .column {
+          @apply pr-10;
+
+          & p {
+            @apply text-base text-black mb-1;
+
+            & a {
+              @apply underline;
+            }
+          }
+
+          &.second {
+            & p {
+              @apply text-sm text-grey;
+            }
+          }
         }
       }
     }

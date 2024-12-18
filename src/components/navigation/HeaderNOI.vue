@@ -88,7 +88,7 @@ export default {
     column-gap: 1rem;
 
     & .back-button {
-      @apply relative inline-block rounded-lg px-6 text-base select-none;
+      @apply relative inline-block rounded-lg px-6 text-base select-none bg-secondary;
 
       line-height: 44px;
       color: var(--primary-color);
@@ -108,7 +108,7 @@ export default {
     }
 
     & .lang-selector {
-      @apply w-52 rounded-lg;
+      @apply w-32 rounded-lg;
 
       border: 2px solid var(--primary-color);
 
