@@ -27,6 +27,16 @@ export default {
     getConfigProperty(key) {
       return universalConfig[key]
     },
+    initConfigPropertiesFromEnvvars() {
+      this.setConfigProperty('apiEndpoint', this.$config.apiEndpoint)
+      this.setConfigProperty('apiCompaniesPath', this.$config.apiCompaniesPath)
+      this.setConfigProperty('network', this.$config.network)
+      this.setConfigProperty('headerLogoUrl', this.$config.headerLogoUrl)
+      this.setConfigProperty('searchbarBackground', this.$config.searchbarBackground)
+      this.setConfigProperty('primaryColor', this.$config.primaryColor)
+      this.setConfigProperty('hiddenFilters', this.$config.hiddenFilters)
+      this.setConfigProperty('visibleSpecializationAreas', this.$config.visibleSpecializationAreas)
+    },
 
     copyToClipboard(text) {
       const textArea = document.createElement('textarea')

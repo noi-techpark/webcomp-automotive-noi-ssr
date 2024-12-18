@@ -222,6 +222,9 @@ export default {
 
   created() {
     // set univesal config
+    if (this.$config?.primaryColor) {
+      this.initConfigPropertiesFromEnvvars();
+    }
     this.setConfigProperty('primaryColor', this.primaryColor)
     if (this.apiEndpoint !== '') {
       this.setConfigProperty('apiEndpoint', this.apiEndpoint)

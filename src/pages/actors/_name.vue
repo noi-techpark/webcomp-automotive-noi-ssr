@@ -91,6 +91,7 @@ export default {
   },
   mounted() {
     // Define CSS Variables
+    this.initConfigPropertiesFromEnvvars();
     this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.getConfigProperty('primaryColor'));
     this.companyName = this.companyData.name
   },
