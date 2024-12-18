@@ -141,7 +141,9 @@ export default {
 
 
       &:focus {
-        background-color: color-mix(in srgb, var(--primary-color) 25%, theme('colors.secondary'))
+        background-color: color-mix(in srgb, var(--primary-color) 25%, theme('colors.secondary'));
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'><path d='m 3.5880746,196.40172 3.6,5.2 c 6.4000004,9.1 18.9000004,11.4 28.1000004,5 L 249.98807,56.901718 l 214.7,149.600002 c 9.1,6.4 21.7,4.1 28.1,-5 l 3.6,-5.2 c 6.4,-9.1 4.1,-21.7 -5,-28.1 L 249.98807,0.00171832 8.5880746,168.30172 c -9.09999999,6.4 -11.3,18.9 -5,28.1 z' /></svg>");
+        background-position: 98% 75%;
       }
 
       &.placeholder {
