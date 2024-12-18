@@ -6,15 +6,21 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <header class="header">
-    <div class="lang-selector">
-      <Select
-        :aria-label="$t('common.languageSelector')"
-        :value="$i18n.locale"
-        :options="availableLanguages"
-        aspect="fill"
-        :white-contrast="false"
-        @input="changeLanguage"
-      />
+    <div class="right-header">
+      <nuxt-link class="back-button" :class="{hidden: !showBackButton}" to="/">
+        <Icon name="back-arrow" />
+        {{ $t('common.toAllCompanies')}}
+      </nuxt-link>
+      <div class="lang-selector">
+        <Select
+          :aria-label="$t('common.languageSelector')"
+          :value="$i18n.locale"
+          :options="availableLanguages"
+          aspect="fill"
+          :white-contrast="false"
+          @input="changeLanguage"
+        />
+      </div>
     </div>
     <div class="logos-ct">
       <nuxt-link class="logo clickable" to="/" aria-label="NOI Logo">
@@ -36,6 +42,12 @@ import utils from '~/mixins/utils'
 
 export default {
   mixins: [utils],
+  props: {
+    showBackButton: {
+      type: Boolean,
+      default: false,
+    }
+  },
   computed: {
     availableLanguages() {
       return [
@@ -70,13 +82,39 @@ export default {
 .header {
   @apply fixed top-0 w-full bg-secondary z-20;
 
-  & .lang-selector {
-    @apply absolute top-6 right-4 w-52 rounded-lg;
+  & .right-header {
+    @apply absolute top-6 right-4 flex;
 
-    border: 2px solid var(--primary-color);
+    column-gap: 1rem;
 
-    & .select .selector select {
+    & .back-button {
+      @apply relative inline-block rounded-lg px-6 text-base select-none;
+
+      line-height: 44px;
       color: var(--primary-color);
+
+      border: 2px solid var(--primary-color);
+
+      &.hidden {
+        display: none;
+      }
+
+      & svg {
+        @apply w-5 mr-1;
+
+        vertical-align: -10%;
+        fill: var(--primary-color) !important;
+      }
+    }
+
+    & .lang-selector {
+      @apply w-52 rounded-lg;
+
+      border: 2px solid var(--primary-color);
+
+      & .select .selector select {
+        color: var(--primary-color);
+      }
     }
   }
   & .logos-ct {

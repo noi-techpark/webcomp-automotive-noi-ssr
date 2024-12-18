@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div ref="actorProfile" class="actor-profile" style="height: 100vh; overflow: hidden">
-    <HeaderNOI />
+    <HeaderNOI show-back-button />
     <company-view
       v-if="companyData"
       :data="companyData"
