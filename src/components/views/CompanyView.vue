@@ -429,14 +429,14 @@ export default {
     position: absolute;
     width: 100vw;
     bottom: 0;
-    left: calc(-0.5 * (100vw - 1200px));
+    left: min(0px, calc(-0.5 * (100vw - 1200px)));
     background-color: #ededed;
 
     & .footer {
       @apply flex flex-row items-center py-8;
 
-      padding-left: calc(0.5 * (100vw - 1200px) + 2rem);
-      padding-right: calc(0.5 * (100vw - 1200px) + 2rem);
+      padding-left: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
+      padding-right: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
 
       & .column {
         @apply pr-10;
