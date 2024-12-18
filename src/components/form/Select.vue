@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <InputLabel v-if="label" :text="label" :required="required" />
     <div class="selector">
       {{ prefix ? prefix : '' }}
-      <select :id="label" v-model="selected" :aria-label="ariaLabel || label" aria-controls="actorsList" :required="required" >
+      <select :id="label" v-model="selected" :aria-label="ariaLabel || label" aria-controls="actorsList" :required="required" :class="{'placeholder': selected == ''}">
         <option
           v-for="option in options"
           :key="option.value"
@@ -142,6 +142,10 @@ export default {
 
       &:focus {
         background-color: color-mix(in srgb, var(--primary-color) 25%, theme('colors.secondary'))
+      }
+
+      &.placeholder {
+        @apply text-black text-opacity-60;
       }
     }
   }

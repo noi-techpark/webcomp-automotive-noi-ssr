@@ -74,6 +74,10 @@ export default {
     @apply absolute top-6 right-4 w-52 rounded-lg;
 
     border: 2px solid var(--primary-color);
+
+    & .select .selector select {
+      color: var(--primary-color);
+    }
   }
   & .logos-ct {
     height: 100px;
