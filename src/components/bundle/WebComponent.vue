@@ -247,6 +247,20 @@ export default {
     if (this.visibleSpecializationAreas !== '') {
       this.setConfigProperty('visibleSpecializationAreas', this.visibleSpecializationAreas)
     }
+    if(this.primaryColor === undefined || this.headerLogoUrl === undefined || this.searchbarBackground === undefined)
+    this.fetchSetup().then(setup => {
+      if(this.primaryColor === undefined || this.primaryColor === '') {
+        this.setConfigProperty('primaryColor', setup.primaryColor)
+      }
+      if(this.headerLogoUrl === undefined || this.headerLogoUrl === '') {
+        this.setConfigProperty('headerLogoUrl', setup.headerLogoUrl)
+      }
+      if(this.searchbarBackground === undefined || this.searchbarBackground === '') {
+        this.setConfigProperty('searchbarBackground', setup.searchbarBackground)
+      }
+    })
+    .catch(err => console.log(err))
+
 
 
     if (this.language) {

@@ -36,6 +36,34 @@ export default {
       this.setConfigProperty('primaryColor', this.$config.primaryColor)
       this.setConfigProperty('hiddenFilters', this.$config.hiddenFilters)
       this.setConfigProperty('visibleSpecializationAreas', this.$config.visibleSpecializationAreas)
+
+      this.fetchSetup().then(setup => {
+        if(this.$config.primaryColor === undefined || this.$config.primaryColor === '') {
+          this.setConfigProperty('primaryColor', setup.primaryColor)
+        }
+        if(this.$config.headerLogoUrl === undefined || this.$config.headerLogoUrl === '') {
+          this.setConfigProperty('headerLogoUrl', setup.headerLogoUrl)
+        }
+        if(this.$config.searchbarBackground === undefined || this.$config.searchbarBackground === '') {
+          this.setConfigProperty('searchbarBackground', setup.searchbarBackground)
+        }
+      })
+      .catch(err => console.log(err))
+    },
+    async fetchSetup() {
+      let endpoint = this.getConfigProperty('apiEndpoint') + this.getConfigProperty('apiCompaniesPath')
+      if (endpoint.slice(-1) === '/') {
+        endpoint = endpoint.slice(0, endpoint.length - 1)
+      }
+      const response = await fetch(endpoint + '-setup')
+      if (!response.ok) {
+        throw new Error(`Error while fetching ${endpoint}-setup: errorcode was ${response.status}`);
+      }
+      return {
+        primaryColor: response.data.primaryColor,
+        headerLogoUrl: this.getConfigProperty('apiEndpoint') + response.data.logo.url,
+        searchbarBackground: this.getConfigProperty('apiEndpoint') + response.data.coverImage.url
+      }
     },
 
     copyToClipboard(text) {
