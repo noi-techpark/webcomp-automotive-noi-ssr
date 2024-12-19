@@ -68,11 +68,15 @@ export default {
     @apply flex flex-row mx-6 mb-4 cursor-pointer select-none rounded-lg bg-secondary shadow;
 
     & .card-image {
-      @apply h-fit w-48 min-w-[8rem] min-w-[12rem] rounded-lg object-top object-scale-down;
+      @apply m-2 rounded-2xl;
+
+      min-width: 10rem;
+      width: 10rem;
+      height: 9rem;
     }
 
     & .card-desc {
-      @apply flex flex-col justify-start p-4 pt-0.5;
+      @apply flex flex-col justify-start p-4 pt-0.5 w-full;
 
       & h5 {
         @apply mb-2 text-lg font-bold;
@@ -83,8 +87,10 @@ export default {
       }
 
       & .card-company-bottom {
+        flex-basis: 50%;
         display: flex;
         justify-content: space-between;
+        align-items: end;
 
         & .card-company-city {
           @apply text-xs;
@@ -107,7 +113,11 @@ export default {
     @apply block m-4 rounded-lg bg-white shadow;
 
     & .card-image {
-      @apply h-32 mx-auto rounded-lg object-scale-down;
+      @apply m-2 rounded-2xl;
+
+      min-width: 10rem;
+      width: 10rem;
+      height: 9rem;
     }
 
     & .card-desc {
@@ -122,8 +132,10 @@ export default {
       }
 
       & .card-company-bottom {
+        flex-basis: 50%;
         display: flex;
         justify-content: space-between;
+        align-items: end;
 
         & .card-company-city {
           @apply text-xs;
