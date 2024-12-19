@@ -82,6 +82,8 @@ export default {
 .header {
   @apply fixed top-0 w-full bg-secondary z-20;
 
+  max-width: 100vw;
+
   & .right-header {
     @apply absolute top-6 right-4 flex;
 
