@@ -266,13 +266,17 @@ export default {
     container-name: search-bar-ct;
 
     & .search-bar {
-      @apply h-12;
+      @apply h-12 flex;
 
       max-width: calc(1300px * 0.4 - 3rem);
       width: calc(100% - 2 * theme('spacing.6'));
 
-      & input {
-        @apply flex-initial rounded-lg;
+      & .text-input {
+        @apply w-full;
+
+        & input {
+          @apply flex-initial rounded-lg;
+        }
       }
     }
 
