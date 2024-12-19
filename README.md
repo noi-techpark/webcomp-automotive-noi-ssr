@@ -28,6 +28,53 @@ Include the webcompscript file in your HTML and define the web component like th
 </noi-automotive>
 ```
 
+### Individualisation (both website and webcomponent)
+
+#### API_ENDPOINT
+URL to the backend
+Only change this if you're using you're own backend server
+
+> Default: "https://bk.opendatahub.com"
+
+#### API_COMPANIES_PATH
+URL that get's appended to `API_ENDPOINT` when requesting companies
+Only change this if you're using you're own backend server
+
+> Default: "/api/published-noi-companies/"
+
+#### NETWORK
+defines from which network the app should load the profiles/companies
+
+> Default "noi"
+
+#### HEADER_LOGO_URL
+Replaces the standard NOI Logo to a custom one. The new one should be 100px high and preferably with a transparent background.
+
+#### SEARCHBAR_BACKGROUND
+Replaces the standard background image of the searchbar. The size doesn't really matter since the background is set to cover the whole searchbar.
+Hint: right click on the current image and open the image in a new tab. You'll see that the whole image is actually a square
+
+#### PRIMARY_COLOR
+Set the primary color. The value should be valid hexcode e.g. #0000ff
+
+#### HIDDEN_FILTERS
+Declare which filters should be hidden from the user. The value should be a comma-seperated list e.g. `specialization_area,industrial_sector,turnover`
+possible values are: 
+
+- specializationArea
+- industrialSector
+- valueChainPosition
+- employees
+- turnover
+- certifications
+
+#### VISIBLE_SPECIALIZATION_AREAS
+Declare which specialization Areas should be visible. The value should be a comma-seperated list. If this variable is not set, all specialization Areas are visible.
+possible values are: 
+- automotive & mobility
+- manufacturing
+- agri-automation
+
 ### Attributes
 
 #### language
@@ -108,7 +155,7 @@ height of the webcomponent. Because the string gets directly inserted as a css-v
 > Default: 675px
 
 #### show-home-view
-If `show-home-view`is false, the webcomponent will hide the homeview (the startpage, which gives a small description about the sectorial overview)
+If `show-home-view` is false, the webcomponent will hide the homeview (the startpage, which gives a small description about the sectorial overview)
 
 > Type: Boolean<br>
 > Default: true

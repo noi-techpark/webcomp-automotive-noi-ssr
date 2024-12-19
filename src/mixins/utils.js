@@ -2,21 +2,68 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+const universalConfig = {
+          apiEndpoint: 'https://bk.opendatahub.com',
+          apiCompaniesPath: '/api/noi-companies',
+          network: 'noi',
+          headerLogoUrl: '',
+          searchbarBackground: 'https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg',
+          primaryColor: '#0000ff',
+          hiddenFilters: undefined,
+          visibleSpecializationAreas: undefined,
+        }
+
+
 export default {
   methods: {
-    getApiEndpoint() {
-      return this.$config?.apiEndpoint || 'https://bk.opendatahub.com'
+    setConfigProperty(key, value) {
+      if(value !== undefined) {
+        universalConfig[key] = value
+        if(key === 'network' && universalConfig.apiCompaniesPath === '/api/noi-companies') {
+          universalConfig.apiCompaniesPath = '/api/' + value + '-companies'
+        }
+      }
     },
-
-    getApiPublishedCompaniesPath() {
-      return (
-        this.$config?.apiCompaniesPath ||
-        '/api/published-companies/?fields[0]=data_'
-      )
+    getConfigProperty(key) {
+      return universalConfig[key]
     },
+    initConfigPropertiesFromEnvvars() {
+      this.setConfigProperty('apiEndpoint', this.$config.apiEndpoint)
+      this.setConfigProperty('apiCompaniesPath', this.$config.apiCompaniesPath)
+      this.setConfigProperty('network', this.$config.network)
+      this.setConfigProperty('headerLogoUrl', this.$config.headerLogoUrl)
+      this.setConfigProperty('searchbarBackground', this.$config.searchbarBackground)
+      this.setConfigProperty('primaryColor', this.$config.primaryColor)
+      this.setConfigProperty('hiddenFilters', this.$config.hiddenFilters)
+      this.setConfigProperty('visibleSpecializationAreas', this.$config.visibleSpecializationAreas)
 
-    getApiCompaniesPath() {
-      return '/api/companies'
+      this.fetchSetup().then(setup => {
+        if(this.$config.primaryColor === undefined || this.$config.primaryColor === '') {
+          this.setConfigProperty('primaryColor', setup.primaryColor)
+        }
+        if(this.$config.headerLogoUrl === undefined || this.$config.headerLogoUrl === '') {
+          this.setConfigProperty('headerLogoUrl', setup.headerLogoUrl)
+        }
+        if(this.$config.searchbarBackground === undefined || this.$config.searchbarBackground === '') {
+          this.setConfigProperty('searchbarBackground', setup.searchbarBackground)
+        }
+      })
+      .catch(err => console.log(err))
+    },
+    async fetchSetup() {
+      let endpoint = this.getConfigProperty('apiEndpoint') + this.getConfigProperty('apiCompaniesPath')
+      if (endpoint.slice(-1) === '/') {
+        endpoint = endpoint.slice(0, endpoint.length - 1)
+      }
+      const response = await fetch(endpoint + '-setup')
+      if (!response.ok) {
+        throw new Error(`Error while fetching ${endpoint}-setup: errorcode was ${response.status}`);
+      }
+      return {
+        primaryColor: response.data.primaryColor,
+        headerLogoUrl: this.getConfigProperty('apiEndpoint') + response.data.logo.url,
+        searchbarBackground: this.getConfigProperty('apiEndpoint') + response.data.coverImage.url
+      }
     },
 
     copyToClipboard(text) {
@@ -59,7 +106,7 @@ export default {
     },
 
     mapCompaniesResult(response, lang) {
-      return response.data.map((company) => company.attributes['data_' + lang])
+      return response.data.map((company) => company['data_' + lang] ? company['data_' + lang] : company)
     },
 
     formatWithThousandSeparator(number) {
@@ -121,9 +168,11 @@ export default {
 
       while (fetchedAllCompanies === false || currentLoop >= SAFE_LOOP_LIMIT) {
         const response = await fetch(
-          this.getApiEndpoint() +
-            this.getApiPublishedCompaniesPath() +
+          this.getConfigProperty('apiEndpoint') +
+            this.getConfigProperty('apiCompaniesPath') +
+            '?locale=' +
             this.$i18n.locale +
+            '&populate=*' +
             '&pagination[start]=' +
             currentLoop * FETCH_LIMIT +
             '&pagination[limit]=' +
@@ -134,7 +183,6 @@ export default {
         })
 
         const fetchedCompanies = await response.json()
-
         const companiesList = this.mapCompaniesResult(
           fetchedCompanies,
           this.$i18n.locale
@@ -153,9 +201,11 @@ export default {
 
     async fetchCompanyById(companyId) {
       const response = await fetch(
-        this.getApiEndpoint() +
-          this.getApiPublishedCompaniesPath() +
+        this.getConfigProperty('apiEndpoint') +
+          this.getConfigProperty('apiCompaniesPath') +
+          '?locale=' +
           this.$i18n.locale +
+          '&populate=*' +
           '&' + encodeURIComponent('filters[companyId][$eq]') + "=" + encodeURIComponent(companyId)
       ).catch(() => {
         alert('Sorry, an error has occurred while fetching the company.')
@@ -167,8 +217,8 @@ export default {
 
     async fetchCompanyByName(companyName) {
       const response = await fetch(
-        this.getApiEndpoint() +
-          this.getApiCompaniesPath() +
+        this.getConfigProperty('apiEndpoint') +
+          this.getConfigProperty('apiCompaniesPath') +
           "?locale=" + this.$i18n.locale +
           '&' + encodeURIComponent('filters[name][$eq]') + "=" + encodeURIComponent(companyName)
       ).catch(() => {
@@ -209,23 +259,23 @@ export default {
         let R = parseInt(hexColor.substring(1,3),16);
         let G = parseInt(hexColor.substring(3,5),16);
         let B = parseInt(hexColor.substring(5,7),16);
-    
+
         R = parseInt(R * (100 + percent) / 100);
         G = parseInt(G * (100 + percent) / 100);
         B = parseInt(B * (100 + percent) / 100);
-    
-        R = (R<255)?R:255;  
-        G = (G<255)?G:255;  
-        B = (B<255)?B:255;  
-    
+
+        R = (R<255)?R:255;
+        G = (G<255)?G:255;
+        B = (B<255)?B:255;
+
         R = Math.round(R)
         G = Math.round(G)
         B = Math.round(B)
-    
+
         const RR = ((R.toString(16).length===1)?"0"+R.toString(16):R.toString(16));
         const GG = ((G.toString(16).length===1)?"0"+G.toString(16):G.toString(16));
         const BB = ((B.toString(16).length===1)?"0"+B.toString(16):B.toString(16));
-    
+
         return "#"+RR+GG+BB;
     },
     setGlobalCSSVariable(rootElement, varname, value) {
@@ -241,8 +291,8 @@ export default {
       if (!str) { return ""; }
       if (str.length <= length) { return str; }
       const subString = str.slice(0, length-1); // the original check
-      return (useWordBoundary 
-        ? subString.slice(0, subString.lastIndexOf(" ")) 
+      return (useWordBoundary
+        ? subString.slice(0, subString.lastIndexOf(" "))
         : subString) + "…";
     },
     /*
@@ -250,15 +300,15 @@ export default {
      */
     landscapeMode(minWidth = 768) {
       /*
-       * NOTE: To change the value for the css container queries, you'll need to configure tailwind.config.js. 
+       * NOTE: To change the value for the css container queries, you'll need to configure tailwind.config.js.
        * For more info, read this: https://v2.tailwindcss.com/docs/breakpoints
        */
       const rootElement1 = this.$root.$el
-      let rootElement2 
+      let rootElement2
       if (typeof window !== 'undefined')
         rootElement2 = document.getElementsByClassName('component-view')[0]
       const width = rootElement1?.clientWidth || rootElement2?.clientWidth
-      
+
       if (width)
         return width >= minWidth
       else

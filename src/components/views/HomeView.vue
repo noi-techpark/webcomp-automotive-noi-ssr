@@ -72,7 +72,7 @@ export default {
   components: {
     CompanieMapping: () => import("@/components-lazy/ui/generic/Map"),
   },
-  
+
   props: {
     companiesList: {
       type: Array,
@@ -115,7 +115,7 @@ export default {
 
       if (this.companiesList) {
         this.companiesList.forEach((company) => {
-          const legalName = company.attributes.legalName
+          const legalName = company.attributes?.legalName || company.legalName
           if (!companiesList[legalName]) {
             companiesList[legalName] = true
           }

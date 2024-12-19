@@ -2,7 +2,10 @@
 //
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
+import utils from "./utils"
+
 export default {
+  mixins: [utils],
   computed: {
     mainCategories() {
       return [
@@ -29,7 +32,7 @@ export default {
         ),
       ]
     },
-    
+
     industrialSectors() {
       return [
         {
@@ -224,20 +227,26 @@ export default {
     },
 
     specializationOptions() {
-      return [
-        {
+      const ret = []
+      if (this.isSpecializationAreaVisible('automotive & mobility')) {
+        ret.push({
           value: 'automotiveAndMobility',
           name: this.$t('common.automotiveAndMobility'),
-        },
-        {
+        })
+      }
+      if (this.isSpecializationAreaVisible('manufacturing')) {
+        ret.push({
           value: 'manufacturing',
           name: this.$t('common.manufacturing'),
-        },
-        {
+        })
+      }
+      if (this.isSpecializationAreaVisible('agri-automation')) {
+        ret.push({
           value: 'agriAutomation',
           name: this.$t('common.agriAutomation'),
-        },
-      ]
+        })
+      }
+      return ret
     },
   },
 
@@ -279,7 +288,7 @@ export default {
     },
 
     filterResults(results = [], filters, searchValue, categoryFilter, mode='and', mainCategory, defaultCategoryValidated, displayMultipleCategories) {
-      // Filter 
+      // Filter
       const categoryFilterFunction = (catFilter, catAttr,)=>{
         if(mode === 'and') {
           return (
@@ -301,23 +310,23 @@ export default {
           const cleanSearchVal = searchValue.toLowerCase()
           results = results.filter((r) =>
             (
-              r.attributes.name +
+              r.name +
               ' ' +
-              r.attributes.companyDescription +
+              r.companyDescription +
               ' ' +
-              r.attributes.productsAndServices +
+              r.productsAndServices +
               ' ' +
-              r.attributes.references +
+              r.references +
               ' ' +
-              (r.attributes.companyContact ? r.attributes.companyContact.email : '') +
+              (r.companyContact ? r.companyContact.email : '') +
               ' ' +
-              (r.attributes.contactPerson ? r.attributes.contactPerson.email : '') +
+              (r.contactPerson ? r.contactPerson.email : '') +
               ' ' +
-              (r.attributes.contactPerson ? r.attributes.contactPerson.personName : '') +
+              (r.contactPerson ? r.contactPerson.personName : '') +
               ' ' +
-              (r.attributes.companyAddressStreet ? r.attributes.companyAddressStreet.name : '') +
+              (r.companyAddressStreet ? r.companyAddressStreet.name : '') +
               ' ' +
-              (r.attributes.companyAddressStreet ? r.attributes.companyAddressStreet.city : '')
+              (r.companyAddressStreet ? r.companyAddressStreet.city : '')
             )
               .toLowerCase()
               .includes(cleanSearchVal)
@@ -332,8 +341,8 @@ export default {
          */
         if (categoryFilter && !(categoryFilter.automotiveAndMobility === categoryFilter.manufacturing === categoryFilter.agriAutomation === (mode === 'or'))) {
           results = results.filter((r) => {
-            if(r?.attributes?.specialization) {
-              return categoryFilterFunction(categoryFilter, r.attributes.specialization)
+            if(r?.specialization) {
+              return categoryFilterFunction(categoryFilter, r.specialization)
             } else {
               return false
             }
@@ -343,8 +352,8 @@ export default {
         if (mainCategory && mainCategory !== true) {
           results = results.filter((r) => {
             return (
-              r.attributes.specialization &&
-              r.attributes.specialization[mainCategory]
+              r.specialization &&
+              r.specialization[mainCategory]
             )
           })
         } else if (
@@ -353,8 +362,8 @@ export default {
         ) {
           results = results.filter((r) => {
             return (
-              r.attributes.specialization &&
-              r.attributes.specialization[defaultCategoryValidated]
+              r.specialization &&
+              r.specialization[defaultCategoryValidated]
             )
           })
         }
@@ -362,14 +371,14 @@ export default {
         if (filters.industrialSector) {
           results = results.filter(
             (r) =>
-              r.attributes.industrialSector === filters.industrialSector
+              r.industrialSector === filters.industrialSector
           )
         }
 
         if (filters.valueChainPosition) {
           results = results.filter(
             (r) =>
-              r.attributes.valueChainPosition ===
+              r.valueChainPosition ===
               filters.valueChainPosition
           )
         }
@@ -379,60 +388,60 @@ export default {
             case '< 1 Mio':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.turnover < 1000000
+                  r.metrics &&
+                  r.metrics.turnover < 1000000
               )
               break
             case '1 - 2 Mio':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.turnover >= 1000000 &&
-                  r.attributes.metrics.turnover < 2000000
+                  r.metrics &&
+                  r.metrics.turnover >= 1000000 &&
+                  r.metrics.turnover < 2000000
               )
               break
             case '2 - 10 Mio':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.turnover >= 2000000 &&
-                  r.attributes.metrics.turnover < 10000000
+                  r.metrics &&
+                  r.metrics.turnover >= 2000000 &&
+                  r.metrics.turnover < 10000000
               )
               break
             case '10 - 50 Mio':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.turnover >= 10000000 &&
-                  r.attributes.metrics.turnover < 50000000
+                  r.metrics &&
+                  r.metrics.turnover >= 10000000 &&
+                  r.metrics.turnover < 50000000
               )
               break
             case '50 - 250 Mio':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.turnover >= 5000000 &&
-                  r.attributes.metrics.turnover < 250000000
+                  r.metrics &&
+                  r.metrics.turnover >= 5000000 &&
+                  r.metrics.turnover < 250000000
               )
               break
             case '250 - 500 Mio':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.turnover >= 25000000 &&
-                  r.attributes.metrics.turnover < 500000000
+                  r.metrics &&
+                  r.metrics.turnover >= 25000000 &&
+                  r.metrics.turnover < 500000000
               )
               break
             case '> 500 Mio':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.turnover >= 500000000
+                  r.metrics &&
+                  r.metrics.turnover >= 500000000
               )
               break
             case 'NOT-DEFINED':
               results = results.filter(
-                (r) => r.attributes.metrics && !r.attributes.metrics.turnover
+                (r) => r.metrics && !r.metrics.turnover
               )
               break
           }
@@ -443,53 +452,53 @@ export default {
             case '<5':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.employeeNumber < 5
+                  r.metrics &&
+                  r.metrics.employeeNumber < 5
               )
               break
             case '5-10':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.employeeNumber >= 5 &&
-                  r.attributes.metrics.employeeNumber < 10
+                  r.metrics &&
+                  r.metrics.employeeNumber >= 5 &&
+                  r.metrics.employeeNumber < 10
               )
               break
             case '10-50':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.employeeNumber >= 10 &&
-                  r.attributes.metrics.employeeNumber < 50
+                  r.metrics &&
+                  r.metrics.employeeNumber >= 10 &&
+                  r.metrics.employeeNumber < 50
               )
               break
             case '50-150':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.employeeNumber >= 50 &&
-                  r.attributes.metrics.employeeNumber < 150
+                  r.metrics &&
+                  r.metrics.employeeNumber >= 50 &&
+                  r.metrics.employeeNumber < 150
               )
               break
             case '150-250':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.employeeNumber >= 150 &&
-                  r.attributes.metrics.employeeNumber < 250
+                  r.metrics &&
+                  r.metrics.employeeNumber >= 150 &&
+                  r.metrics.employeeNumber < 250
               )
               break
             case '>250':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics &&
-                  r.attributes.metrics.employeeNumber >= 250
+                  r.metrics &&
+                  r.metrics.employeeNumber >= 250
               )
               break
             case 'NOT-DEFINED':
               results = results.filter(
                 (r) =>
-                  r.attributes.metrics && !r.attributes.metrics.employeeNumber
+                  r.metrics && !r.metrics.employeeNumber
               )
               break
           }
@@ -498,8 +507,8 @@ export default {
         if (filters.certification) {
           results = results.filter(
             (r) =>
-              r.attributes.certifications &&
-              r.attributes.certifications[filters.certification] === true
+              r.certifications &&
+              r.certifications[filters.certification] === true
           )
         }
       }
@@ -507,27 +516,35 @@ export default {
     },
 
     mapResults(results) {
+      results = results.map(result => {
+        if (result.attributes) {
+          return result.attributes
+        }
+        return result
+      })
+
       const mappedResults = results.map((r) =>
         this.getResultDataObject(
           false,
           r.id,
-          r.attributes.name,
+          r.name,
           null,
           false,
-          r.attributes.companyLocation
-            ? Number(r.attributes.companyLocation.lat)
+          r.companyLocation
+            ? Number(r.companyLocation.lat)
             : 0,
-          r.attributes.companyLocation
-            ? Number(r.attributes.companyLocation.lng)
+          r.companyLocation
+            ? Number(r.companyLocation.lng)
             : 0,
-            r.attributes?.mainImage?.data?.attributes,
-            r.attributes?.companyDescription,
-            r.attributes?.companyAddressStreet?.city,
-            r.attributes?.specialization,
+            r?.mainImage,
+            r?.companyDescription,
+            r?.companyAddressStreet?.city,
+            r?.specialization,
         )
       )
-
-      mappedResults.sort((a, b) => a.name.localeCompare(b.name))
+      mappedResults.sort((a, b) => {
+        return a.name.localeCompare(b.name)
+      })
 
       return mappedResults
     },
@@ -579,7 +596,7 @@ export default {
 
       // count the number of companies that apply to each filter
       results.forEach((result) => {
-        const attr = result.attributes
+        const attr = result
 
         if (attr.specialization) {
           Object.keys(attr.specialization).forEach((key) => {
@@ -646,5 +663,24 @@ export default {
 
       return count
     },
+    isFilterVisible(filtername) {
+      if(this.getConfigProperty('hiddenFilters')) {
+        const hiddenFilters = this.getConfigProperty('hiddenFilters').split(",").map(filter => filter.trim())
+        if(filtername === 'advanced') {
+          return !(hiddenFilters.includes('turnover') && hiddenFilters.includes('employees') && hiddenFilters.includes('certifications'))
+        }
+        return !hiddenFilters.includes(filtername)
+      } else {
+        return true;
+      }
+    },
+    isSpecializationAreaVisible(areaName) {
+      if(this.getConfigProperty('visibleSpecializationAreas')) {
+        const visibleSpecializationAreas = this.getConfigProperty('visibleSpecializationAreas').split(",").map(filter => filter.trim().toLowerCase())
+        return visibleSpecializationAreas.includes(areaName.toLowerCase())
+      } else {
+        return true;
+      }
+    }
   }
 }

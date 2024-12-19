@@ -10,6 +10,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     :class="{
       disabled,
       fill: aspect === 'fill',
+      'external-background': externalBackground,
       'not-valid': !valid,
       'inverted-colorscheme': invertedColorscheme,
     }"
@@ -98,6 +99,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    externalBackground: {
+      type: Boolean,
+      default: false,
+    }
   },
 
   methods: {
@@ -146,6 +151,14 @@ export default {
       background-image: url(~assets/icon/search.svg?inline);
       background-position: calc(100% - 20px) center;
       background-size: 18px auto;
+    }
+  }
+
+  &.external-background {
+    @apply opacity-80;
+
+    & input {
+      @apply border-none;
     }
   }
 
