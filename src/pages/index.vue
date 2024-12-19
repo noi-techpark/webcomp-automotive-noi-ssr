@@ -198,7 +198,7 @@ export default {
     },
     showMapModal() {
       this.$modal.show(WebComponent,
-        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters},
+        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters, primaryColor: this.getConfigProperty('primaryColor')},
         {name: 'webcomponent', focusTrap: true, width: '90%', height:  this.isInLandscapeMode ? '90%' : '85%', transition: 'modal',},
       )
     },
