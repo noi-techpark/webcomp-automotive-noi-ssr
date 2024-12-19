@@ -9,13 +9,23 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <div class="right-header">
       <nuxt-link class="back-button" :class="{hidden: !showBackButton}" to="/">
         <Icon name="back-arrow" />
-        {{ $t('common.toAllCompanies')}}
+        <span class="back-button-text">{{ $t('common.toAllCompanies')}}</span>
       </nuxt-link>
-      <div class="lang-selector">
+      <div class="lang-selector" :class="{'hidden-on-mobile': showBackButton}">
         <Select
+          class="desktop"
           :aria-label="$t('common.languageSelector')"
           :value="$i18n.locale"
           :options="availableLanguages"
+          aspect="fill"
+          :white-contrast="false"
+          @input="changeLanguage"
+        />
+        <Select
+          class="mobile"
+          :aria-label="$t('common.languageSelector')"
+          :value="$i18n.locale"
+          :options="availableLanguagesShort"
           aspect="fill"
           :white-contrast="false"
           @input="changeLanguage"
@@ -65,6 +75,23 @@ export default {
         },
       ]
     },
+    availableLanguagesShort() {
+      return [
+        {
+          value: 'it',
+          name: 'IT',
+        },
+        {
+          value: 'de',
+          name: 'DE',
+        },
+        {
+          value: 'en',
+          name: 'EN',
+        },
+      ]
+    },
+
   },
   methods: {
     changeLanguage(lang) {
@@ -82,6 +109,8 @@ export default {
 .header {
   @apply fixed top-0 w-full bg-secondary z-20;
 
+  container-type: inline-size;
+  container-name: noi-automotive-header;
   max-width: 100vw;
 
   & .right-header {
@@ -117,6 +146,10 @@ export default {
       & .select .selector select {
         color: var(--primary-color);
       }
+
+      & .select.mobile {
+        display: none;
+      }
     }
   }
   & .logos-ct {
@@ -133,6 +166,33 @@ export default {
 
   & hr {
     border-top: 1px solid black;
+  }
+}
+@container noi-automotive-header (max-width: theme('screens.md')) {
+  .right-header {
+    & .back-button {
+      padding-left:  1rem !important;
+      padding-right: 0.8rem !important;
+
+      & .back-button-text {
+        display: none;
+      }
+    }
+
+    & .lang-selector {
+      width: 5rem !important;
+
+      &.hidden-on-mobile {
+        display: none;
+      }
+
+      & .select.desktop {
+        display: none;
+      }
+      & .select.mobile {
+        display: block !important;
+      }
+    }
   }
 }
 </style>
