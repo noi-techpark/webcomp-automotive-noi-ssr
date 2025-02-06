@@ -29,6 +29,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         />
         <Button v-if="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
       </div>
+      <div ref="searchBarOffsetBox" class="search-bar-offset-box"></div>
     </div>
     <div class="company-list">
       <aside v-show="isInLandscapeMode">
@@ -227,6 +228,15 @@ export default {
           searchBarStyle.height = newHeight + 'px'
         }
       }
+      if(this.$refs.searchBarOffsetBox) {
+        const newHeightOffsetBox = 50.0 * ((newHeight - 75.0) / 125.0)
+        const animation = this.$refs.searchBarOffsetBox.animate({height: newHeightOffsetBox + 'px'}, 500)
+        const searchBarOffsetBoxStyle = this.$refs.searchBarOffsetBox.style
+        animation.onfinish = function () {
+          animation.cancel()
+          searchBarOffsetBoxStyle.height = newHeightOffsetBox + 'px'
+        }
+      }
     }
   },
 }
@@ -256,6 +266,7 @@ export default {
     transform: translate(-50%, 0);
     z-index: 2;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 
@@ -280,6 +291,9 @@ export default {
           @apply flex-initial rounded-lg;
         }
       }
+    }
+    & .search-bar-offset-box {
+      height: 30px
     }
 
     & .filter-bt {
