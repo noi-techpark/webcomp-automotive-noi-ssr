@@ -43,7 +43,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </div>
       </nuxt-link>
     </div>
-    <hr />
   </header>
 </template>
 
@@ -109,6 +108,8 @@ export default {
 .header {
   @apply fixed top-0 w-full bg-secondary z-20;
 
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.25);
+
   container-type: inline-size;
   container-name: noi-automotive-header;
   max-width: 100vw;
@@ -162,10 +163,6 @@ export default {
         @apply h-full;
       }
     }
-  }
-
-  & hr {
-    border-top: 1px solid black;
   }
 }
 @container noi-automotive-header (max-width: theme('screens.md')) {
