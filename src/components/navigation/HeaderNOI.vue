@@ -7,11 +7,18 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <header class="header">
     <div class="right-header">
-      <nuxt-link class="back-button" :class="{hidden: !showBackButton}" to="/">
-        <Icon name="back-arrow" />
-        <span class="back-button-text">{{ $t('common.toAllCompanies')}}</span>
+      <nuxt-link
+        class="back-button"
+        :class="{ hidden: !showBackButton }"
+        to="/"
+      >
+        <Icon name="back-arrow2" />
+        <span class="back-button-text"> {{ $t('common.toAllCompanies') }}</span>
       </nuxt-link>
-      <div class="lang-selector" :class="{'hidden-on-mobile': showBackButton}">
+      <div
+        class="lang-selector"
+        :class="{ 'hidden-on-mobile': showBackButton }"
+      >
         <Select
           class="desktop"
           :aria-label="$t('common.languageSelector')"
@@ -55,7 +62,7 @@ export default {
     showBackButton: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   computed: {
     availableLanguages() {
@@ -90,7 +97,6 @@ export default {
         },
       ]
     },
-
   },
   methods: {
     changeLanguage(lang) {
@@ -120,7 +126,7 @@ export default {
     column-gap: 1rem;
 
     & .back-button {
-      @apply relative inline-block rounded-lg px-6 text-base select-none bg-secondary;
+      @apply relative inline-block rounded-lg  pl-4 pr-4 text-base select-none bg-secondary;
 
       line-height: 44px;
       color: var(--primary-color);
@@ -132,9 +138,7 @@ export default {
       }
 
       & svg {
-        @apply w-5 mr-1;
-
-        vertical-align: -10%;
+        @apply h-5 align-sub;
         fill: var(--primary-color) !important;
       }
     }
@@ -168,7 +172,7 @@ export default {
 @container noi-automotive-header (max-width: theme('screens.md')) {
   .right-header {
     & .back-button {
-      padding-left:  1rem !important;
+      padding-left: 1rem !important;
       padding-right: 0.8rem !important;
 
       & .back-button-text {
