@@ -79,7 +79,7 @@ export default {
       @apply flex flex-col justify-start p-4 pt-0.5 w-full;
 
       & h5 {
-        @apply mb-2 text-lg font-bold;
+        @apply mb-2 mt-3 text-2xl font-bold;
       }
 
       & .card-company-desc {
@@ -93,7 +93,7 @@ export default {
         align-items: end;
 
         & .card-company-city {
-          @apply text-xs;
+          @apply text-xs text-grey;
         }
 
         & .open-button {
