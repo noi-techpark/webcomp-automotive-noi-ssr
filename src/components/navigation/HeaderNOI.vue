@@ -124,7 +124,7 @@ export default {
       line-height: 44px;
       color: var(--primary-color);
 
-      border: 2px solid var(--primary-color);
+      border: 1px solid var(--primary-color);
 
       &.hidden {
         display: none;
@@ -141,7 +141,7 @@ export default {
     & .lang-selector {
       @apply w-32 rounded-lg;
 
-      border: 2px solid var(--primary-color);
+      border: 1px solid var(--primary-color);
 
       & .select .selector select {
         color: var(--primary-color);

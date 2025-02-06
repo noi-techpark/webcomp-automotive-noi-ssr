@@ -9,7 +9,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <h1 class="top-title"><Icon class="filter-icon" name="filter"/><b>{{ $t('common.filters') }}</b></h1>
     <div class="list">
       <div v-if="isFilterVisible('specializationArea')" class="category-filter">
-        <InputLabel :text="$t('filters.specialization')"/>
+        <InputLabel :text="$t('filters.specialization').toUpperCase()"/>
         <multiselect
           v-model="specializations"
           :options="specializationOptions"
@@ -32,7 +32,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         v-if="isFilterVisible('industrialSector')"
         v-model="filters.industrialSector"
         :label="$t('filters.industrialSector')"
-        :aria-label="'filter: ' + $t('filters.industrialSector')"
+        :aria-label="'filter: ' + $t('filters.industrialSector').toUpperCase()"
         aria-controls="actorsList"
         :options="industrialSectors"
         :filter-count="filterCount.industrialSectors"
@@ -45,7 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <Select
         v-if="isFilterVisible('valueChainPosition')"
         v-model="filters.valueChainPosition"
-        :label="$t('filters.valueChainPosition')"
+        :label="$t('filters.valueChainPosition').toUpperCase()"
         :aria-label="'filter: ' + $t('filters.valueChainPosition')"
         aria-controls="actorsList"
         :options="valueChainPositions"
@@ -59,7 +59,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <Select
         v-if="isFilterVisible('employees')"
         v-model="filters.employees"
-        :label="$t('filters.numberOfEmployees')"
+        :label="$t('filters.numberOfEmployees').toUpperCase()"
         :aria-label="'filter: ' + $t('filters.numberOfEmployees')"
         aria-controls="actorsList"
         :options="employees"
@@ -73,7 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <Select
         v-if="isFilterVisible('turnover')"
         v-model="filters.turnover"
-        :label="$t('filters.turnover')"
+        :label="$t('filters.turnover').toUpperCase()"
         :aria-label="'filter: ' + $t('filters.turnover')"
         aria-controls="actorsList"
         :options="turnovers"
@@ -87,7 +87,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <Select
         v-if="isFilterVisible('certifications')"
         v-model="filters.certification"
-        :label="$t('filters.certification')"
+        :label="$t('filters.certification').toUpperCase()"
         :aria-label="'filter: ' + $t('filters.certification')"
         aria-controls="actorsList"
         :options="certifications"
@@ -217,7 +217,7 @@ export default {
       & .selector {
         @apply py-1;
 
-        border: 2px solid var(--primary-color);
+        border: 1px solid var(--primary-color);
 
         & select {
           min-height: 32px;
@@ -246,7 +246,7 @@ export default {
 .multiselect {
   @apply rounded-lg bg-white;
 
-  border: 2px solid var(--primary-color);
+  border: 1px solid var(--primary-color);
   width: calc(100% - 4px);
 
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'><path d='m 3.562255,158.69404 3.6,-5.2 c 6.4,-9.1 18.9,-11.4 28.1,-5 l 214.699995,149.7 214.7,-149.6 c 9.1,-6.4 21.7,-4.1 28.1,5 l 3.6,5.2 c 6.4,9.1 4.1,21.7 -5,28.1 l -241.4,168.2 -241.399995,-168.3 c -9.10000002,-6.4 -11.3,-18.9 -5,-28.1 z' /></svg>");
@@ -272,7 +272,7 @@ export default {
 }
 
 .multiselect__content-wrapper {
-  border: 2px solid var(--primary-color);
+  border: 1px solid var(--primary-color);
 }
 
 .multiselect__option--highlight {
