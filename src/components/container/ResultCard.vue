@@ -65,7 +65,7 @@ export default {
 <style lang="postcss" scoped>
 .desktop {
   &.card {
-    @apply flex flex-row mx-6 mb-4 cursor-pointer select-none rounded-lg bg-secondary shadow;
+    @apply flex flex-row mx-6 mb-4 cursor-pointer select-none rounded-lg bg-white drop-shadow-xl;
 
     & .card-image {
       @apply m-2 rounded-2xl;
@@ -110,7 +110,7 @@ export default {
 .mobile {
 
   &.card {
-    @apply block m-4 rounded-lg bg-white shadow;
+    @apply block m-4 rounded-lg bg-white drop-shadow-xl;
 
     & .card-image {
       @apply m-2 rounded-2xl;

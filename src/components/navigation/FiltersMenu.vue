@@ -189,7 +189,7 @@ export default {
 <style>
 
 .filters-menu-website {
-  @apply relative bg-secondary drop-shadow-xl px-5 rounded-lg;
+  @apply relative bg-white drop-shadow-xl px-5 rounded-lg;
 
   z-index: 1;
 
