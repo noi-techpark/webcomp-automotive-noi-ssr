@@ -19,7 +19,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <InputLabel v-if="label" :text="label" :required="required" />
     <div class="selector">
       {{ prefix ? prefix : '' }}
-      <select :id="label" v-model="selected" :aria-label="ariaLabel || label" aria-controls="actorsList" :required="required" :class="{'placeholder': selected == ''}">
+      <select :id="label" v-model="selected" :aria-label="ariaLabel || label" aria-controls="actorsList" :required="required" :class="{'placeholder': selected == ''}" onchange="this.blur()">
         <option
           v-for="option in options"
           :key="option.value"
