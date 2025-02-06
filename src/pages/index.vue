@@ -266,7 +266,9 @@ export default {
     container-name: search-bar-ct;
 
     & .search-bar {
-      @apply h-12 flex;
+      @apply h-12 flex rounded-lg;
+
+      border: 2px solid white;
 
       max-width: calc(1300px * 0.4 - 3rem);
       width: calc(100% - 2 * theme('spacing.6'));

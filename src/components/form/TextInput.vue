@@ -13,6 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       'external-background': externalBackground,
       'not-valid': !valid,
       'inverted-colorscheme': invertedColorscheme,
+      searchbar: type === 'search'
     }"
   >
     <InputLabel v-if="label" :text="label" :required="required" />
@@ -132,7 +133,7 @@ export default {
 <style lang="postcss" scoped>
 .text-input {
   & input {
-    @apply text-base px-5 bg-input resize-none text-black font-medium;
+    @apply text-base px-5 bg-transparent resize-none text-black font-medium;
 
     width: 300px;
     padding-top: 10px;
@@ -141,17 +142,18 @@ export default {
     border-radius: 40px;
 
     &:focus {
-      @apply outline-none bg-input-focus;
+      @apply outline-none;
     }
+  }
 
-    &[type='search'] {
-      @apply bg-no-repeat;
+  &.searchbar {
+    @apply bg-no-repeat bg-input backdrop-blur;
+    background-color: rgba(242, 242, 242, 0.8);
 
-      padding-right: 50px;
-      background-image: url(~assets/icon/search.svg?inline);
-      background-position: calc(100% - 20px) center;
-      background-size: 18px auto;
-    }
+    padding-right: 50px;
+    background-image: url(~assets/icon/search.svg?inline);
+    background-position: calc(100% - 20px) center;
+    background-size: 18px auto;
   }
 
   &.external-background {
