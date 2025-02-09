@@ -103,7 +103,7 @@ export default {
   & .right-column {
     @apply w-full;
 
-    height: calc(100vh - 100px);
+    height: 100vh;
 
     container-type: inline-size;
     container-name: noi-automotive-component-view;

@@ -737,7 +737,8 @@ export default {
   }
 
   & .filters-menu {
-    @apply absolute top-0 bottom-0 bg-secondary px-5 drop-shadow-xl transition duration-300;
+    @apply absolute top-0 bottom-0 bg-secondary px-5 transition duration-300;
+    filter: drop-shadow(0 9px 7px rgba(0, 0, 0, 0.1));
 
     z-index: 1;
 

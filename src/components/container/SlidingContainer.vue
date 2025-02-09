@@ -33,7 +33,7 @@ export default {
   & .content {
     @apply relative h-full mr-auto ml-auto;
 
-    max-width: 1200px;
+    max-height: max(100vh, 1200px);
   }
 
   &.visible {

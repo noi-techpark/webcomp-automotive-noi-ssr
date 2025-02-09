@@ -312,7 +312,8 @@ export default {
 
 <style lang="postcss" scoped>
 .company-view {
-  @apply h-full overflow-y-auto;
+  @apply overflow-y-auto flex flex-col justify-between;
+  height: 100vh;
 
   & .close {
     @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
@@ -332,7 +333,11 @@ export default {
   }
 
   & .data-view {
-    @apply px-8 py-8;
+    @apply px-8 bg-secondary;
+
+    padding-top: 2rem;
+    padding-left: max(2rem, calc(50vw - 600px + 2rem));
+    padding-right: max(2rem, calc(50vw - 600px + 2rem));
 
     & .header-profile {
       @apply flex flex-row;
@@ -426,10 +431,9 @@ export default {
   }
 
   & .footer-ct {
-    position: absolute;
     width: 100vw;
-    bottom: 0;
-    left: min(1px, calc(-0.5 * (100vw - 1200px)));
+    margin-left: auto;
+    margin-right: auto;
     background-color: #ededed;
 
     & .footer {
@@ -462,7 +466,6 @@ export default {
 @container noi-automotive-component-view (max-width: theme('screens.md')) {
   .company-view {
     & .data-view {
-      padding-bottom: 400px;
 
       & .header-profile {
         & h1 {
@@ -484,10 +487,8 @@ export default {
     }
 
     & .footer-ct {
-      position: absolute;
       width: 100vw;
-      bottom: 0;
-      left: min(1px, calc(-0.5 * (100vw - 1200px)));
+      margin-left: min(1px, calc(-0.5 * (100vw - 1200px)));
       background-color: #ededed;
 
       & .footer {

@@ -147,7 +147,8 @@ export default {
   }
 
   &.searchbar {
-    @apply bg-no-repeat bg-input backdrop-blur;
+    @apply bg-no-repeat bg-input;
+    backdrop-filter: blur(8px);
     background-color: rgba(242, 242, 242, 0.8);
 
     padding-right: 50px;

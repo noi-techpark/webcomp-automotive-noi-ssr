@@ -326,7 +326,8 @@ export default {
         }
 
         & .map-ct {
-          @apply bg-secondary drop-shadow-xl cursor-pointer;
+          @apply bg-secondary cursor-pointer;
+          filter: drop-shadow(0 9px 7px rgba(0, 0, 0, 0.1));
 
           height: 240px;
           width: 100%;
