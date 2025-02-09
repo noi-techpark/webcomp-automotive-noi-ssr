@@ -67,7 +67,7 @@ export default {
   data() {
     return {
       companyName: '',
-      TITLE_END: 'NOI Automotive Automation',
+      TITLE_END: ' - NOI Automotive Automation',
     }
   },
   head() {
