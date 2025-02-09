@@ -429,7 +429,7 @@ export default {
     position: absolute;
     width: 100vw;
     bottom: 0;
-    left: min(0px, calc(-0.5 * (100vw - 1200px)));
+    left: min(1px, calc(-0.5 * (100vw - 1200px)));
     background-color: #ededed;
 
     & .footer {
@@ -487,7 +487,7 @@ export default {
       position: absolute;
       width: 100vw;
       bottom: 0;
-      left: min(0px, calc(-0.5 * (100vw - 1200px)));
+      left: min(1px, calc(-0.5 * (100vw - 1200px)));
       background-color: #ededed;
 
       & .footer {
