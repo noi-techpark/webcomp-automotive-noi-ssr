@@ -39,17 +39,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         />
       </div>
     </div>
-    <nuxt-link
-      v-show="showBackToHomepage"
-      class="back-to-hompepage-button"
-      :to="'/' + $i18n.locale"
-    >
-      <Button
-        icon="back-arrow"
-        :value="$t('common.backToHomepage')"
-        type="primary"
-      ></Button>
-    </nuxt-link>
     <div class="logos-ct">
       <nuxt-link class="logo clickable" to="/" aria-label="NOI Logo">
         <div v-if="!getConfigProperty('headerLogoUrl')">
@@ -107,9 +96,6 @@ export default {
           name: 'EN',
         },
       ]
-    },
-    showBackToHomepage() {
-      return !['/', '/en', '/de', '/it'].includes(this.$route.path)
     },
   },
   methods: {
@@ -171,11 +157,6 @@ export default {
       }
     }
   }
-
-  & .back-to-hompepage-button {
-    @apply absolute top-6 right-20;
-  }
-
   & .logos-ct {
     height: 100px;
 
@@ -184,12 +165,6 @@ export default {
 
       & svg {
         @apply h-full;
-      }
-      & .noi-navigator {
-        display: inline;
-        margin-left: 0.5rem;
-        font-size: 40px;
-        vertical-align: middle;
       }
     }
   }
@@ -219,20 +194,6 @@ export default {
         display: block !important;
       }
     }
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .noi-automotive {
-    display: none;
-  }
-  .noi-navigator {
-    display: none;
-  }
-}
-@media screen and (max-width: 780px) {
-  .noi-navigator {
-    display: none !important;
   }
 }
 </style>

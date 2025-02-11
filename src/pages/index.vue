@@ -26,7 +26,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @input="delaySearch"
         />
         <Button
-          v-show="!isInLandscapeMode"
+          v-if="!isInLandscapeMode"
           icon="filter"
           class="filter-bt"
           @click="showFilterModal"
@@ -104,7 +104,6 @@ export default {
           agriAutomation: false,
         },
       },
-      visibleResultsDelayed: [],
       filteredCompanies: [],
       searchValue: '',
       searchValueDelayed: '',
@@ -190,13 +189,11 @@ export default {
     }
 
     this.$root.$on('set-filters', this.setFilters)
-    this.$root.$on('set-search-value', this.setSearchValue)
   },
   methods: {
     async fetchResults() {
       this.fetchedData = await this.fetchAllCompanies()
       this.loading = false
-      this.visibleResultsDelayed = this.mappedResults
     },
     toggleAdvancedFiltersVisibility() {
       this.areAdvancedFiltersVisible = !this.areAdvancedFiltersVisible
@@ -207,25 +204,12 @@ export default {
     },
     doneTyping() {
       this.searchValueDelayed = this.searchValue
-      this.visibleResultsDelayed = this.mappedResults
     },
     setFilters(newFilters) {
       this.filters = newFilters
-      this.activeFilters = newFilters
-      this.visibleResultsDelayed = this.mappedResults
     },
     resetFilters() {
-      this.setFilters({
-        specializations: {
-          automotiveAndMobility: false,
-          manufacturing: false,
-          agriAutomation: false,
-        },
-      })
-    },
-    setSearchValue(newValue) {
-      this.searchValue = newValue
-      this.searchValueDelayed = newValue
+      this.filters = {}
     },
     showMapModal() {
       this.$modal.show(
@@ -361,8 +345,7 @@ export default {
   }
 
   & .company-list {
-    @apply relative flex mx-auto;
-    height: auto;
+    @apply relative flex h-fit mx-auto;
 
     max-width: 1300px;
     top: calc(

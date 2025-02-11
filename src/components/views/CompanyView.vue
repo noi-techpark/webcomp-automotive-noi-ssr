@@ -215,13 +215,6 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       </div>
     </SlidingContainer>
     <!-- Added style="visbility:hidden", because for some reason. The <vue-html2pdf></vue-html2pdf> was visible. Download Still works-->
-    <PdfExporter
-      ref="pdfExporter"
-      style="visibility: hidden"
-      :export-name="data.attributes.name"
-      :companies="[data]"
-      :automatic-download="false"
-    />
     <client-only>
       <PdfExporter
         ref="pdfExporter"
@@ -317,16 +310,6 @@ export default {
   @apply overflow-y-auto flex flex-col justify-between;
   height: 100vh;
 
-  /**
-   * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
-   * but some linters still warn about it.
-   *
-   * browser-compatibility: https://developer.mozilla.org/en-US/docs/Web/CSS/@container#browser_compatibility
-   * stylelint 14.12.0: https://github.com/stylelint/stylelint/releases/tag/14.12.0
-   */
-  container-type: inline-size;
-  container-name: noi-automotive-company-view;
-
   & .close {
     @apply absolute top-3 right-3 w-8 h-8 bg-white cursor-pointer;
 
@@ -370,7 +353,7 @@ export default {
     }
 
     & .top-overview {
-      @apply flex my-6 space-x-6;
+      @apply flex flex-row my-6 space-x-6;
 
       & .col {
         width: 50%;
@@ -378,11 +361,8 @@ export default {
         & .image {
           @apply bg-white bg-cover bg-center object-contain;
 
-          max-height: 270px;
+          height: 270px;
           mix-blend-mode: multiply;
-          object-fit: contain;
-          object-position: top;
-
         }
 
         & .top-desc {
@@ -482,21 +462,24 @@ export default {
 @container noi-automotive-component-view (max-width: theme('screens.md')) {
   .company-view {
     & .data-view {
-
       & .header-profile {
         & h1 {
           @apply mt-12;
         }
       }
 
-@container noi-automotive-company-view (max-width: 600px) {
-  .header-profile {
-    & .logo {
-      height: 100px !important;
+      & .top-overview {
+        @apply flex-col space-x-0;
+
+        & .col {
+          @apply w-auto;
+
+          & .top-desc {
+            @apply h-auto mb-8;
+          }
+        }
+      }
     }
-  }
-  .top-overview {
-    @apply flex-col space-x-0;
 
     & .footer-ct {
       width: 100vw;
