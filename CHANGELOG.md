@@ -2,6 +2,60 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.3.0](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.2.6...v2.3.0) (2025-02-11)
+
+
+### Features
+
+* added a downward arrow in dropdown boxes ([9c88e56](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/9c88e560a490bbfc79043731e77b80aa55f423b2))
+* added arrow icon to ResultCard ([7d78a70](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/7d78a709047824f10a33dd94d5f2d1edf7fa4a10))
+* added toAllCompanies Button ([0740228](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/07402280ff13a3bf9442211528f26cc8b8f252a6))
+* adjusted filtersmenu to new design ([37373ce](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/37373ceeb8a8ad8921daef30007becd35904c059))
+* adjusted to Strapi v5 ([fd9c0a9](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/fd9c0a9163549af8a6e703ec51a67db29620d3d2))
+* filters can now be hidden via env variables ([b9b411c](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/b9b411cb20519df563765a2f1d450acfb49c6d37))
+* hide some header stuff on mobile ([b1fbf3a](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/b1fbf3ad1b9708bfc866e6764ec4991d9b4f2e48))
+* logo can now be changed via env variable ([f26777d](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/f26777da650d6df317c2e4c7a37fcda3565770c5))
+* moved searchbar 50px higher ([9854e7c](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/9854e7ca42bb5ae33275c05e605016a6ddd61061))
+* moved searchbar to the middle;removed border ([7e1db20](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/7e1db20c0572f8a30273346ac32e052b211ed55f))
+* prepared for x-companies-setup ([d855377](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/d85537729b18d84118dc5aa0dad985c584d641fe))
+* primary color can now be changed via env variable ([e659b8c](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/e659b8c561435d854d31297f0ebdcd4ad2365ccf))
+* searchbar background image can now be changed via env variable ([55ebfb4](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/55ebfb46b93c24c0cd80669be5e0ea937b6df5d4))
+* united all config stuff into its own object ([e1aea37](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/e1aea37701fb634c724cf8fbe5307afb125d2623))
+* updated README with the envvars ([66bd175](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/66bd17548ea52f4adfaa994bc0302f190032d89a))
+* visible specialization areas are now customizable via env variable ([88fe3de](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/88fe3deb9689b704cf5ee0058b943e6dfe70c812))
+* webpack version now also supports the new config stuff ([474bf8a](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/474bf8afd984a9e6f098583ce784f4dbcecae03c))
+
+
+### Bug Fixes
+
+* add more failsafes for missing data ([98c388b](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/98c388bc1bdb9fba74e2ed97f131d1738303a070))
+* adjusted filterMenu and ResultCard background and shadow ([3336d19](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/3336d195907f541e3943392ddf80fa58e6462ffe))
+* Adjusted from endpoint `published-xxx-companies` to `xxx-companies` ([d4269a1](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/d4269a122d27c1fa49ee49b27df7eb91b5e49b74))
+* adjusted Resultcard to be more cohesive across companies ([d14757b](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/d14757b94cde3a1d5678f24ba4d7cb4c34936946))
+* adjusted select border width ([63ba2fa](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/63ba2fad4b24907ee64ddcc39ea0801ce248ce50))
+* bigger Company name and location in grey ([487fe53](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/487fe531ec2385c153b4a1009e7d395626f31caa))
+* config now also initializes in actor profiles ([ac6aef6](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/ac6aef6ca384cf374d45fb6faa9bead615b3a087))
+* correct merge ([7cf88d3](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/7cf88d3fff4d9c13327dc42a349ca717732428f8))
+* downward arrow now points upwards when focused ([4485184](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/448518409229414259fe343215b0a3f80c0771cb))
+* footer css ([7f944e4](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/7f944e47339eb1f497f5774a781532dd134bd214))
+* forgot to adjust specific company profiles ([9bd782f](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/9bd782f7c248c8bcd8fba48fb8686a49aa459943))
+* images should preserve their aspect ratio ([0ec0f5d](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/0ec0f5de349335b01c75ffb2dfe6d125bc51e6c1))
+* language selector being out of bounds for small devices ([9dd2824](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/9dd2824babc6ab89939b431b3a62b698353220cc))
+* links to profiles now contain the users language ([6517f39](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/6517f39218a64aeb0f81832a22b220e1e6cbd2be))
+* made searchbar more prominent ([6900575](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/6900575b9bea8768cf9fb01101d0e0cc60a07c59))
+* Map doesn't throw error anymore, when there are no companies ([5da0fc6](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/5da0fc6a2d70acff581aa7befcf6a79e03aef861))
+* missing hyphen in title ([8804797](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/880479750b7e9bc1ccf55d64ff2b5066cbfb6c8b))
+* more adjustments for footer ([1eec2e9](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/1eec2e9037427497f63b48b455b8cda9db634cff))
+* multiple css fixes for footer and header ([11a685c](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/11a685c71daaa2e5c1603c7b1dca410ee6bd8692))
+* remove focus after an element got selected ([fe9aea6](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/fe9aea6b74089b0b8fa7487d38113861382fa305))
+* replaced back-arrow with better one ([fffcaae](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/fffcaaed613d774331ab8939c2cbf92e445dd9c4))
+* replaced header border with shadow ([d2e3965](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/d2e3965e4b139251a1a8429b4707513ef218cc83))
+* some css was only working when using nuxt dev but not with nuxt start ([6c6a7f2](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/6c6a7f24b6459739c42bc3422173670ec123595d))
+* stop filter-bt from being in new line ([fd1afc5](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/fd1afc5476a920886eca8319f0f8b4b7c129f8e6))
+* stop primary color from being overwritten ([81b34d7](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/81b34d7cb916daf7df1fbbc32f54938bf0bd978f))
+* when building `0px` got optimized to `0`, which resulted in an invalid property ([7d9eca5](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/7d9eca5259df221f8a014fb37de2b488a2616b42))
+* white border only around searchbar ([b55a0d0](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/b55a0d00026c235f2ecb94e6d8827034321076fd))
+
 ### [2.2.6](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.2.5...v2.2.6) (2024-09-19)
 
 ### [2.2.5](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.2.4...v2.2.5) (2024-08-16)
