@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
   <div ref="actorProfile" class="actor-profile" style="height: 100vh; overflow: hidden">
-    <HeaderNOI />
+    <HeaderNOI show-back-button />
     <company-view
       v-if="companyData"
       :data="companyData"
@@ -25,13 +25,25 @@ import utils from '~/mixins/utils.js'
 export default {
   mixins: [utils],
 
-  async asyncData({ params, i18n }) {
+  async asyncData({ params, i18n, $config: { apiEndpoint, apiCompaniesPath, network }}) {
     let fetchedCompany;
     if(params.name) {
+      let apiUrl = ''
+      if (apiEndpoint) {
+        apiUrl += apiEndpoint
+      } else {
+        apiUrl += utils.methods.getConfigProperty('apiEndpoint')
+      }
+      if (apiCompaniesPath) {
+        apiUrl += apiCompaniesPath
+      } else if (network) {
+        apiUrl += '/api/' + network + '-companies'
+      } else {
+        apiUrl += utils.methods.getConfigProperty('apiCompaniesPath')
+      }
       /* eslint-disable  */
       const response = await fetch(
-        'https://bk.opendatahub.com' +
-          '/api/companies' +
+          apiUrl +
           '?locale=' +
           i18n.locale +
           '&populate=*' +
@@ -44,15 +56,18 @@ export default {
       })
       /* eslint-enable */
       fetchedCompany = await response.json()
+      if(fetchedCompany.attributes) {
+        fetchedCompany = fetchedCompany.attributes
+      }
     }
 
-    return { companyData: fetchedCompany?.data[0] }
+    return { companyData: utils.methods.mapCompaniesResult(fetchedCompany, i18n.locale)[0] }
   },
 
   data() {
     return {
-      TITLE_END: 'NOI Automotive Automation',
-      primaryColor: '#0000ff'
+      companyName: '',
+      TITLE_END: ' - NOI Automotive Automation',
     }
   },
   head() {
@@ -62,7 +77,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.truncate(this.removeUnnecessaryNewlines(this.companyData?.attributes?.productsAndServices), 160, true),
+          content: this.truncate(this.removeUnnecessaryNewlines(this.companyData?.productsAndServices || this.companyData?.attributes?.productsAndServices), 160, true),
         },
       ],
     }
@@ -70,14 +85,15 @@ export default {
   computed: {
     tabTitle() {
       return (
-        (this.$route.params.name ? this.$route.params.name + ' - ' : '') +
-        this.TITLE_END
+        this.companyName + this.TITLE_END
       )
     },
   },
   mounted() {
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.primaryColor);
+    this.initConfigPropertiesFromEnvvars();
+    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.getConfigProperty('primaryColor'));
+    this.companyName = this.companyData.name
   },
 }
 </script>
@@ -87,10 +103,15 @@ export default {
   & .right-column {
     @apply w-full;
 
+    height: 100vh;
+
+    container-type: inline-size;
+    container-name: noi-automotive-component-view;
+
+
     top: 100px !important;
   }
   & .container {
-    @apply !h-fit;
 
     & .company-view {
       overflow-y: inherit;
@@ -98,6 +119,13 @@ export default {
   }
   & .no-results-notice {
     @apply mx-6 text-base text-grey my-6;
+  }
+}
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
+  & .right-column {
+    & .container {
+      height: fit-content;
+    }
   }
 }
 </style>

@@ -7,24 +7,36 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <template>
   <div ref="homepage" class="homepage">
     <HeaderNOI />
-    <div ref="searchBar" class="search-bar-ct" role=search>
+    <div
+      ref="searchBar"
+      class="search-bar-ct"
+      role="search"
+      :style="{
+        backgroundImage:
+          'url(' +
+          getConfigProperty('searchbarBackground') +
+          ')',
+      }"
+    >
       <div class="search-bar">
         <TextInput
           v-model="searchValue"
           :placeholder="$t('filters.searchPlaceholder')"
           type="search"
           aspect="fill"
+          external-background
           @input="delaySearch"
         />
         <Button v-if="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
       </div>
+      <div ref="searchBarOffsetBox" class="search-bar-offset-box"></div>
     </div>
     <div class="company-list">
       <aside v-show="isInLandscapeMode">
         <div class="map-col">
           <!--
           <div class="top-desc">
-            TODO: add here optional top description 
+            TODO: add here optional top description
           </div>
           -->
           <div class="map-ct clickable" data-not-lazy @click="showMapModal">
@@ -41,13 +53,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </client-only>
           </div>
         </div>
-        <FiltersMenu 
+        <FiltersMenu
           :initial-filters="filters"
           :filter-count="filterCount"
         />
       </aside>
       <main>
-        <ResultList 
+        <ResultList
           :result-list="visibleResults"
           :max-description-length="175"
           :card-type="isInLandscapeMode ? 'desktop' : 'mobile'"
@@ -94,7 +106,6 @@ export default {
       filteredCompanies: [],
       searchValue: '',
       searchValueDelayed: '',
-      primaryColor: '#0000ff'
     }
   },
   head() {
@@ -112,7 +123,7 @@ export default {
     filteredResults() {
       let results = []
 
-      if (this.fetchedData) {
+      if (this.fetchedData.length > 0) {
         // call filterResults from mixin 'filters'
         results = this.filterResults(this.fetchedData, this.filters, this.searchValueDelayed, this.filters.specializations, 'and')
       }
@@ -132,11 +143,14 @@ export default {
       return this.countFilters(this.filteredResults)
     },
   },
+  created() {
+    this.initConfigPropertiesFromEnvvars()
+  },
   mounted() {
     this.fetchResults()
 
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.homepage, this.primaryColor);
+    this.setStandardGlobalCSSVariables(this.$refs.homepage, this.getConfigProperty('primaryColor'));
 
     window.addEventListener('scroll', this.adjustHeaderHeight)
     window.addEventListener('touchmove', this.adjustHeaderHeight)
@@ -184,20 +198,20 @@ export default {
       this.filters = {}
     },
     showMapModal() {
-      this.$modal.show(WebComponent, 
-        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters},
+      this.$modal.show(WebComponent,
+        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters, primaryColor: this.getConfigProperty('primaryColor')},
         {name: 'webcomponent', focusTrap: true, width: '90%', height:  this.isInLandscapeMode ? '90%' : '85%', transition: 'modal',},
       )
     },
     showFilterModal() {
-      this.$modal.show(FiltersMenu, 
+      this.$modal.show(FiltersMenu,
         { initialFilters: this.filters, filterCount: this.filterCount },
-        { name: 'filtersmenu', 
-          focusTrap: true, 
-          width: '95%', 
-          height:  'auto', 
+        { name: 'filtersmenu',
+          focusTrap: true,
+          width: '95%',
+          height:  'auto',
           shiftY: 0.25,
-          styles: 'background-color: ' +  twConfig.theme.colors.secondary + ';' + 
+          styles: 'background-color: ' +  twConfig.theme.colors.secondary + ';' +
                   'border-radius: ' + twConfig.theme.borderRadius.lg + ';',
           transition: 'modal',
         },
@@ -208,10 +222,19 @@ export default {
       const newHeight = ((200 - scrollTop > 75) ? (200 - scrollTop) : 75)
       if(this.$refs.searchBar) {
         const animation = this.$refs.searchBar.animate({height: newHeight + 'px'}, 500)
-        const searchBarStyle = this.$refs.searchBar.style 
+        const searchBarStyle = this.$refs.searchBar.style
         animation.onfinish = function () {
           animation.cancel()
           searchBarStyle.height = newHeight + 'px'
+        }
+      }
+      if(this.$refs.searchBarOffsetBox) {
+        const newHeightOffsetBox = 50.0 * ((newHeight - 75.0) / 125.0)
+        const animation = this.$refs.searchBarOffsetBox.animate({height: newHeightOffsetBox + 'px'}, 500)
+        const searchBarOffsetBoxStyle = this.$refs.searchBarOffsetBox.style
+        animation.onfinish = function () {
+          animation.cancel()
+          searchBarOffsetBoxStyle.height = newHeightOffsetBox + 'px'
         }
       }
     }
@@ -242,8 +265,11 @@ export default {
     left: 50%;
     transform: translate(-50%, 0);
     z-index: 2;
-    
-    background-image: url('https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg');
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
     background-position: center;
     background-size: cover;
 
@@ -251,15 +277,24 @@ export default {
     container-name: search-bar-ct;
 
     & .search-bar {
-      @apply absolute flex items-center justify-between mx-6 h-12;
+      @apply h-12 flex;
 
-      max-width: calc(1300px * 0.3);
+      max-width: calc(1300px * 0.4 - 3rem);
       width: calc(100% - 2 * theme('spacing.6'));
-      top: calc(50% - ((theme('spacing.12') + 4px) / 2));
 
-      & input {
-        @apply flex-initial rounded-lg;
+      & .text-input {
+        @apply w-full rounded-lg;
+
+        border: 2px solid white;
+
+
+        & input {
+          @apply flex-initial rounded-lg;
+        }
       }
+    }
+    & .search-bar-offset-box {
+      height: 30px
     }
 
     & .filter-bt {
@@ -283,7 +318,7 @@ export default {
 
       & .map-col {
         @apply mb-6;
-        
+
         & .top-desc {
           @apply flex items-center text-sm text-grey font-light;
 
@@ -291,7 +326,8 @@ export default {
         }
 
         & .map-ct {
-          @apply bg-secondary drop-shadow-xl cursor-pointer;
+          @apply bg-secondary cursor-pointer;
+          filter: drop-shadow(0 9px 7px rgba(0, 0, 0, 0.1));
 
           height: 240px;
           width: 100%;

@@ -195,6 +195,12 @@ const config = {
   publicRuntimeConfig: {
     apiEndpoint: process.env.API_ENDPOINT,
     apiCompaniesPath: process.env.API_COMPANIES_PATH,
+    network: process.env.NETWORK,
+    headerLogoUrl: process.env.HEADER_LOGO_URL,
+    searchbarBackground: process.env.SEARCHBAR_BACKGROUND,
+    primaryColor: process.env.PRIMARY_COLOR,
+    hiddenFilters: process.env.HIDDEN_FILTERS,
+    visibleSpecializationAreas: process.env.VISIBLE_SPECIALIZATION_AREAS,
   },
 
   router: {

@@ -68,12 +68,10 @@ setup({
 
 export default {
   i18n: vueI18n,
-  mixins: [ utils ],
+  mixins: [ utils, ],
 
   provide() {
     return {
-      // Provide primary-color for Map.vue
-      'primary-color': this.primaryColor,
       'tailwind-config': twConfig,
     }
   },
@@ -123,7 +121,9 @@ export default {
     },
     primaryColor: {
       type: String,
-      default: "#0000ff",
+      default() {
+        return '#0000ff'
+      },
       Validator(value) {
         return /^#[0-9A-F]{6}$/i.test(value) || /^#([0-9A-F]{3}){1,2}$/i.test(value);
       }
@@ -139,7 +139,35 @@ export default {
     showHomeView: {
       type: Boolean,
       default: true,
-    }
+    },
+    apiEndpoint: {
+      type: String,
+      default: ''
+    },
+    apiCompaniesPath: {
+      type: String,
+      default: ''
+    },
+    network: {
+      type: String,
+      default: ''
+    },
+    headerLogoUrl: {
+      type: String,
+      default: ''
+    },
+    searchbarBackground: {
+      type: String,
+      default: ''
+    },
+    hiddenFilters: {
+      type: String,
+      default: ''
+    },
+    visibleSpecializationAreas: {
+      type: String,
+      default: ''
+    },
 
   },
 
@@ -170,7 +198,7 @@ export default {
     visibleCategoriesAsArray() {
       if(this.visibleCategories.split(',')[0] === '')
         return undefined;
-      else { 
+      else {
         return this.visibleCategories.split(',').map(category => category.trim());
       }
     }
@@ -193,6 +221,48 @@ export default {
   },
 
   created() {
+    // set univesal config
+    if (this.$config?.primaryColor) {
+      this.initConfigPropertiesFromEnvvars();
+    }
+    this.setConfigProperty('primaryColor', this.primaryColor)
+    if (this.apiEndpoint !== '') {
+      this.setConfigProperty('apiEndpoint', this.apiEndpoint)
+    }
+    if (this.apiCompaniesPath !== '') {
+      this.setConfigProperty('apiCompaniesPath', this.apiCompaniesPath)
+    }
+    if (this.network !== '') {
+      this.setConfigProperty('network', this.network)
+    }
+    if (this.headerLogoUrl !== '') {
+      this.setConfigProperty('headerLogoUrl', this.headerLogoUrl)
+    }
+    if (this.searchbarBackground !== '') {
+      this.setConfigProperty('searchbarBackground', this.searchbarBackground)
+    }
+    if (this.hiddenFilters !== '') {
+      this.setConfigProperty('hiddenFilters', this.hiddenFilters)
+    }
+    if (this.visibleSpecializationAreas !== '') {
+      this.setConfigProperty('visibleSpecializationAreas', this.visibleSpecializationAreas)
+    }
+    if(this.primaryColor === undefined || this.headerLogoUrl === undefined || this.searchbarBackground === undefined)
+    this.fetchSetup().then(setup => {
+      if(this.primaryColor === undefined || this.primaryColor === '') {
+        this.setConfigProperty('primaryColor', setup.primaryColor)
+      }
+      if(this.headerLogoUrl === undefined || this.headerLogoUrl === '') {
+        this.setConfigProperty('headerLogoUrl', setup.headerLogoUrl)
+      }
+      if(this.searchbarBackground === undefined || this.searchbarBackground === '') {
+        this.setConfigProperty('searchbarBackground', setup.searchbarBackground)
+      }
+    })
+    .catch(err => console.log(err))
+
+
+
     if (this.language) {
       if (this.$i18n.locale !== this.language) {
         if (typeof this.$i18n.setLocale !== 'undefined') {
@@ -213,8 +283,8 @@ export default {
     this.$refs.componentView.style.height = this.height;
 
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.primaryColor);
-    
+    this.setStandardGlobalCSSVariables(this.$refs.componentView, this.getConfigProperty('primaryColor'));
+
     if (this.displayAsWebsite && this.$route?.params?.companyName) {
       this.requestedCompanyDisplay = this.$route.params.companyName
     }
@@ -245,8 +315,8 @@ export default {
 
     showCompany(companyData) {
       this.visibleCompanyData = companyData
-      this.historyPush('/companies/' + companyData.attributes.name)
-      this.$emit('changeTitle', companyData.attributes.name)
+      this.historyPush('/companies/' + companyData.attributes?.name || companyData.name)
+      this.$emit('changeTitle', companyData.attributesu?.name || companyData.name)
     },
 
     hideCompany() {
@@ -290,7 +360,7 @@ export default {
       // explicitly require a boolean value,
       if (isLoading === true || isLoading === false)
         this.loading = isLoading
-      else 
+      else
         this.loading = !this.loading
     },
     setFilterMenuWidth(value) {
@@ -306,9 +376,9 @@ export default {
 
 .component-view {
   @apply relative overflow-hidden w-full h-full;
-  
+
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
-  
+
   /**
    * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
    * but some linters still warn about it.
