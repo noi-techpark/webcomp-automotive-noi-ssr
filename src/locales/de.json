@@ -1,7 +1,7 @@
 {
   "common": {
     "backToCategories": "Zurück",
-    "backToHomepage": "Zur Homepage",
+    "toAllCompanies": "Zu allen Unternehmen",
     "allCategories": "Alle Spezialisierungsfelder",
     "filters": "Filter",
     "automotive": "Automotive",
@@ -45,7 +45,6 @@
     "certification": "Zertifizierung",
     "specialization": "Spezialisierungsfeld",
     "resetFilters": "Filter zurücksetzen",
-    "applyFilters": "Filter anwenden",
     "automotiveTechnology": "Automobiltechnik",
     "machineryAndPlantConstruction": "Maschinen und Anlagebau",
     "electronicsElectricalEngineering": "Elektronik / Elektrotechnik",

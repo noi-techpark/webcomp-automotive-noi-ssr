@@ -18,11 +18,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         />
       </div>
       <div class="logos-ct">
-        <div class="logo clickable" @click="backToCategories">
-          <Icon name="logo" />
+        <div v-if="!getConfigProperty('headerLogoUrl').headerLogoUrl">
+          <Icon name="logo" alt="NOI Logo" />
+          <Icon name="logo-automotive" alt="NOI Automotive Automation Logo" />
         </div>
-        <div class="logo clickable" @click="backToCategories">
-          <Icon name="logo-automotive" />
+        <div v-else>
+          <img :src="getConfigProperty('headerLogoUrl')" alt="LOGO" />
         </div>
       </div>
       <hr />
@@ -72,7 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           @click="showResult(resultItem)"
         >
           <div v-if="resultItem.isMainCategory" class="mainCategory">
-            <div class="result clickable">
+            <div v-if="isSpecializationAreaVisible(resultItem.name)" class="result clickable">
               <div class="name">
                 {{
                   resultItem.name + ' (' + filterCount.categories[resultItem.id.replace(CATEGORY_PREFIX, '')] + ')' || ''
@@ -101,6 +102,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <div class="top-title">{{ $t('common.filters') }}</div>
       <div class="list">
         <Select
+          v-if="isFilterVisible('industrialSector')"
           v-model="filters.industrialSector"
           :label="$t('filters.industrialSector')"
           :options="industrialSectors"
@@ -110,6 +112,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           class="select"
         />
         <Select
+          v-if="isFilterVisible('valueChainPosition')"
           v-model="filters.valueChainPosition"
           :label="$t('filters.valueChainPosition')"
           :options="valueChainPositions"
@@ -119,6 +122,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           class="select"
         />
         <div
+          v-if="isFilterVisible('advanced')"
           class="advanced-filters-bt"
           @click="toggleAdvancedFiltersVisibility"
         >
@@ -133,6 +137,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           :class="{ visible: areAdvancedFiltersVisible }"
         >
           <Select
+            v-if="isFilterVisible('turnover')"
             v-model="filters.turnover"
             :label="$t('filters.turnover')"
             :options="turnovers"
@@ -142,6 +147,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             class="select"
           />
           <Select
+            v-if="isFilterVisible('employees')"
             v-model="filters.employees"
             :label="$t('filters.numberOfEmployees')"
             :options="employees"
@@ -151,6 +157,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             class="select"
           />
           <Select
+            v-if="isFilterVisible('certifications')"
             v-model="filters.certification"
             :label="$t('filters.certification')"
             :options="certifications"
@@ -753,7 +760,8 @@ export default {
   }
 
   & .filters-menu {
-    @apply absolute top-0 bottom-0 bg-secondary px-5 drop-shadow-xl transition duration-300;
+    @apply absolute top-0 bottom-0 bg-secondary px-5 transition duration-300;
+    filter: drop-shadow(0 9px 7px rgba(0, 0, 0, 0.1));
 
     z-index: 1;
 
@@ -831,7 +839,7 @@ export default {
   .navigation-ct {
     & .navigation-bar {
       @apply w-full left-0 transform-none;
-      
+
       bottom: 40cqh;
 
       & .section-title {

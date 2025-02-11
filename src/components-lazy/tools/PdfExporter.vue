@@ -49,13 +49,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   class="image"
                   :style="{
                     backgroundImage:
-                      data.attributes.mainImage &&
-                      data.attributes.mainImage.data &&
-                      data.attributes.mainImage.data.attributes.formats
+                      data.mainImage &&
+                      data.mainImage.formats
                         ? 'url(' +
-                          getApiEndpoint() +
+                          getConfigProperty('apiEndpoint') +
                           getAvailableImageFormat(
-                            data.attributes.mainImage.data.attributes.formats
+                            data.mainImage.formats
                           ) +
                           ')'
                         : undefined,
@@ -64,47 +63,45 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               </div>
               <div class="col">
                 <p class="top-desc">
-                  {{ data.attributes.mainImageDescription }}
+                  {{ data.mainImageDescription }}
                 </p>
                 <div class="middle-desc">
                   <div
                     class="second-image"
                     :style="{
                       backgroundImage:
-                        data.attributes.auxiliaryImage &&
-                        data.attributes.auxiliaryImage.data &&
-                        data.attributes.auxiliaryImage.data.attributes.formats
+                        data.auxiliaryImage &&
+                        data.auxiliaryImage.formats
                           ? 'url(' +
-                            getApiEndpoint() +
+                            getConfigProperty('apiEndpoint') +
                             getAvailableImageFormat(
-                              data.attributes.auxiliaryImage.data.attributes
-                                .formats
+                              data.auxiliaryImage.formats
                             ) +
                             ')'
                           : undefined,
                     }"
                   ></div>
                   <p class="second-desc">
-                    {{ data.attributes.auxiliaryImageDescription }}
+                    {{ data.auxiliaryImageDescription }}
                   </p>
                 </div>
               </div>
             </div>
             <div class="data-ct">
-              <h1>{{ data.attributes.name }}</h1>
+              <h1>{{ data.name }}</h1>
               <div class="data-cols">
                 <div class="col">
                   <h2>{{ $t('common.company') }}</h2>
                   <!-- prettier-ignore -->
-                  <p class="text">{{ removeUnnecessaryNewlines(data.attributes.companyDescription) }}</p>
+                  <p class="text">{{ removeUnnecessaryNewlines(data.companyDescription) }}</p>
 
                   <h2>{{ $t('common.productsAndServices') }}</h2>
                   <!-- prettier-ignore -->
-                  <p class="text">{{ removeUnnecessaryNewlines(data.attributes.productsAndServices) }}</p>
+                  <p class="text">{{ removeUnnecessaryNewlines(data.productsAndServices) }}</p>
 
                   <h2>{{ $t('common.references') }}</h2>
                   <!-- prettier-ignore -->
-                  <p class="text">{{ removeUnnecessaryNewlines(data.attributes.references) }}</p>
+                  <p class="text">{{ removeUnnecessaryNewlines(data.references) }}</p>
                 </div>
               </div>
             </div>
@@ -112,88 +109,88 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <div class="footer">
             <div class="column primary">
               <p class="uppercase">
-                {{ data.attributes.legalName }}
+                {{ data.legalName }}
               </p>
-              <p v-if="data.attributes.companyAddressStreet">
-                {{ data.attributes.companyAddressStreet.name }}
+              <p v-if="data.companyAddressStreet">
+                {{ data.companyAddressStreet.name }}
               </p>
               <p
                 v-if="
-                  data.attributes.companyLocation &&
-                  data.attributes.companyAddressStreet
+                  data.companyLocation &&
+                  data.companyAddressStreet
                 "
               >
-                {{ data.attributes.companyLocation.cap }}
-                {{ data.attributes.companyAddressStreet.city }}
+                {{ data.companyLocation.cap }}
+                {{ data.companyAddressStreet.city }}
               </p>
-              <p v-if="data.attributes.companyContact">
-                <a :href="'tel:' + data.attributes.companyContact.phoneNumber"
-                  >T {{ data.attributes.companyContact.phoneNumber }}</a
+              <p v-if="data.companyContact">
+                <a :href="'tel:' + data.companyContact.phoneNumber"
+                  >T {{ data.companyContact.phoneNumber }}</a
                 >
               </p>
-              <p v-if="data.attributes.companyContact">
-                <a :href="'mailto:' + data.attributes.companyContact.email">{{
-                  data.attributes.companyContact.email
+              <p v-if="data.companyContact">
+                <a :href="'mailto:' + data.companyContact.email">{{
+                  data.companyContact.email
                 }}</a>
               </p>
-              <p v-if="data.attributes.companyContact">
+              <p v-if="data.companyContact">
                 <a
                   :href="
-                    appendPrefixToUrl(data.attributes.companyContact.website)
+                    appendPrefixToUrl(data.companyContact.website)
                   "
-                  >{{ data.attributes.companyContact.website }}</a
+                  >{{ data.companyContact.website }}</a
                 >
               </p>
             </div>
             <div class="column second">
-              <p v-if="data.attributes.companyContact" class="mb-6">
+              <p v-if="data.companyContact" class="mb-6">
                 {{ $t('common.contact') }}:
-                <a :href="'mailto:' + data.attributes.contactPerson.email">{{
-                  data.attributes.contactPerson.personName
+                <a :href="'mailto:' + data.contactPerson.email">{{
+                  data.contactPerson.personName
                 }}</a>
-                <span v-if="data.attributes.contactPerson.role"
-                  >({{ data.attributes.contactPerson.role }})</span
+                <span v-if="data.contactPerson.role"
+                  >({{ data.contactPerson.role }})</span
                 >
               </p>
               <p
                 v-if="
-                  data.attributes.metrics && data.attributes.metrics.turnover
+                  data.metrics && data.metrics.turnover
                 "
               >
                 {{ $t('filters.turnover') }}:
                 {{
-                  formatWithThousandSeparator(data.attributes.metrics.turnover)
+                  formatWithThousandSeparator(data.metrics.turnover)
                 }}
                 €
               </p>
               <p
                 v-if="
-                  data.attributes.metrics &&
-                  data.attributes.metrics.employeeNumber
+                  data.metrics &&
+                  data.metrics.employeeNumber
                 "
               >
                 {{ $t('common.employees') }}:
-                {{ data.attributes.metrics.employeeNumber }}
+                {{ data.metrics.employeeNumber }}
               </p>
               <p
                 v-if="
-                  data.attributes.metrics && data.attributes.metrics.exportRatio
+                  data.metrics && data.metrics.exportRatio
                 "
               >
                 {{ $t('common.exportRatio') }}:
-                {{ data.attributes.metrics.exportRatio }}%
+                {{ data.metrics.exportRatio }}%
               </p>
               <p
                 v-if="
-                  data.attributes.metrics && data.attributes.metrics.rAndDRatio
+                  data.metrics && data.metrics.rAndDRatio
                 "
               >
                 {{ $t('common.researchAndDevelopmentRatio') }}:
-                {{ data.attributes.metrics.rAndDRatio }}%
+                {{ data.metrics.rAndDRatio }}%
               </p>
               <p
                 v-if="
-                  data.attributes.certifications &&
+                  data.certifications &&
                   getEnabledCertifications(data).length
                 "
               >
@@ -206,13 +203,13 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 class="logo"
                 :style="{
                   backgroundImage:
-                    data.attributes.logo &&
-                    data.attributes.logo.data &&
-                    data.attributes.logo.data.attributes.formats
+                    data.logo &&
+                    data.logo.data &&
+                    data.logo.data.formats
                       ? 'url(' +
-                        getApiEndpoint() +
+                        getConfigProperty('apiEndpoint') +
                         getAvailableImageFormat(
-                          data.attributes.logo.data.attributes.formats
+                          data.logo.data.formats
                         ) +
                         ')'
                       : undefined,
@@ -336,11 +333,11 @@ export default {
         Other: this.$t('filters.other'),
       }
 
-      if (data.attributes.certifications) {
+      if (data.certifications) {
         for (const [certificationId, certificationName] of Object.entries(
           CERTIFICATES_NAMES
         )) {
-          if (data.attributes.certifications[certificationId] === true) {
+          if (data.certifications[certificationId] === true) {
             certifications.push(certificationName)
           }
         }

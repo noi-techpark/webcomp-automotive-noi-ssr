@@ -5,8 +5,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div ref="actorProfile" class="actor-profile" style="height: 100vh; overflow: hidden">
-    <HeaderNOI />
+  <div
+    ref="actorProfile"
+    class="actor-profile"
+    style="height: 100vh; overflow: hidden"
+  >
+    <HeaderNOI show-back-button />
     <company-view
       v-if="companyData"
       :data="companyData"
@@ -25,23 +29,58 @@ import utils from '~/mixins/utils.js'
 export default {
   mixins: [utils],
 
-  data() {
+  async asyncData({
+    params,
+    i18n,
+    $config: { apiEndpoint, apiCompaniesPath, network },
+  }) {
+    let fetchedCompany
+    if (params.name) {
+      let apiUrl = ''
+      if (apiEndpoint) {
+        apiUrl += apiEndpoint
+      } else {
+        apiUrl += utils.methods.getConfigProperty('apiEndpoint')
+      }
+      if (apiCompaniesPath) {
+        apiUrl += apiCompaniesPath
+      } else if (network) {
+        apiUrl += '/api/' + network + '-companies'
+      } else {
+        apiUrl += utils.methods.getConfigProperty('apiCompaniesPath')
+      }
+      /* eslint-disable  */
+      const response = await fetch(
+        apiUrl +
+          '?locale=' +
+          i18n.locale +
+          '&populate=*' +
+          '&' +
+          encodeURIComponent('filters[name][$eq]') +
+          '=' +
+          encodeURIComponent(params.name.toUpperCase())
+      ).catch(() => {
+        alert('Sorry, an error has occurred while fetching the company.')
+      })
+      /* eslint-enable */
+      fetchedCompany = await response.json()
+      if (fetchedCompany.attributes) {
+        fetchedCompany = fetchedCompany.attributes
+      }
+    }
+
     return {
-      TITLE_END: 'NOI Automotive Automation',
-      primaryColor: '#0000ff',
-      companyData: null
+      companyData: utils.methods.mapCompaniesResult(
+        fetchedCompany,
+        i18n.locale
+      )[0],
     }
   },
 
-  async fetch() {
-    const companyName = this.$route.params.name;
-    let fetchedData;
-    if (!isNaN(Number(companyName))) {
-      fetchedData = await this.fetchCompanyById(Number(companyName));
-      this.companyData = fetchedData?.data[0].attributes['data_' + this.$i18n.locale];
-    } else {
-      fetchedData = await this.fetchCompanyByName(companyName);
-      this.companyData = fetchedData?.data[0];
+  data() {
+    return {
+      companyName: '',
+      TITLE_END: ' - NOI Automotive Automation',
     }
   },
   head() {
@@ -51,22 +90,31 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.truncate(this.removeUnnecessaryNewlines(this.companyData?.attributes?.productsAndServices), 160, true),
+          content: this.truncate(
+            this.removeUnnecessaryNewlines(
+              this.companyData?.productsAndServices ||
+                this.companyData?.attributes?.productsAndServices
+            ),
+            160,
+            true
+          ),
         },
       ],
     }
   },
   computed: {
     tabTitle() {
-      return (
-        (this.companyData?.attributes?.name ? this.companyData.attributes.name + ' - ' : '') +
-        this.TITLE_END
-      )
+      return this.companyName + this.TITLE_END
     },
   },
   mounted() {
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.primaryColor);
+    this.initConfigPropertiesFromEnvvars()
+    this.setStandardGlobalCSSVariables(
+      this.$refs.actorProfile,
+      this.getConfigProperty('primaryColor')
+    )
+    this.companyName = this.companyData.name
   },
 }
 </script>
@@ -76,17 +124,27 @@ export default {
   & .right-column {
     @apply w-full;
 
+    height: 100vh;
+
+    container-type: inline-size;
+    container-name: noi-automotive-component-view;
+
     top: 100px !important;
   }
   & .container {
-    height: auto !important;
-
     & .company-view {
       overflow-y: inherit;
     }
   }
   & .no-results-notice {
     @apply mx-6 text-base text-grey my-6;
+  }
+}
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
+  & .right-column {
+    & .container {
+      height: fit-content;
+    }
   }
 }
 </style>
