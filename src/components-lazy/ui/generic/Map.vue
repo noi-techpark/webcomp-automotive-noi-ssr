@@ -52,13 +52,6 @@ Vue.use(VueLayers)
 
 export default {
   mixins: [utils],
-  inject: {
-    // inject primaryColor from WebComponent.vue
-    primaryColor: {
-      from: 'primary-color',
-      default: '#0000ff'
-    }
-  },
   props: {
     visibleCompanies: {
       type: Array,
@@ -87,22 +80,22 @@ export default {
 
   computed: {
     companiesWithValidLocationCoordinates() {
-      return this.visibleCompanies.filter((company) =>
+      return this.visibleCompanies?.filter((company) =>
         this.hasCompanyValidCoordinates(company)
-      )
+      ) || []
     },
     points() {
       return this.getCoordinatesOfCompanies(this.companiesWithValidLocationCoordinates) || []
     },
     mapMarker() {
       return new OlIcon({
-        color: this.primaryColor,
+        color: this.getConfigProperty('primaryColor'),
         crossOrigin: 'anonymous',
-        src: 'data:image/svg+xml;utf8,' + 
-          '<svg width="120" height="120" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">' + 
-            '<!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->' + 
-            '<path fill="white" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>' + 
-            '<path fill="white" fill-opacity="0.1" d="M 106.66666,106.66666 H 277.33333 V 277.33333 H 106.66666 Z" />' + 
+        src: 'data:image/svg+xml;utf8,' +
+          '<svg width="120" height="120" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">' +
+            '<!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->' +
+            '<path fill="white" d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>' +
+            '<path fill="white" fill-opacity="0.1" d="M 106.66666,106.66666 H 277.33333 V 277.33333 H 106.66666 Z" />' +
           '</svg>',
         scale: 0.25,
       });
@@ -110,7 +103,7 @@ export default {
     clusterIcon() {
       const clusterIcons = Array(3);
       const circleShape = new CircleShape({
-        fill: new Fill({ color: this.primaryColor }),
+        fill: new Fill({ color: this.getConfigProperty('primaryColor') }),
         radius: 10,
       });
       clusterIcons[0] = circleShape.clone();
@@ -192,7 +185,7 @@ export default {
 
     /**
      * @param companies: Array of companies, for example companiesWithValidLocationCoordinates
-     * 
+     *
      * @returns Array in GeoJSON Format
      */
     getCoordinatesOfCompanies(companies) {
@@ -236,7 +229,7 @@ export default {
           image: clustersize <= 1 ? this.mapMarker : this.getClusterIconAccordingToSize(clustersize),
           text: clustersize <= 1 ? new OlText({
             text: this.currentZoom >= 14 ? this.textFormatForMarkerStyleFunc(feature?.values_?.features[0]?.id_) : undefined,
-            fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
+            fill: new Fill({ color: this.getTextColor(this.getConfigProperty('primaryColor')) }),
             backgroundFill: new Fill({ color: this.primarycolor }),
             textAlign: 'center',
             offsetY: -25,
@@ -248,7 +241,7 @@ export default {
             padding: [1.25, 1.75, 1.25, 1.75]
           }) : new OlText({
             text: "" + clustersize,
-            fill: new Fill({ color: this.getTextColor(this.primaryColor) }),
+            fill: new Fill({ color: this.getTextColor(this.getConfigProperty('primaryColor')) }),
             offsetY: 1,
             textAlign: 'center',
             scale: clustersize < 10 ? 1 : clustersize < 50 ? 1.3 : 1.4,

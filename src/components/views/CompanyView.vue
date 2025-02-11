@@ -16,20 +16,16 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         </div>
         <main class="data-view">
           <div class="header-profile">
-            <h1>{{ data?.attributes?.name }}</h1>
+            <h1>{{ data?.name }}</h1>
             <img
               class="logo"
               :src="
-                data?.attributes?.logo &&
-                data?.attributes?.logo.data &&
-                data?.attributes?.logo.data?.attributes?.formats
-                  ? getApiEndpoint() +
-                    getAvailableImageFormat(
-                      data?.attributes?.logo.data?.attributes?.formats
-                    )
+                data?.logo && data?.logo?.formats
+                  ? getConfigProperty('apiEndpoint') +
+                    getAvailableImageFormat(data?.logo?.formats)
                   : ''
               "
-              :alt="'Logo ' + data?.attributes?.name"
+              :alt="'Logo ' + data?.name"
             />
           </div>
           <div class="top-overview">
@@ -38,16 +34,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 v-if="!mainVideoID"
                 class="image"
                 :src="
-                  data?.attributes?.mainImage &&
-                  data?.attributes?.mainImage.data &&
-                  data?.attributes?.mainImage.data?.attributes?.formats
-                    ? getApiEndpoint() +
-                      getAvailableImageFormat(
-                        data?.attributes?.mainImage.data?.attributes?.formats
-                      )
+                  data?.mainImage && data?.mainImage?.formats
+                    ? getConfigProperty('apiEndpoint') +
+                      getAvailableImageFormat(data?.mainImage?.formats)
                     : ''
                 "
-                :alt="data?.attributes?.mainImageDescription"
+                :alt="data?.mainImageDescription"
               />
               <iframe
                 v-else
@@ -61,33 +53,25 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <p class="top-desc">
                 {{
                   !mainVideoID
-                    ? data?.attributes?.mainImageDescription
-                    : data?.attributes?.mainVideoDescription
+                    ? data?.mainImageDescription
+                    : data?.mainVideoDescription
                 }}
               </p>
-              <div
-                v-if="
-                  data?.attributes?.auxiliaryImage?.data?.attributes?.formats
-                "
-                class="middle-desc"
-              >
+              <div v-if="data?.auxiliaryImage?.formats" class="middle-desc">
                 <img
                   class="second-image"
                   :src="
-                    data?.attributes?.auxiliaryImage &&
-                    data?.attributes?.auxiliaryImage.data &&
-                    data?.attributes?.auxiliaryImage.data?.attributes?.formats
-                      ? getApiEndpoint() +
-                        getAvailableImageFormat(
-                          data?.attributes?.auxiliaryImage.data?.attributes
-                            .formats
-                        )
+                    data?.auxiliaryImage &&
+                    data?.auxiliaryImage &&
+                    data?.auxiliaryImage?.formats
+                      ? getConfigProperty('apiEndpoint') +
+                        getAvailableImageFormat(data?.auxiliaryImage.formats)
                       : ''
                   "
-                  :alt="data?.attributes?.auxiliaryImageDescription"
+                  :alt="data?.auxiliaryImageDescription"
                 />
                 <p class="second-desc">
-                  {{ data?.attributes?.auxiliaryImageDescription }}
+                  {{ data?.auxiliaryImageDescription }}
                 </p>
               </div>
             </div>
@@ -96,38 +80,38 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <div class="col">
               <h2>{{ $t('common.company') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.companyDescription) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.companyDescription) }}</p>
 
               <h2>{{ $t('common.productsAndServices') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.productsAndServices) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.productsAndServices) }}</p>
 
               <h2>{{ $t('common.references') }}</h2>
               <!-- prettier-ignore -->
-              <p class="text">{{ removeUnnecessaryNewlines(data?.attributes?.references) }}</p>
+              <p class="text">{{ removeUnnecessaryNewlines(data?.references) }}</p>
             </div>
             <!--
             <div
               v-if="
-                data?.attributes?.contactPerson &&
-                data?.attributes?.contactPerson.personName
+                data?.contactPerson &&
+                data?.contactPerson.personName
               "
               class="col"
             >
               <h2 class="pt-5">{{ $t('common.contactPerson') }}</h2>
-              <p class="text">{{ data?.attributes?.contactPerson.personName }}</p>
-              <p v-if="data?.attributes?.contactPerson.email" class="text">
+              <p class="text">{{ data?.contactPerson.personName }}</p>
+              <p v-if="data?.contactPerson.email" class="text">
                 <a
-                  :href="'mailto:' + data?.attributes?.contactPerson.email"
+                  :href="'mailto:' + data?.contactPerson.email"
                   class="link"
-                  >{{ data?.attributes?.contactPerson.email }}</a
+                  >{{ data?.contactPerson.email }}</a
                 >
               </p>
-              <p v-if="data?.attributes?.companyContact.phoneNumber" class="text">
+              <p v-if="data?.companyContact.phoneNumber" class="text">
                 <a
-                  :href="'tel:' + data?.attributes?.companyContact.phoneNumber"
+                  :href="'tel:' + data?.companyContact.phoneNumber"
                   class="link"
-                  >{{ data?.attributes?.companyContact.phoneNumber }}</a
+                  >{{ data?.companyContact.phoneNumber }}</a
                 >
               </p>
             </div>
@@ -137,132 +121,97 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             {{ $t('common.downloadPdf') }} ↓
           </button>
         </main>
-        <footer class="footer" :aria-label="$t('company.footerDescription')">
-          <div class="column">
-            <p class="uppercase" :aria-label="$t('company.legalName')">
-              {{ data?.attributes?.legalName }}
-            </p>
-            <p
-              v-if="data?.attributes?.companyAddressStreet"
-              :aria-label="$t('company.companyAddressStreet')"
-            >
-              {{ data?.attributes?.companyAddressStreet.name }}
-            </p>
-            <p
-              v-if="
-                data?.attributes?.companyLocation &&
-                data?.attributes?.companyAddressStreet
-              "
-              :aria-label="$t('company.companyLocation')"
-            >
-              {{ data?.attributes?.companyLocation.cap }}
-              {{ data?.attributes?.companyAddressStreet.city }}
-            </p>
-            <p
-              v-if="data?.attributes?.companyContact"
-              :aria-label="$t('company.phoneNumber')"
-            >
-              <a
-                :href="'tel:' + data?.attributes?.companyContact.phoneNumber"
-                >{{ data?.attributes?.companyContact.phoneNumber }}</a
+        <div class="footer-ct">
+          <footer class="footer" :aria-label="$t('company.footerDescription')">
+            <div class="column">
+              <p class="uppercase" :aria-label="$t('company.legalName')">
+                {{ data?.legalName }}
+              </p>
+              <p
+                v-if="data?.companyAddressStreet"
+                :aria-label="$t('company.companyAddressStreet')"
               >
-            </p>
-            <p
-              v-if="data?.attributes?.companyContact"
-              :aria-label="$t('company.email')"
-            >
-              <a :href="'mailto:' + data?.attributes?.companyContact.email">{{
-                data?.attributes?.companyContact.email
-              }}</a>
-            </p>
-            <p
-              v-if="data?.attributes?.companyContact"
-              :aria-label="$t('company.website') + data?.attributes?.name"
-            >
-              <a
-                :href="
-                  appendPrefixToUrl(data?.attributes?.companyContact.website)
-                "
-                target="_blank"
-                >{{ data?.attributes?.companyContact.website }}</a
+                {{ data?.companyAddressStreet?.name }}
+              </p>
+              <p
+                v-if="data?.companyLocation && data?.companyAddressStreet"
+                :aria-label="$t('company.companyLocation')"
               >
-            </p>
-          </div>
-          <div
-            class="column second"
-            :aria-label="$t('company.footerDescription2')"
-          >
-            <p
-              v-if="data?.attributes?.companyContact"
-              :aria-label="$t('common.contact')"
-            >
-              {{ $t('common.contact') }}:
-              <a :href="'mailto:' + data?.attributes?.contactPerson.email">{{
-                data?.attributes?.contactPerson.personName
-              }}</a>
-              <span v-if="data?.attributes?.contactPerson.role"
-                >({{ data?.attributes?.contactPerson.role }})</span
+                {{ data?.companyLocation?.cap }}
+                {{ data?.companyAddressStreet?.city }}
+              </p>
+              <p
+                v-if="data?.companyContact"
+                :aria-label="$t('company.phoneNumber')"
               >
-            </p>
-            <p
-              v-if="data?.attributes?.contactPerson?.phoneNumber"
-              class="text"
-              :aria-label="$t('company.phoneNumberContactPerson')"
-            >
-              <a
-                :href="'tel:' + data?.attributes?.contactPerson.phoneNumber"
-                class="link"
-                >{{ data?.attributes?.contactPerson.phoneNumber }}</a
+                <a :href="'tel:' + data?.companyContact?.phoneNumber">{{
+                  data?.companyContact?.phoneNumber
+                }}</a>
+              </p>
+              <p v-if="data?.companyContact" :aria-label="$t('company.email')">
+                <a :href="'mailto:' + data?.companyContact?.email">{{
+                  data?.companyContact?.email
+                }}</a>
+              </p>
+              <p
+                v-if="data?.companyContact"
+                :aria-label="$t('company.website') + data?.name"
               >
-            </p>
-            <p
-              v-if="
-                data?.attributes?.metrics && data?.attributes?.metrics.turnover
-              "
+                <a
+                  :href="appendPrefixToUrl(data?.companyContact?.website)"
+                  target="_blank"
+                  >{{ data?.companyContact?.website }}</a
+                >
+              </p>
+            </div>
+            <div
+              class="column second"
+              :aria-label="$t('company.footerDescription2')"
             >
-              {{ $t('filters.turnover') }}:
-              {{
-                formatWithThousandSeparator(data?.attributes?.metrics.turnover)
-              }}
-              €
-            </p>
-            <p
-              v-if="
-                data?.attributes?.metric &&
-                data?.attributes?.metrics.employeeNumber
-              "
-            >
-              {{ $t('common.employees') }}:
-              {{ data?.attributes?.metrics.employeeNumber }}
-            </p>
-            <p
-              v-if="
-                data?.attributes?.metrics &&
-                data?.attributes?.metrics.exportRatio
-              "
-            >
-              {{ $t('common.exportRatio') }}:
-              {{ data?.attributes?.metrics.exportRatio }}%
-            </p>
-            <p
-              v-if="
-                data?.attributes?.metrics &&
-                data?.attributes?.metrics.rAndDRatio
-              "
-            >
-              {{ $t('common.researchAndDevelopmentRatio') }}:
-              {{ data?.attributes?.metrics.rAndDRatio }}%
-            </p>
-            <p
-              v-if="
-                data?.attributes?.certifications && enabledCertifications.length
-              "
-            >
-              {{ $t('common.certifications') }}:
-              {{ enabledCertifications.join(', ') }}
-            </p>
-          </div>
-        </footer>
+              <p v-if="data?.companyContact" :aria-label="$t('common.contact')">
+                {{ $t('common.contact') }}:
+                <a :href="'mailto:' + data?.contactPerson?.email">{{
+                  data?.contactPerson?.personName
+                }}</a>
+                <span v-if="data?.contactPerson?.role"
+                  >({{ data?.contactPerson?.role }})</span
+                >
+              </p>
+              <p
+                v-if="data?.contactPerson?.phoneNumber"
+                class="text"
+                :aria-label="$t('company.phoneNumberContactPerson')"
+              >
+                <a
+                  :href="'tel:' + data?.contactPerson?.phoneNumber"
+                  class="link"
+                  >{{ data?.contactPerson?.phoneNumber }}</a
+                >
+              </p>
+              <p v-if="data?.metrics && data?.metrics?.turnover">
+                {{ $t('filters.turnover') }}:
+                {{ formatWithThousandSeparator(data?.metrics?.turnover) }}
+                €
+              </p>
+              <p v-if="data?.metric && data?.metrics?.employeeNumber">
+                {{ $t('common.employees') }}:
+                {{ data?.metrics?.employeeNumber }}
+              </p>
+              <p v-if="data?.metrics && data?.metrics?.exportRatio">
+                {{ $t('common.exportRatio') }}:
+                {{ data?.metrics?.exportRatio }}%
+              </p>
+              <p v-if="data?.metrics && data?.metrics?.rAndDRatio">
+                {{ $t('common.researchAndDevelopmentRatio') }}:
+                {{ data?.metrics?.rAndDRatio }}%
+              </p>
+              <p v-if="data?.certifications && enabledCertifications.length">
+                {{ $t('common.certifications') }}:
+                {{ enabledCertifications.join(', ') }}
+              </p>
+            </div>
+          </footer>
+        </div>
       </div>
     </SlidingContainer>
     <!-- Added style="visbility:hidden", because for some reason. The <vue-html2pdf></vue-html2pdf> was visible. Download Still works-->
@@ -277,7 +226,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <PdfExporter
         ref="pdfExporter"
         style="visibility: hidden"
-        :export-name="data?.attributes?.name"
+        :export-name="data?.name"
         :companies="[data]"
         :automatic-download="false"
       />
@@ -333,11 +282,11 @@ export default {
         Other: this.$t('filters.other'),
       }
 
-      if (this.data?.attributes?.certifications) {
+      if (this.data?.certifications) {
         for (const [certificationId, certificationName] of Object.entries(
           CERTIFICATES_NAMES
         )) {
-          if (this.data?.attributes?.certifications[certificationId] === true) {
+          if (this.data?.certifications[certificationId] === true) {
             certifications.push(certificationName)
           }
         }
@@ -348,7 +297,7 @@ export default {
   },
 
   updated() {
-    this.mainVideoID = getYouTubeID(this.data?.attributes?.mainVideo)
+    this.mainVideoID = getYouTubeID(this.data?.mainVideo)
   },
 
   methods: {
@@ -365,7 +314,8 @@ export default {
 
 <style lang="postcss" scoped>
 .company-view {
-  @apply h-full overflow-y-auto;
+  @apply overflow-y-auto flex flex-col justify-between;
+  height: 100vh;
 
   /**
    * INFO: the at rule @conainer is supported by all major Browsers since February 2023,
@@ -395,7 +345,11 @@ export default {
   }
 
   & .data-view {
-    @apply px-8 py-8;
+    @apply px-8 bg-secondary;
+
+    padding-top: 2rem;
+    padding-left: max(2rem, calc(50vw - 600px + 2rem));
+    padding-right: max(2rem, calc(50vw - 600px + 2rem));
 
     & .header-profile {
       @apply flex flex-row;
@@ -422,7 +376,7 @@ export default {
         width: 50%;
 
         & .image {
-          @apply bg-transparent bg-cover bg-center;
+          @apply bg-white bg-cover bg-center object-contain;
 
           max-height: 270px;
           mix-blend-mode: multiply;
@@ -444,7 +398,7 @@ export default {
           height: 140px;
 
           & .second-image {
-            @apply h-full w-1/2 bg-white bg-cover bg-center mix-blend-multiply;
+            @apply h-full w-1/2 bg-white bg-cover bg-center object-contain mix-blend-multiply;
 
             min-width: 200px;
           }
@@ -492,31 +446,48 @@ export default {
     }
   }
 
-  & .footer {
-    @apply flex items-center py-8 px-8;
-
+  & .footer-ct {
+    width: 100vw;
+    margin-left: auto;
+    margin-right: auto;
     background-color: #ededed;
 
-    & .column {
-      @apply pr-10;
+    & .footer {
+      @apply flex flex-row items-center py-8;
 
-      & p {
-        @apply text-base text-black mb-1;
+      padding-left: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
+      padding-right: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
 
-        & a {
-          @apply underline;
-        }
-      }
+      & .column {
+        @apply pr-10;
 
-      &.second {
         & p {
-          @apply text-sm text-grey;
+          @apply text-base text-black mb-1;
+
+          & a {
+            @apply underline;
+          }
+        }
+
+        &.second {
+          & p {
+            @apply text-sm text-grey;
+          }
         }
       }
     }
   }
 }
 
+@container noi-automotive-component-view (max-width: theme('screens.md')) {
+  .company-view {
+    & .data-view {
+
+      & .header-profile {
+        & h1 {
+          @apply mt-12;
+        }
+      }
 
 @container noi-automotive-company-view (max-width: 600px) {
   .header-profile {
@@ -527,22 +498,34 @@ export default {
   .top-overview {
     @apply flex-col space-x-0;
 
-    & .col {
-      width: 100% !important;
+    & .footer-ct {
+      width: 100vw;
+      margin-left: min(1px, calc(-0.5 * (100vw - 1200px)));
+      background-color: #ededed;
 
-      & .image {
-        margin-left: auto;
-        margin-right: auto;
-      }
+      & .footer {
+        @apply flex flex-row items-center py-8;
 
-      & .top-desc {
-        @apply mb-2;
-        height: auto !important;  
-        font-size: 1rem !important;
-      }
+        padding-left: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
+        padding-right: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
 
-      & .middle-desc {
-        display: none !important;
+        & .column {
+          @apply pr-10;
+
+          & p {
+            @apply text-base text-black mb-1;
+
+            & a {
+              @apply underline;
+            }
+          }
+
+          &.second {
+            & p {
+              @apply text-sm text-grey;
+            }
+          }
+        }
       }
     }
   }
