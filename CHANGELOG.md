@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.3.3](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.3.2...v2.3.3) (2025-02-12)
+
+
+### Bug Fixes
+
+* apply small mobile style fixes ([b7558d1](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/b7558d11ed7462a3a8c70b4b75619d6d303b2750))
+
 ### [2.3.2](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.3.1...v2.3.2) (2025-02-12)
 
 
