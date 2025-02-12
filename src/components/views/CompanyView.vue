@@ -480,7 +480,7 @@ export default {
     }
 
     & .footer-ct {
-      width: 100vw;
+      width: 100%;
       margin-left: min(1px, calc(-0.5 * (100vw - 1200px)));
       background-color: #ededed;
 
