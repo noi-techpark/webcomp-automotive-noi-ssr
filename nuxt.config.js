@@ -14,8 +14,8 @@ const targetConfig = !process.env.TARGET_CONFIG
 console.log(targetConfig)
 
 const config = {
-  ssr: false, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
-  target: targetConfig,
+  ssr: true, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  target: 'server',
 
   srcDir: 'src/',
 

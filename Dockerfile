@@ -17,7 +17,7 @@ RUN yarn install
 # Copy TypeScript files
 COPY --chown=node:node . .
 
-RUN yarn generate
+RUN yarn build
 
 ENV HOST=0.0.0.0
 
