@@ -306,8 +306,11 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
+.container {
+  overflow-y: auto;
+}
+
 .company-view {
-  @apply overflow-y-auto flex flex-col justify-between;
   height: 100vh;
 
   & .close {
@@ -331,8 +334,6 @@ export default {
     @apply px-8 bg-secondary;
 
     padding-top: 2rem;
-    padding-left: max(2rem, calc(50vw - 600px + 2rem));
-    padding-right: max(2rem, calc(50vw - 600px + 2rem));
 
     & .header-profile {
       @apply flex flex-row;
@@ -427,16 +428,13 @@ export default {
   }
 
   & .footer-ct {
-    width: 100vw;
+    width: 100%;
     margin-left: auto;
     margin-right: auto;
     background-color: #ededed;
 
     & .footer {
-      @apply flex flex-row items-center py-8;
-
-      padding-left: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
-      padding-right: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
+      @apply flex flex-row items-center py-8 px-8;
 
       & .column {
         @apply pr-10;
@@ -489,8 +487,8 @@ export default {
       & .footer {
         @apply flex flex-row items-center py-8;
 
-        padding-left: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
-        padding-right: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
+        /*padding-left: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));
+        padding-right: max(2rem, calc(0.5 * (100vw - 1200px) + 2rem));*/
 
         & .column {
           @apply pr-10;
