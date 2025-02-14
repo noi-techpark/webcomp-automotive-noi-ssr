@@ -27,7 +27,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </div>
             <div class="map-ct clickable" @click="showMapView()">
               <client-only>
-                <link rel="stylesheet" href="https://unpkg.com/vuelayers/dist/vuelayers.css">
+                <link
+                  rel="stylesheet"
+                  href="https://unpkg.com/vuelayers/dist/vuelayers.css"
+                />
                 <CompanieMapping
                   mode="preview"
                   :visible-companies="filteredCompanies"
@@ -70,7 +73,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 <script>
 export default {
   components: {
-    CompanieMapping: () => import("@/components-lazy/ui/generic/Map"),
+    CompanieMapping: () => import('@/components-lazy/ui/generic/Map'),
   },
 
   props: {
@@ -235,7 +238,8 @@ export default {
     & a {
       @apply mr-2;
 
-      &:hover, &:focus {
+      &:hover,
+      &:focus {
         @apply underline;
       }
     }

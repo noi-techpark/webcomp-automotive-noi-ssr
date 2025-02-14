@@ -5,11 +5,20 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div ref="filtersmenu" class="filters-menu-website" role="menu" :aria-label="$t('common.filters')">
-    <h1 class="top-title"><Icon class="filter-icon" name="filter"/><b>{{ $t('common.filters') }}</b></h1>
+  <div
+    ref="filtersmenu"
+    class="filters-menu-website"
+    role="menu"
+    :aria-label="$t('common.filters')"
+  >
+    <h1 class="top-title">
+      <Icon class="filter-icon" name="filter" /><b>{{
+        $t('common.filters')
+      }}</b>
+    </h1>
     <div class="list">
       <div v-if="isFilterVisible('specializationArea')" class="category-filter">
-        <InputLabel :text="$t('filters.specialization').toUpperCase()"/>
+        <InputLabel :text="$t('filters.specialization').toUpperCase()" />
         <multiselect
           v-model="specializations"
           :options="specializationOptions"
@@ -22,10 +31,16 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           tag-placeholder=""
           select-label=""
           deselect-label=""
-          :preselect-first="false">
-            <template slot="option" slot-scope="props">
-              <span>{{ props.option.name + " (" + filterCount.categories[props.option.value] + ")" }}</span>
-            </template>
+          :preselect-first="false"
+        >
+          <template slot="option" slot-scope="props">
+            <span>{{
+              props.option.name +
+              ' (' +
+              filterCount.categories[props.option.value] +
+              ')'
+            }}</span>
+          </template>
         </multiselect>
       </div>
       <Select
@@ -117,7 +132,7 @@ import filters from '~/mixins/filters.js'
 
 export default {
   components: {
-    Multiselect
+    Multiselect,
   },
 
   mixins: [utils, filters],
@@ -126,8 +141,8 @@ export default {
     // inject primaryColor from WebComponent.vue
     primaryColor: {
       from: 'primary-color',
-      default: '#0000ff'
-    }
+      default: '#0000ff',
+    },
   },
 
   props: {
@@ -137,8 +152,8 @@ export default {
     },
     filterCount: {
       type: Object,
-      default: ()=>{}
-    }
+      default: () => {},
+    },
   },
 
   data() {
@@ -153,23 +168,25 @@ export default {
       this.$root.$emit('set-filters', newFilters)
     },
     specializations(newSpecializations) {
-
       const newSpecializationBoolean = {
         automotiveAndMobility: false,
         manufacturing: false,
         agriAutomation: false,
       }
 
-      newSpecializations.forEach((specialization)=>{
+      newSpecializations.forEach((specialization) => {
         newSpecializationBoolean[specialization.value] = true
       })
       this.filters.specializations = newSpecializationBoolean
       // this.$root.$emit('set-filters', this.filters)
-    }
+    },
   },
 
   mounted() {
-    this.setStandardGlobalCSSVariables(this.$refs.filtersmenu, this.getConfigProperty('primaryColor'));
+    this.setStandardGlobalCSSVariables(
+      this.$refs.filtersmenu,
+      this.getConfigProperty('primaryColor')
+    )
 
     if (this.initialFilters) {
       this.filters = this.initialFilters
@@ -181,13 +198,11 @@ export default {
       this.filters = {}
       this.specializations = []
     },
-  }
+  },
 }
-
 </script>
 
 <style>
-
 .filters-menu-website {
   @apply relative bg-white px-5 rounded-lg;
   filter: drop-shadow(0 9px 7px rgba(0, 0, 0, 0.1));

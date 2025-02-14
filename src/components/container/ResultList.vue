@@ -10,7 +10,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       <NuxtLink
         v-for="(resultItem, index) in resultList"
         :key="new Date().getTime() + '-' + index"
-        :to="($i18n.locale != 'en' ? '/' + $i18n.locale : '') + '/actors/' + encodeURIComponent(resultItem.name)"
+        :to="
+          ($i18n.locale != 'en' ? '/' + $i18n.locale : '') +
+          '/actors/' +
+          encodeURIComponent(resultItem.name)
+        "
         target="_blank"
         :aria-label="$t('company.profile') + resultItem.name"
       >
@@ -49,7 +53,7 @@ export default {
       validator(value) {
         return ['desktop', 'mobile'].includes(value)
       },
-    }
+    },
   },
 }
 </script>
