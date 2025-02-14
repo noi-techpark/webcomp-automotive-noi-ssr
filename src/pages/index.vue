@@ -13,9 +13,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       role="search"
       :style="{
         backgroundImage:
-          'url(' +
-          getConfigProperty('searchbarBackground') +
-          ')',
+          'url(' + getConfigProperty('searchbarBackground') + ')',
       }"
     >
       <div class="search-bar">
@@ -27,7 +25,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           external-background
           @input="delaySearch"
         />
-        <Button v-if="!isInLandscapeMode" icon="filter" class="filter-bt" @click="showFilterModal" />
+        <Button
+          v-if="!isInLandscapeMode"
+          icon="filter"
+          class="filter-bt"
+          @click="showFilterModal"
+        />
       </div>
       <div ref="searchBarOffsetBox" class="search-bar-offset-box"></div>
     </div>
@@ -53,10 +56,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             </client-only>
           </div>
         </div>
-        <FiltersMenu
-          :initial-filters="filters"
-          :filter-count="filterCount"
-        />
+        <FiltersMenu :initial-filters="filters" :filter-count="filterCount" />
       </aside>
       <main>
         <ResultList
@@ -66,9 +66,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
         />
       </main>
     </div>
-  <div class="full-screen-loader" :class="{ visible: loading }">
-    <Loader colorscheme="colored" />
-  </div>
+    <div class="full-screen-loader" :class="{ visible: loading }">
+      <Loader colorscheme="colored" />
+    </div>
   </div>
 </template>
 
@@ -97,7 +97,8 @@ export default {
       isInLandscapeMode: this.landscapeMode(),
       fetchedData: [],
       filters: {
-        specializations: { // define specializations, so that vue is able to detect changes to it (more info: https://stackoverflow.com/a/55379279)
+        specializations: {
+          // define specializations, so that vue is able to detect changes to it (more info: https://stackoverflow.com/a/55379279)
           automotiveAndMobility: false,
           manufacturing: false,
           agriAutomation: false,
@@ -125,7 +126,13 @@ export default {
 
       if (this.fetchedData.length > 0) {
         // call filterResults from mixin 'filters'
-        results = this.filterResults(this.fetchedData, this.filters, this.searchValueDelayed, this.filters.specializations, 'and')
+        results = this.filterResults(
+          this.fetchedData,
+          this.filters,
+          this.searchValueDelayed,
+          this.filters.specializations,
+          'and'
+        )
       }
       return results
     },
@@ -150,29 +157,36 @@ export default {
     this.fetchResults()
 
     // Define CSS Variables
-    this.setStandardGlobalCSSVariables(this.$refs.homepage, this.getConfigProperty('primaryColor'));
+    this.setStandardGlobalCSSVariables(
+      this.$refs.homepage,
+      this.getConfigProperty('primaryColor')
+    )
 
     window.addEventListener('scroll', this.adjustHeaderHeight)
     window.addEventListener('touchmove', this.adjustHeaderHeight)
-    window.addEventListener('resize', ()=>{
-      this.isInLandscapeMode = this.landscapeMode();
+    window.addEventListener('resize', () => {
+      this.isInLandscapeMode = this.landscapeMode()
     })
 
-    document.onkeyup = function(e) {
-      if (e.ctrlKey && e.key === 'k') { // Ctrl+K: focus searchbar
-        e.preventDefault();
-        e.stopPropagation();
+    document.onkeyup = function (e) {
+      if (e.ctrlKey && e.key === 'k') {
+        // Ctrl+K: focus searchbar
+        e.preventDefault()
+        e.stopPropagation()
         const searchbar = document.getElementById('searchbar')
-        if(searchbar)
-          searchbar.focus()
+        if (searchbar) searchbar.focus()
         return false
-      } else if (e.key === 'Tab') { // tab: scroll element into view, so it's completely visible
+      } else if (e.key === 'Tab') {
+        // tab: scroll element into view, so it's completely visible
         const activeElement = document.activeElement
-        if(activeElement.parentElement.id === 'actorsList') {
-          document.activeElement.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        if (activeElement.parentElement.id === 'actorsList') {
+          document.activeElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center',
+          })
         }
       }
-    };
+    }
 
     this.$root.$on('set-filters', this.setFilters)
   },
@@ -186,7 +200,7 @@ export default {
     },
     delaySearch() {
       clearTimeout(searchTypingTimer)
-      searchTypingTimer = setTimeout(this.doneTyping, 250);
+      searchTypingTimer = setTimeout(this.doneTyping, 250)
     },
     doneTyping() {
       this.searchValueDelayed = this.searchValue
@@ -198,46 +212,72 @@ export default {
       this.filters = {}
     },
     showMapModal() {
-      this.$modal.show(WebComponent,
-        {showHomeView: false, showLanguageSelect: false, initialFilters: this.filters, primaryColor: this.getConfigProperty('primaryColor')},
-        {name: 'webcomponent', focusTrap: true, width: '90%', height:  this.isInLandscapeMode ? '90%' : '85%', transition: 'modal',},
+      this.$modal.show(
+        WebComponent,
+        {
+          showHomeView: false,
+          showLanguageSelect: false,
+          initialFilters: this.filters,
+          primaryColor: this.getConfigProperty('primaryColor'),
+        },
+        {
+          name: 'webcomponent',
+          focusTrap: true,
+          width: '90%',
+          height: this.isInLandscapeMode ? '90%' : '85%',
+          transition: 'modal',
+        }
       )
     },
     showFilterModal() {
-      this.$modal.show(FiltersMenu,
+      this.$modal.show(
+        FiltersMenu,
         { initialFilters: this.filters, filterCount: this.filterCount },
-        { name: 'filtersmenu',
+        {
+          name: 'filtersmenu',
           focusTrap: true,
           width: '95%',
-          height:  'auto',
+          height: 'auto',
           shiftY: 0.25,
-          styles: 'background-color: ' +  twConfig.theme.colors.secondary + ';' +
-                  'border-radius: ' + twConfig.theme.borderRadius.lg + ';',
+          styles:
+            'background-color: ' +
+            twConfig.theme.colors.secondary +
+            ';' +
+            'border-radius: ' +
+            twConfig.theme.borderRadius.lg +
+            ';',
           transition: 'modal',
-        },
+        }
       )
     },
     adjustHeaderHeight() {
-      const scrollTop = document.body.scrollTop || document.documentElement.scrollTop
-      const newHeight = ((200 - scrollTop > 75) ? (200 - scrollTop) : 75)
-      if(this.$refs.searchBar) {
-        const animation = this.$refs.searchBar.animate({height: newHeight + 'px'}, 500)
+      const scrollTop =
+        document.body.scrollTop || document.documentElement.scrollTop
+      const newHeight = 200 - scrollTop > 75 ? 200 - scrollTop : 75
+      if (this.$refs.searchBar) {
+        const animation = this.$refs.searchBar.animate(
+          { height: newHeight + 'px' },
+          500
+        )
         const searchBarStyle = this.$refs.searchBar.style
         animation.onfinish = function () {
           animation.cancel()
           searchBarStyle.height = newHeight + 'px'
         }
       }
-      if(this.$refs.searchBarOffsetBox) {
+      if (this.$refs.searchBarOffsetBox) {
         const newHeightOffsetBox = 50.0 * ((newHeight - 75.0) / 125.0)
-        const animation = this.$refs.searchBarOffsetBox.animate({height: newHeightOffsetBox + 'px'}, 500)
+        const animation = this.$refs.searchBarOffsetBox.animate(
+          { height: newHeightOffsetBox + 'px' },
+          500
+        )
         const searchBarOffsetBoxStyle = this.$refs.searchBarOffsetBox.style
         animation.onfinish = function () {
           animation.cancel()
           searchBarOffsetBoxStyle.height = newHeightOffsetBox + 'px'
         }
       }
-    }
+    },
   },
 }
 </script>
@@ -287,14 +327,13 @@ export default {
 
         border: 2px solid white;
 
-
         & input {
           @apply flex-initial rounded-lg;
         }
       }
     }
     & .search-bar-offset-box {
-      height: 30px
+      height: 30px;
     }
 
     & .filter-bt {
@@ -309,7 +348,9 @@ export default {
     @apply relative flex h-fit mx-auto;
 
     max-width: 1300px;
-    top: calc(300px + 2 * theme('spacing.4')); /* 100px header height, 200px search-bar-ct height, 2 * theme('spacing.4') 200px search-bar-ct margin */
+    top: calc(
+      300px + 2 * theme('spacing.4')
+    ); /* 100px header height, 200px search-bar-ct height, 2 * theme('spacing.4') 200px search-bar-ct margin */
 
     & aside {
       @apply pl-5;
@@ -349,7 +390,6 @@ export default {
   }
 }
 
-
 .full-screen-loader {
   @apply fixed flex items-center justify-center top-0 right-0 bottom-0 left-0 bg-white bg-opacity-75 z-30 opacity-0 pointer-events-none;
 
@@ -362,10 +402,10 @@ export default {
 
 .modal-enter-active,
 .modal-leave-active {
-    transition: all 0.5s;
+  transition: all 0.5s;
 }
 .modal-enter,
 .modal-leave-active {
-    opacity: 0;
+  opacity: 0;
 }
 </style>

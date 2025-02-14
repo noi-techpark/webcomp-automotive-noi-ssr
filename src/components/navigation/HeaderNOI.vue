@@ -45,9 +45,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           <Icon name="logo" alt="NOI Logo" />
           <Icon name="logo-automotive" alt="NOI Automotive Automation Logo" />
         </div>
-        <div v-else>
-          <img :src="getConfigProperty('headerLogoUrl')" alt="LOGO" />
-        </div>
+        <img v-else :src="getConfigProperty('headerLogoUrl')" alt="LOGO" />
       </nuxt-link>
     </div>
   </header>
@@ -165,6 +163,10 @@ export default {
 
       & svg {
         @apply h-full;
+      }
+
+      & img {
+        height: 100%;
       }
     }
   }

@@ -1,0 +1,170 @@
+name: 'Build, Test & Deploy Noi Automotive'
+on:
+  push:
+    branches:
+      - 'main'
+      - 'master'
+
+jobs:
+  build_test:
+    name: 'Build & Test'
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.event.head_commit.message, 'chore(release)') }}
+    steps:
+      - name: Notify CI Start
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{secrets.MAIL_USER}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: ▶️ ${{ github.ref_name }} - ${{github.repository}} - Started
+          to: automation@codeworks.build, simonetesta@codeworks.build
+          from: Codeworks Automation
+          body: |
+            Pipeline of
+            repository: ${{github.repository}}
+            branch: ${{ github.ref_name }}
+            commit: ${{ github.sha }}
+            started!
+          convert_markdown: true
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: eu-west-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Checkout Noi Automotive Repository
+        uses: actions/checkout@v3
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install
+        run: yarn install
+
+      - name: Build
+        run: |
+          yarn build
+
+      - name: Test
+        run: |
+          yarn test:ci
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 'Set version variable'
+        run: |
+          VERSION=$(echo "${{github.event.head_commit.message}}" | cut -d ":" -f 2 | cut -d " " -f 2)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Build Tag and Push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          tags: ${{ steps.login-ecr.outputs.registry }}/${{github.event.repository.name}}:${{ github.ref_name }}-latest,${{ steps.login-ecr.outputs.registry }}/${{github.event.repository.name}}:${{ github.ref_name }}-${{ env.VERSION }}
+          push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: false
+
+  deploy:
+    name: 'Deploy'
+    needs: build_test
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.event.head_commit.message, 'chore(release)') }}
+    steps:
+      - uses: shaunco/ssh-agent@git-repo-mapping
+        with:
+          ssh-private-key: |
+            ${{ secrets.DEPLOY_KEY_NIXOS_CONFIG_YOSAI }}
+
+          repo-mappings: |
+            github.com/codeworks-infrastructure/nixos-config-yosai
+
+      - name: Checkout Yosai repository
+        if: ${{ contains(github.ref, 'main') || contains(github.ref, 'master') }}
+        uses: actions/checkout@v3
+        with:
+          path: yosai
+          repository: codeworks-infrastructure/nixos-config-yosai
+          ref: main
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: 'Set version variable'
+        run: |
+          VERSION=$(echo "${{github.event.head_commit.message}}" | cut -d ":" -f 2 | cut -d " " -f 2)
+          echo "VERSION=$VERSION" >> "$GITHUB_ENV"
+
+      - name: Deploy Production
+        if: ${{ contains(github.ref, 'main') || contains(github.ref, 'master') }}
+        run: |
+          cd yosai
+          git config user.email "ci@codeworks.build"
+          git config user.name "Codeworks CI"
+          python ops/change-image.py -b ${{ github.ref_name }} -s noi-automotive -r ${{github.event.repository.name}} -t ${{ github.ref_name }}-${{ env.VERSION }}
+          git add services/noi-automotive.nix
+          git commit -m '${{ github.ref_name }} - ${{github.repository}}'
+          git push origin main
+
+  notify:
+    name: 'Notify'
+    needs: [build_test, deploy]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify Build & Test Failure
+        if: always() && needs.build_test.result == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{secrets.MAIL_USER}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: 💥 ${{ github.ref_name }} - ${{github.repository}} - failed
+          to: automation@codeworks.build, simonetesta@codeworks.build
+          from: Codeworks Automation
+          body: |
+            Build & Test job of
+            repository: ${{github.repository}}
+            branch: ${{ github.ref_name }}
+            commit: ${{ github.sha }}
+            failed!
+
+      - name: Notify Deploy Failure
+        if: always() && needs.deploy.result == 'failure'
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 465
+          secure: true
+          username: ${{secrets.MAIL_USER}}
+          password: ${{secrets.MAIL_PASSWORD}}
+          subject: 💥 ${{ github.ref_name }} - ${{github.repository}} - failed
+          to: automation@codeworks.build, simonetesta@codeworks.build
+          from: Codeworks Automation
+          body: |
+            Deploy job of
+            repository: ${{github.repository}}
+            branch: ${{ github.ref_name }}
+            commit: ${{ github.sha }}
+            failed!

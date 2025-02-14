@@ -5,7 +5,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 
 <template>
-  <div ref="actorProfile" class="actor-profile" style="height: 100vh; overflow: hidden">
+  <div
+    ref="actorProfile"
+    class="actor-profile"
+    style="height: 100vh; overflow: hidden"
+  >
     <HeaderNOI show-back-button />
     <company-view
       v-if="companyData"
@@ -25,9 +29,13 @@ import utils from '~/mixins/utils.js'
 export default {
   mixins: [utils],
 
-  async asyncData({ params, i18n, $config: { apiEndpoint, apiCompaniesPath, network }}) {
-    let fetchedCompany;
-    if(params.name) {
+  async asyncData({
+    params,
+    i18n,
+    $config: { apiEndpoint, apiCompaniesPath, network },
+  }) {
+    let fetchedCompany
+    if (params.name) {
       let apiUrl = ''
       if (apiEndpoint) {
         apiUrl += apiEndpoint
@@ -43,7 +51,7 @@ export default {
       }
       /* eslint-disable  */
       const response = await fetch(
-          apiUrl +
+        apiUrl +
           '?locale=' +
           i18n.locale +
           '&populate=*' +
@@ -56,12 +64,17 @@ export default {
       })
       /* eslint-enable */
       fetchedCompany = await response.json()
-      if(fetchedCompany.attributes) {
+      if (fetchedCompany.attributes) {
         fetchedCompany = fetchedCompany.attributes
       }
     }
 
-    return { companyData: utils.methods.mapCompaniesResult(fetchedCompany, i18n.locale)[0] }
+    return {
+      companyData: utils.methods.mapCompaniesResult(
+        fetchedCompany,
+        i18n.locale
+      )[0],
+    }
   },
 
   data() {
@@ -77,28 +90,36 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.truncate(this.removeUnnecessaryNewlines(this.companyData?.productsAndServices || this.companyData?.attributes?.productsAndServices), 160, true),
+          content: this.truncate(
+            this.removeUnnecessaryNewlines(
+              this.companyData?.productsAndServices ||
+                this.companyData?.attributes?.productsAndServices
+            ),
+            160,
+            true
+          ),
         },
       ],
     }
   },
   computed: {
     tabTitle() {
-      return (
-        this.companyName + this.TITLE_END
-      )
+      return this.companyName + this.TITLE_END
     },
   },
   mounted() {
     // Define CSS Variables
-    this.initConfigPropertiesFromEnvvars();
-    this.setStandardGlobalCSSVariables(this.$refs.actorProfile, this.getConfigProperty('primaryColor'));
+    this.initConfigPropertiesFromEnvvars()
+    this.setStandardGlobalCSSVariables(
+      this.$refs.actorProfile,
+      this.getConfigProperty('primaryColor')
+    )
     this.companyName = this.companyData.name
   },
 }
 </script>
 
-<style>
+<style lang="postcss" scoped>
 .actor-profile {
   & .right-column {
     @apply w-full;
@@ -108,11 +129,9 @@ export default {
     container-type: inline-size;
     container-name: noi-automotive-component-view;
 
-
     top: 100px !important;
   }
   & .container {
-
     & .company-view {
       overflow-y: inherit;
     }

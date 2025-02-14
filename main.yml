@@ -9,7 +9,7 @@ env:
   PROJECT_NAME: automotive-noi
   DOCKER_IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}
   DOCKER_TAG: ${{ github.sha }}
-  AWS_REGION: "eu-west-1"
+  AWS_REGION: 'eu-west-1'
 
 jobs:
   test:
@@ -20,13 +20,13 @@ jobs:
         uses: fsfe/reuse-action@v1
       - uses: noi-techpark/github-actions/yarn-build@v2
         with:
-          build-command: yarn build
+          build-command: yarn generate
           node-version: ${{env.NODE_VERSION}}
       - uses: noi-techpark/github-actions/webcomp-test@v2
         with:
           origin-test-enabled: false
 
-  deploy-website-test:
+  deploy-test:
     runs-on: ubuntu-22.04
     if: github.ref == 'refs/heads/main'
     needs: test
@@ -48,11 +48,10 @@ jobs:
           X_API_ENDPOINT: https://bk.opendatahub.com
           X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
 
-      - name: Build and push
-        uses: noi-techpark/github-actions/docker-build-and-push@v2
+      - uses: noi-techpark/github-actions/yarn-build@v2
         with:
-          docker-username: ${{ github.actor }}
-          docker-password: ${{ secrets.GITHUB_TOKEN }}
+          build-command: yarn generate
+          node-version: ${{env.NODE_VERSION}}
 
       - name: Deploy application
         uses: noi-techpark/github-actions/docker-deploy@v2
