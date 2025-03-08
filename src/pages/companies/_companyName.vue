@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 <template>
     <div style="height: 100vh; overflow: hidden">
-      <WebComponent website-mode="true" :default-company="decodeURI($router?.params?.companyName) || ''" @changeTitle="changeTitle"/>
+      <WebComponent website-mode="true" :default-company="(isNumber($router?.params?.companyName) ? $router?.params?.companyName :  decodeURI($router?.params?.companyName))" @changeTitle="changeTitle"/>
     </div>
   </template>
   

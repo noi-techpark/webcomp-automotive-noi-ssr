@@ -7,13 +7,15 @@ import i18nOptions from './src/plugins/i18n.options'
 const matomo =
   !process.env.DISABLED_MATOMO || process.env.DISABLED_MATOMO === 'false'
 
-const targetConfig = !process.env.TARGET_CONFIG ? 'server' : process.env.TARGET_CONFIG;
+const targetConfig = !process.env.TARGET_CONFIG
+  ? 'static'
+  : process.env.TARGET_CONFIG
 
-console.log(targetConfig);
+console.log(targetConfig)
 
 const config = {
-  ssr: targetConfig === 'server', // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
-  target: targetConfig,
+  ssr: true, // NOTE: if ssr need to be enabled, first change the inclusion on vuelayers in the component MapView implementing a plugin
+  target: 'server',
 
   srcDir: 'src/',
 
@@ -28,7 +30,10 @@ const config = {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' },
-      { name: 'google-site-verification', content: 'xFg36VV3r7ycMqVCrgMcxwwHrOiZKU7j9zzjlZH9PNY' }, // Google Console verification token for Raphael Siller
+      {
+        name: 'google-site-verification',
+        content: 'xFg36VV3r7ycMqVCrgMcxwwHrOiZKU7j9zzjlZH9PNY',
+      }, // Google Console verification token for Raphael Siller
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -78,11 +83,7 @@ const config = {
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
-  modules: [
-    'nuxt-i18n',
-    '@/shared/vuelayers',
-    'nuxt-custom-elements',
-  ],
+  modules: ['nuxt-i18n', '@/shared/vuelayers', 'nuxt-custom-elements'],
 
   customElements: {
     entries: [
@@ -100,10 +101,12 @@ const config = {
                 customLinks: '[]',
               },
             }, */
-          },{
+          },
+          {
             name: 'CompanieMapping',
             path: '@/components-lazy/ui/generic/Map',
-          },{
+          },
+          {
             name: 'PdfExport',
             path: '@/components-lazy/tools/PdfExporter',
           },
@@ -124,9 +127,12 @@ const config = {
     babel: {
       compact: process.env.NODE_ENV === 'production',
       presets: [
-        ['@nuxt/babel-preset-app', {
-          useBuiltIns: 'entry',
-        }]
+        [
+          '@nuxt/babel-preset-app',
+          {
+            useBuiltIns: 'entry',
+          },
+        ],
       ],
     },
 
@@ -185,6 +191,10 @@ const config = {
             plugins: [
               '@babel/plugin-proposal-nullish-coalescing-operator',
               '@babel/plugin-proposal-optional-chaining',
+              [
+                '@babel/plugin-proposal-private-property-in-object',
+                { loose: true },
+              ],
             ],
           },
         }

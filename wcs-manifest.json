@@ -25,14 +25,11 @@
   "searchTags": ["automotive", "automation", "map"],
   "dist": {
     "basePath": "dist/nuxt-custom-elements/noi-automotive",
-    "files": [
-      "noi-automotive.js",
-      "home-cover.jpg"
-    ],
+    "files": ["noi-automotive.js", "home-cover.jpg"],
     "scripts": [
       {
-      "file": "noi-automotive.js",
-      "parameter": ""
+        "file": "noi-automotive.js",
+        "parameter": ""
       }
     ]
   },
@@ -73,7 +70,12 @@
         "label": "Filter category at startup",
         "required": false,
         "options": {
-          "values": ["", "automotiveAndMobility", "manufacturing", "agriAutomation"]
+          "values": [
+            "",
+            "automotiveAndMobility",
+            "manufacturing",
+            "agriAutomation"
+          ]
         }
       },
       {
@@ -82,7 +84,12 @@
         "label": "Only show selected categories",
         "required": false,
         "options": {
-          "values": ["", "automotiveAndMobility", "manufacturing", "agriAutomation"]
+          "values": [
+            "",
+            "automotiveAndMobility",
+            "manufacturing",
+            "agriAutomation"
+          ]
         }
       },
       {
@@ -108,7 +115,7 @@
         "type": "text",
         "label": "Primary color (Hex Code)",
         "required": false,
-        "options": {          
+        "options": {
           "default": "#0000ff"
         }
       },
@@ -136,7 +143,7 @@
         "label": "Show Home View?",
         "required": false,
         "options": {
-            "default": true
+          "default": true
         }
       }
     ]

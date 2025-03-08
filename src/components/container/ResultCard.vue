@@ -24,10 +24,14 @@ SPDX-License-Identifier: AGPL-3.0-or-later
           {{ result.city }}
         </p>
         <div class="open-button">
-          <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 500'  xmlns:v='https://vecta.io/nano'>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 500 500"
+            xmlns:v="https://vecta.io/nano"
+          >
             <path
-              style='fill:#ececec'
-              d='M158.7 496.4l-5.2-3.6c-9.1-6.4-11.4-18.9-5-28.1L298.2 250 148.6 35.3c-6.4-9.1-4.1-21.7 5-28.1l5.2-3.6c9.1-6.4 21.7-4.1 28.1 5L355.1 250 186.8 491.4c-6.4 9.1-18.9 11.3-28.1 5z'
+              style="fill: #ececec"
+              d="M158.7 496.4l-5.2-3.6c-9.1-6.4-11.4-18.9-5-28.1L298.2 250 148.6 35.3c-6.4-9.1-4.1-21.7 5-28.1l5.2-3.6c9.1-6.4 21.7-4.1 28.1 5L355.1 250 186.8 491.4c-6.4 9.1-18.9 11.3-28.1 5z"
             />
           </svg>
         </div>
@@ -57,7 +61,7 @@ export default {
       validator(value) {
         return ['desktop', 'mobile'].includes(value)
       },
-    }
+    },
   },
 }
 </script>
@@ -109,7 +113,6 @@ export default {
   }
 }
 .mobile {
-
   &.card {
     @apply block m-4 rounded-lg bg-white;
     filter: drop-shadow(0 9px 7px rgba(0, 0, 0, 0.1));
@@ -148,7 +151,6 @@ export default {
           & svg {
             width: 60%;
           }
-
         }
       }
     }
