@@ -19,11 +19,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <h1>{{ data?.name}}</h1>
             <img
               class="logo"
-              :src="data?.logo &&
-                  data?.logo?.formats
+              :src="data?.logo
                     ? getConfigProperty('apiEndpoint') +
-                      getAvailableImageFormat(
-                        data?.logo?.formats
+                      getAvailableImageFormatV2(
+                        data?.logo
                       )
                     : ''"
               :alt="'Logo ' + data?.name"
@@ -34,12 +33,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <img
                 v-if="!mainVideoID"
                 class="image"
-                :src="data?.mainImage &&
-                    data?.mainImage?.formats
+                :src="data?.mainImage
                       ? getConfigProperty('apiEndpoint') +
-                        getAvailableImageFormat(
-                          data?.mainImage?.formats
-                        )
+                        getAvailableImageFormatV2(data?.mainImage)
                       : ''"
                 :alt="data?.mainImageDescription"
               />
@@ -58,12 +54,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <div v-if="data?.auxiliaryImage?.formats" class="middle-desc">
                 <img
                   class="second-image"
-                  :src="data?.auxiliaryImage &&
-                      data?.auxiliaryImage &&
-                      data?.auxiliaryImage?.formats
+                  :src="data?.auxiliaryImage
                         ? getConfigProperty('apiEndpoint') +
-                          getAvailableImageFormat(
-                            data?.auxiliaryImage.formats
+                          getAvailableImageFormatV2(
+                            data?.auxiliaryImage
                           )
                         : ''"
                   :alt="data?.auxiliaryImageDescription"
