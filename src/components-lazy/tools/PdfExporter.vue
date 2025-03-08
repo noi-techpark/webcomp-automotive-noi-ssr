@@ -52,9 +52,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                       data?.mainImage
                         ? 'url(' +
                           getConfigProperty('apiEndpoint') +
-                          getAvailableImageFormatV2(
-                            data.mainImage
-                          ) +
+                          getAvailableImageFormatV2(data.mainImage) +
                           ')'
                         : '',
                   }"
@@ -72,9 +70,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                         data?.auxiliaryImage
                           ? 'url(' +
                             getConfigProperty('apiEndpoint') +
-                            getAvailableImageFormatV2(
-                              data.auxiliaryImage
-                            ) +
+                            getAvailableImageFormatV2(data.auxiliaryImage) +
                             ')'
                           : '',
                     }"
