@@ -49,15 +49,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                   class="image"
                   :style="{
                     backgroundImage:
-                      data.mainImage &&
-                      data.mainImage.formats
+                      data?.mainImage
                         ? 'url(' +
                           getConfigProperty('apiEndpoint') +
-                          getAvailableImageFormat(
-                            data.mainImage.formats
-                          ) +
+                          getAvailableImageFormatV2(data.mainImage) +
                           ')'
-                        : undefined,
+                        : '',
                   }"
                 ></div>
               </div>
@@ -70,15 +67,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                     class="second-image"
                     :style="{
                       backgroundImage:
-                        data.auxiliaryImage &&
-                        data.auxiliaryImage.formats
+                        data?.auxiliaryImage
                           ? 'url(' +
                             getConfigProperty('apiEndpoint') +
-                            getAvailableImageFormat(
-                              data.auxiliaryImage.formats
-                            ) +
+                            getAvailableImageFormatV2(data.auxiliaryImage) +
                             ')'
-                          : undefined,
+                          : '',
                     }"
                   ></div>
                   <p class="second-desc">
@@ -203,14 +197,10 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 class="logo"
                 :style="{
                   backgroundImage:
-                    data.logo &&
-                    data.logo.data &&
-                    data.logo.data.formats
+                    data?.logo
                       ? 'url(' +
                         getConfigProperty('apiEndpoint') +
-                        getAvailableImageFormat(
-                          data.logo.data.formats
-                        ) +
+                        getAvailableImageFormatV2(data.logo) +
                         ')'
                       : undefined,
                 }"
