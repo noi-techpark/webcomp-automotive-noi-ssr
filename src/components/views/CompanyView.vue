@@ -20,9 +20,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <img
               class="logo"
               :src="
-                data?.logo && data?.logo?.formats
+                data?.logo
                   ? getConfigProperty('apiEndpoint') +
-                    getAvailableImageFormat(data?.logo?.formats)
+                    getAvailableImageFormatV2(data?.logo)
                   : ''
               "
               :alt="'Logo ' + data?.name"
@@ -34,9 +34,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 v-if="!mainVideoID"
                 class="image"
                 :src="
-                  data?.mainImage && data?.mainImage?.formats
+                  data?.mainImage
                     ? getConfigProperty('apiEndpoint') +
-                      getAvailableImageFormat(data?.mainImage?.formats)
+                      getAvailableImageFormatV2(data?.mainImage)
                     : ''
                 "
                 :alt="data?.mainImageDescription"
@@ -61,11 +61,9 @@ SPDX-License-Identifier: AGPL-3.0-or-later
                 <img
                   class="second-image"
                   :src="
-                    data?.auxiliaryImage &&
-                    data?.auxiliaryImage &&
-                    data?.auxiliaryImage?.formats
+                    data?.auxiliaryImage
                       ? getConfigProperty('apiEndpoint') +
-                        getAvailableImageFormat(data?.auxiliaryImage.formats)
+                        getAvailableImageFormatV2(data?.auxiliaryImage)
                       : ''
                   "
                   :alt="data?.auxiliaryImageDescription"

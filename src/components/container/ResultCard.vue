@@ -12,7 +12,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
       :src="
         result.image
           ? getConfigProperty('apiEndpoint') +
-            getAvailableImageFormat(result.image.formats, false)
+            getAvailableImageFormatV2(result.image, false)
           : ''
       "
       alt=""

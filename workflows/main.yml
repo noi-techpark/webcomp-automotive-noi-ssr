@@ -1,0 +1,119 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+
+env:
+  NODE_VERSION: 16.x
+  PROJECT_NAME: automotive-noi
+  DOCKER_IMAGE: ghcr.io/${{ github.repository }}/${{ github.event.repository.name }}
+  DOCKER_TAG: ${{ github.sha }}
+  AWS_REGION: 'eu-west-1'
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: REUSE Compliance Check
+        uses: fsfe/reuse-action@v1
+      - uses: noi-techpark/github-actions/yarn-build@v2
+        with:
+          build-command: yarn generate
+          node-version: ${{env.NODE_VERSION}}
+      - uses: noi-techpark/github-actions/webcomp-test@v2
+        with:
+          origin-test-enabled: false
+
+  deploy-test:
+    runs-on: ubuntu-22.04
+    if: github.ref == 'refs/heads/main'
+    needs: test
+    concurrency: deploy-website-test
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create .env file
+        uses: noi-techpark/github-actions/env-file@v2
+        env:
+          X_COMPOSE_PROJECT_NAME: ${{ env.PROJECT_NAME }}
+          X_DOCKER_IMAGE: ${{ env.DOCKER_IMAGE }}
+          X_DOCKER_TAG: ${{ env.DOCKER_TAG }}
+          X_SERVER_PORT: 1013
+
+          X_DISABLED_MATOMO: false
+          X_TARGET_CONFIG: 'server'
+
+          X_API_ENDPOINT: https://bk.opendatahub.com
+          X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
+
+      - uses: noi-techpark/github-actions/yarn-build@v2
+        with:
+          build-command: yarn generate
+          node-version: ${{env.NODE_VERSION}}
+
+      - name: Deploy application
+        uses: noi-techpark/github-actions/docker-deploy@v2
+        with:
+          hosts: 'test'
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          docker-username: 'noi-techpark-bot'
+          docker-password: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          project-name: ${{ env.PROJECT_NAME }}
+
+  # WEBCOMP DISABLED FOR NOW, BECAUSE SSR BUILD IS PREFERRED
+
+  # deploy-test:
+  #   runs-on: ubuntu-22.04
+  #   if: github.ref == 'refs/heads/main'
+  #   needs: test
+  #   concurrency: deploy-test
+  #   env:
+  #     DISABLED_MATOMO: true
+  #     TARGET_CONFIG: 'static'
+  #   steps:
+  #     - uses: actions/checkout@v3
+
+  #     - name: Create .env file
+  #       uses: noi-techpark/github-actions/env-file@v2
+  #       env:
+  #         X_API_ENDPOINT: https://bk.opendatahub.com
+  #         X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
+
+  #     - uses: noi-techpark/github-actions/yarn-build@v2
+  #       with:
+  #         build-command: yarn generate
+  #         node-version: ${{env.NODE_VERSION}}
+
+  #     - uses: noi-techpark/github-actions/webcomp-push@v2
+  #       with:
+  #         keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_TEST}}
+  #         version-tag: ${{github.sha}}
+
+  # deploy-prod:
+  #   runs-on: ${{ vars.RUNNER_UBUNTU }}
+  #   if: startsWith(github.ref, 'refs/tags/v')
+  #   needs: test
+  #   concurrency: deploy-prod
+  #   env:
+  #     MATOMO: false
+  #   steps:
+  #     - uses: ${{ vars.ACTION_CHECKOUT }}
+
+  #     - name: Create .env file
+  #       uses: noi-techpark/github-actions/env-file@v2
+  #       env:
+  #         X_API_ENDPOINT: https://bk.opendatahub.com
+  #         X_API_COMPANIES: PATH=/api/published-companies/?fields[0]=data_
+
+  #     - uses: noi-techpark/github-actions/npm-build@v2
+  #       with:
+  #         build-command: npm run generate
+  #         node-version: ${{env.NODE_VERSION}}
+
+  #     - uses: noi-techpark/github-actions/webcomp-push@v2
+  #       with:
+  #         keycloak-secret: ${{secrets.WCSTORE_CLI_KEYCLOAK_SECRET_PROD}}
+  #         version-tag: ${{github.ref_name}}
+  #         production: "true"

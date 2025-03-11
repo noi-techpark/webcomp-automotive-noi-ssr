@@ -145,6 +145,17 @@ export default {
       return formats?.thumbnail?.url
     },
 
+    /**
+     * returns a url similar to getAvailableImageFormat, but also takes datasets into account, where no formats are specified (only seen for avif images yet)
+     */
+    getAvailableImageFormatV2(image, startFromLargest) {
+      if (image.formats) {
+        return this.getAvailableImageFormat(image.formats)
+      } else {
+        return image.url
+      }
+    },
+
     removeUnnecessaryNewlines(string) {
       return string ? string.replaceAll(/([^.])(\n)/g, '$1 ').trim() : ''
     },

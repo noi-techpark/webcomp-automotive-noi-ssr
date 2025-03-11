@@ -58,7 +58,7 @@ export default {
           '&' +
           encodeURIComponent('filters[name][$eq]') +
           '=' +
-          encodeURIComponent(params.name.toUpperCase())
+          encodeURIComponent(params.name)
       ).catch(() => {
         alert('Sorry, an error has occurred while fetching the company.')
       })
