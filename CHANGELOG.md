@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.4.1...v2.5.0) (2025-05-24)
+
+
+### Features
+
+* updated package version to trigger new deploy ([3e5b3b8](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/3e5b3b80534317d2bd19ed904fcdb595e57d395f))
+
 ### [2.4.1](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.4.0...v2.4.1) (2025-05-24)
 
 
