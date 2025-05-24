@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.4.1](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.4.0...v2.4.1) (2025-05-24)
+
+
+### Bug Fixes
+
+* fixed layout configuration from API setup endpoint ([1312e74](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/1312e7413033d79b70c011b9fc21828e53021d56))
+
 ## [2.4.0](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.3.3...v2.4.0) (2025-03-11)
 
 
