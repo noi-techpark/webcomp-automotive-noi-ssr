@@ -107,6 +107,7 @@ export default {
       filteredCompanies: [],
       searchValue: '',
       searchValueDelayed: '',
+      searchBarBackground: '',
     }
   },
   head() {
@@ -296,7 +297,7 @@ export default {
   container-name: noi-automotive-component-view;
 
   & .search-bar-ct {
-    @apply fixed my-4 rounded-lg;
+    @apply fixed my-4 rounded-lg bg-gray-100;
 
     max-width: calc(100% - 2.5rem);
     width: 1500px;
