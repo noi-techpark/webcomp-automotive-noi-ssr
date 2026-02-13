@@ -41,11 +41,11 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     </div>
     <div class="logos-ct">
       <nuxt-link class="logo clickable" to="/" aria-label="NOI Logo">
-        <div v-if="!getConfigProperty('headerLogoUrl')">
+        <div v-if="!logoUrl">
           <Icon name="logo" alt="NOI Logo" />
           <Icon name="logo-automotive" alt="NOI Automotive Automation Logo" />
         </div>
-        <img v-else :src="getConfigProperty('headerLogoUrl')" alt="LOGO" />
+        <img v-else :src="logoUrl" alt="LOGO" />
       </nuxt-link>
     </div>
   </header>
@@ -61,6 +61,11 @@ export default {
       type: Boolean,
       default: false,
     },
+  },
+  data() {
+    return {
+      logoUrl: null,
+    }
   },
   computed: {
     availableLanguages() {
@@ -96,6 +101,12 @@ export default {
       ]
     },
   },
+  mounted() {
+    this.setLogoUrl() // Due to a bad state implementation, which is not yet fixed, we need to set the logoUrl using fetch
+    setInterval(() => {
+      this.setLogoUrl()
+    }, 1000)
+  },
   methods: {
     changeLanguage(lang) {
       if (typeof this.$i18n.setLocale !== 'undefined') {
@@ -103,6 +114,10 @@ export default {
       } else {
         this.$i18n.locale = lang
       }
+    },
+
+    setLogoUrl() {
+      this.logoUrl = this.getConfigProperty('headerLogoUrl')
     },
   },
 }

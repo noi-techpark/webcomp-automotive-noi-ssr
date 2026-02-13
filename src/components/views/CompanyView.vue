@@ -19,10 +19,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
             <h1>{{ data?.name }}</h1>
             <img
               class="logo"
-              :src="data?.logo
-                    ? getConfigProperty('apiEndpoint') +
-                      getAvailableImageFormatV2(data?.logo)
-                    : ''"
+              :src="
+                data?.logo
+                  ? getConfigProperty('apiEndpoint') +
+                    getAvailableImageFormatV2(data?.logo)
+                  : ''
+              "
               :alt="'Logo ' + data?.name"
             />
           </div>
@@ -31,10 +33,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <img
                 v-if="!mainVideoID"
                 class="image"
-                :src="data?.mainImage
-                      ? getConfigProperty('apiEndpoint') +
-                        getAvailableImageFormatV2(data?.mainImage)
-                      : ''"
+                :src="
+                  data?.mainImage
+                    ? getConfigProperty('apiEndpoint') +
+                      getAvailableImageFormatV2(data?.mainImage)
+                    : ''
+                "
                 :alt="data?.mainImageDescription"
               />
               <iframe
@@ -56,10 +60,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
               <div v-if="data?.auxiliaryImage?.formats" class="middle-desc">
                 <img
                   class="second-image"
-                  :src="data?.auxiliaryImage
-                        ? getConfigProperty('apiEndpoint') +
-                          getAvailableImageFormatV2(data?.auxiliaryImage)
-                        : ''"
+                  :src="
+                    data?.auxiliaryImage
+                      ? getConfigProperty('apiEndpoint') +
+                        getAvailableImageFormatV2(data?.auxiliaryImage)
+                      : ''
+                  "
                   :alt="data?.auxiliaryImageDescription"
                 />
                 <p class="second-desc">
