@@ -3,23 +3,25 @@
 // SPDX-License-Identifier: AGPL-3.0-or-later
 
 const universalConfig = {
-          apiEndpoint: 'https://bk.opendatahub.com',
-          apiCompaniesPath: '/api/noi-companies',
-          network: 'noi',
-          headerLogoUrl: '',
-          searchbarBackground: 'https://cdn.webcomponents.opendatahub.testingmachine.eu/dist/e3df9ad8-e78f-48d8-88d2-089657d27de5/home-cover.jpg',
-          primaryColor: '#0000ff',
-          hiddenFilters: undefined,
-          visibleSpecializationAreas: undefined,
-        }
-
+  apiEndpoint: 'https://bk.opendatahub.com',
+  apiCompaniesPath: '/api/noi-companies',
+  network: 'noi',
+  headerLogoUrl: '',
+  searchbarBackground: '',
+  primaryColor: '#0000ff',
+  hiddenFilters: undefined,
+  visibleSpecializationAreas: undefined,
+}
 
 export default {
   methods: {
     setConfigProperty(key, value) {
-      if(value !== undefined) {
+      if (value !== undefined) {
         universalConfig[key] = value
-        if(key === 'network' && universalConfig.apiCompaniesPath === '/api/noi-companies') {
+        if (
+          key === 'network' &&
+          universalConfig.apiCompaniesPath === '/api/noi-companies'
+        ) {
           universalConfig.apiCompaniesPath = '/api/' + value + '-companies'
         }
       }
@@ -28,41 +30,65 @@ export default {
       return universalConfig[key]
     },
     initConfigPropertiesFromEnvvars() {
-      this.setConfigProperty('apiEndpoint', this.$config.apiEndpoint)
-      this.setConfigProperty('apiCompaniesPath', this.$config.apiCompaniesPath)
-      this.setConfigProperty('network', this.$config.network)
-      this.setConfigProperty('headerLogoUrl', this.$config.headerLogoUrl)
-      this.setConfigProperty('searchbarBackground', this.$config.searchbarBackground)
-      this.setConfigProperty('primaryColor', this.$config.primaryColor)
-      this.setConfigProperty('hiddenFilters', this.$config.hiddenFilters)
-      this.setConfigProperty('visibleSpecializationAreas', this.$config.visibleSpecializationAreas)
+      this.setConfigProperty('apiEndpoint', this.$config?.apiEndpoint)
+      this.setConfigProperty('apiCompaniesPath', this.$config?.apiCompaniesPath)
+      this.setConfigProperty('network', this.$config?.network)
+      this.setConfigProperty('headerLogoUrl', this.$config?.headerLogoUrl)
+      this.setConfigProperty(
+        'searchbarBackground',
+        this.$config?.searchbarBackground
+      )
+      this.setConfigProperty('primaryColor', this.$config?.primaryColor)
+      this.setConfigProperty('hiddenFilters', this.$config?.hiddenFilters)
+      this.setConfigProperty(
+        'visibleSpecializationAreas',
+        this.$config?.visibleSpecializationAreas
+      )
 
-      this.fetchSetup().then(setup => {
-        if(this.$config.primaryColor === undefined || this.$config.primaryColor === '') {
-          this.setConfigProperty('primaryColor', setup.primaryColor)
-        }
-        if(this.$config.headerLogoUrl === undefined || this.$config.headerLogoUrl === '') {
-          this.setConfigProperty('headerLogoUrl', setup.headerLogoUrl)
-        }
-        if(this.$config.searchbarBackground === undefined || this.$config.searchbarBackground === '') {
-          this.setConfigProperty('searchbarBackground', setup.searchbarBackground)
-        }
-      })
-      .catch(err => console.log(err))
+      this.fetchSetup()
+        .then((setup) => {
+          if (setup.primaryColor) {
+            this.setConfigProperty('primaryColor', setup.primaryColor)
+          }
+          if (setup.headerLogoUrl) {
+            this.setConfigProperty('headerLogoUrl', setup.headerLogoUrl)
+          }
+          if (setup.searchbarBackground) {
+            this.setConfigProperty(
+              'searchbarBackground',
+              setup.searchbarBackground
+            )
+          }
+        })
+        .catch((err) => console.log(err))
     },
     async fetchSetup() {
-      let endpoint = this.getConfigProperty('apiEndpoint') + this.getConfigProperty('apiCompaniesPath')
+      let endpoint =
+        this.getConfigProperty('apiEndpoint') +
+        this.getConfigProperty('apiCompaniesPath')
       if (endpoint.slice(-1) === '/') {
         endpoint = endpoint.slice(0, endpoint.length - 1)
       }
-      const response = await fetch(endpoint + '-setup')
+      const response = await fetch(endpoint + '-setup?populate=*')
       if (!response.ok) {
-        throw new Error(`Error while fetching ${endpoint}-setup: errorcode was ${response.status}`);
+        throw new Error(
+          `Error while fetching ${endpoint}-setup: errorcode was ${response.status}`
+        )
       }
+
+      const responseJSON = await response.json()
+      const responseData = responseJSON?.data
+
       return {
-        primaryColor: response.data.primaryColor,
-        headerLogoUrl: this.getConfigProperty('apiEndpoint') + response.data.logo.url,
-        searchbarBackground: this.getConfigProperty('apiEndpoint') + response.data.coverImage.url
+        primaryColor: responseData?.primaryColor,
+        headerLogoUrl: responseData?.logo?.url
+          ? this.getConfigProperty('apiEndpoint').replace('/api', '') +
+            responseData.logo.url
+          : '',
+        searchbarBackground: responseData?.coverImage?.url
+          ? this.getConfigProperty('apiEndpoint').replace('/api', '') +
+            responseData.coverImage.url
+          : '',
       }
     },
 
@@ -106,7 +132,9 @@ export default {
     },
 
     mapCompaniesResult(response, lang) {
-      return response.data.map((company) => company['data_' + lang] ? company['data_' + lang] : company)
+      return response.data.map((company) =>
+        company['data_' + lang] ? company['data_' + lang] : company
+      )
     },
 
     formatWithThousandSeparator(number) {
@@ -116,7 +144,7 @@ export default {
     },
 
     getAvailableImageFormat(formats, startFromLargest = true) {
-      if(startFromLargest) {
+      if (startFromLargest) {
         if (formats?.large) {
           return formats.large.url
         }
@@ -217,7 +245,10 @@ export default {
           '?locale=' +
           this.$i18n.locale +
           '&populate=*' +
-          '&' + encodeURIComponent('filters[companyId][$eq]') + "=" + encodeURIComponent(companyId)
+          '&' +
+          encodeURIComponent('filters[companyId][$eq]') +
+          '=' +
+          encodeURIComponent(companyId)
       ).catch(() => {
         alert('Sorry, an error has occurred while fetching the company.')
       })
@@ -230,8 +261,12 @@ export default {
       const response = await fetch(
         this.getConfigProperty('apiEndpoint') +
           this.getConfigProperty('apiCompaniesPath') +
-          "?locale=" + this.$i18n.locale +
-          '&' + encodeURIComponent('filters[name][$eq]') + "=" + encodeURIComponent(companyName)
+          '?locale=' +
+          this.$i18n.locale +
+          '&' +
+          encodeURIComponent('filters[name][$eq]') +
+          '=' +
+          encodeURIComponent(companyName)
       ).catch(() => {
         alert('Sorry, an error has occurred while fetching the company.')
       })
@@ -267,44 +302,63 @@ export default {
       return brightness > 125 ? 'black' : 'white'
     },
     hexAdjustBrightness(hexColor, percent) {
-        let R = parseInt(hexColor.substring(1,3),16);
-        let G = parseInt(hexColor.substring(3,5),16);
-        let B = parseInt(hexColor.substring(5,7),16);
+      let R = parseInt(hexColor.substring(1, 3), 16)
+      let G = parseInt(hexColor.substring(3, 5), 16)
+      let B = parseInt(hexColor.substring(5, 7), 16)
 
-        R = parseInt(R * (100 + percent) / 100);
-        G = parseInt(G * (100 + percent) / 100);
-        B = parseInt(B * (100 + percent) / 100);
+      R = parseInt((R * (100 + percent)) / 100)
+      G = parseInt((G * (100 + percent)) / 100)
+      B = parseInt((B * (100 + percent)) / 100)
 
-        R = (R<255)?R:255;
-        G = (G<255)?G:255;
-        B = (B<255)?B:255;
+      R = R < 255 ? R : 255
+      G = G < 255 ? G : 255
+      B = B < 255 ? B : 255
 
-        R = Math.round(R)
-        G = Math.round(G)
-        B = Math.round(B)
+      R = Math.round(R)
+      G = Math.round(G)
+      B = Math.round(B)
 
-        const RR = ((R.toString(16).length===1)?"0"+R.toString(16):R.toString(16));
-        const GG = ((G.toString(16).length===1)?"0"+G.toString(16):G.toString(16));
-        const BB = ((B.toString(16).length===1)?"0"+B.toString(16):B.toString(16));
+      const RR =
+        R.toString(16).length === 1 ? '0' + R.toString(16) : R.toString(16)
+      const GG =
+        G.toString(16).length === 1 ? '0' + G.toString(16) : G.toString(16)
+      const BB =
+        B.toString(16).length === 1 ? '0' + B.toString(16) : B.toString(16)
 
-        return "#"+RR+GG+BB;
+      return '#' + RR + GG + BB
     },
     setGlobalCSSVariable(rootElement, varname, value) {
-      if(rootElement)
-        rootElement.style.setProperty(varname, value)
+      if (rootElement) rootElement.style.setProperty(varname, value)
     },
     setStandardGlobalCSSVariables(rootElement, primaryColor) {
-      this.setGlobalCSSVariable(rootElement, '--primary-color', primaryColor);
-      this.setGlobalCSSVariable(rootElement, '--primary-hover', this.hexAdjustBrightness(primaryColor, this.getTextColor(primaryColor) === 'white' ? -20 : 20));
-      this.setGlobalCSSVariable(rootElement, '--primary-color-text', this.getTextColor(primaryColor));
+      this.setGlobalCSSVariable(rootElement, '--primary-color', primaryColor)
+      this.setGlobalCSSVariable(
+        rootElement,
+        '--primary-hover',
+        this.hexAdjustBrightness(
+          primaryColor,
+          this.getTextColor(primaryColor) === 'white' ? -20 : 20
+        )
+      )
+      this.setGlobalCSSVariable(
+        rootElement,
+        '--primary-color-text',
+        this.getTextColor(primaryColor)
+      )
     },
-    truncate(str, length, useWordBoundary ){
-      if (!str) { return ""; }
-      if (str.length <= length) { return str; }
-      const subString = str.slice(0, length-1); // the original check
-      return (useWordBoundary
-        ? subString.slice(0, subString.lastIndexOf(" "))
-        : subString) + "…";
+    truncate(str, length, useWordBoundary) {
+      if (!str) {
+        return ''
+      }
+      if (str.length <= length) {
+        return str
+      }
+      const subString = str.slice(0, length - 1) // the original check
+      return (
+        (useWordBoundary
+          ? subString.slice(0, subString.lastIndexOf(' '))
+          : subString) + '…'
+      )
     },
     /*
      * returns true, when width (in px) of component-view is greater or equal than 768
@@ -320,10 +374,8 @@ export default {
         rootElement2 = document.getElementsByClassName('component-view')[0]
       const width = rootElement1?.clientWidth || rootElement2?.clientWidth
 
-      if (width)
-        return width >= minWidth
-      else
-        return false
-    }
+      if (width) return width >= minWidth
+      else return false
+    },
   },
 }

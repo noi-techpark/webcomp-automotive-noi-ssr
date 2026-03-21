@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.4.1...v2.5.0) (2025-05-24)
+
+
+### Features
+
+* updated package version to trigger new deploy ([3e5b3b8](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/3e5b3b80534317d2bd19ed904fcdb595e57d395f))
+
+### [2.4.1](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.4.0...v2.4.1) (2025-05-24)
+
+
+### Bug Fixes
+
+* fixed layout configuration from API setup endpoint ([1312e74](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/1312e7413033d79b70c011b9fc21828e53021d56))
+
+## [2.4.0](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.3.3...v2.4.0) (2025-03-11)
+
+
+### Features
+
+* align repo ([c1c7b24](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/c1c7b24192eb8f3a35e7e5bd09ba719c5fa48b39))
+
+
+### Bug Fixes
+
+* fallback to image.url if no formats are given ([b5fda8b](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/b5fda8b49a5c6145512ba773766c50687e8bbbd7))
+* strapi $eq filter is case sensitive ([008e5ff](https://github.com/codeworks-projects/webcomp-automotive-noi/commit/008e5ff77a21e6b8c106cf12b7da759266cb7b32))
+
 ### [2.3.3](https://github.com/codeworks-projects/webcomp-automotive-noi/compare/v2.3.2...v2.3.3) (2025-02-12)
 
 

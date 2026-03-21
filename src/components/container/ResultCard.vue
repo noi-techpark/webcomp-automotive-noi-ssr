@@ -9,7 +9,12 @@ SPDX-License-Identifier: AGPL-3.0-or-later
     <!-- card design from https://tailwind-elements.com/docs/standard/components/cards/ -->
     <img
       class="card-image"
-      :src="result.image ? getConfigProperty('apiEndpoint') + getAvailableImageFormatV2(result.image, false) : ''"
+      :src="
+        result.image
+          ? getConfigProperty('apiEndpoint') +
+            getAvailableImageFormatV2(result.image, false)
+          : ''
+      "
       alt=""
     />
     <div class="card-desc">
